@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { View, Text, SafeAreaView, Image, TouchableOpacity, KeyboardAvoidingView } from "react-native";
 import { Container, Content, Item, Input, Header, Form, Label } from "native-base";
 import Constants from 'expo-constants';
@@ -7,7 +7,7 @@ import serverAPI from "../API/serverAPI"
 
 const RegisterScreen = ({navigation}) => {
   // Variables
-  const [phoneNumber, setPhoneNumber] = useState("")
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   // Functions
   const handleOnChangePhone = (phoneNumber) => {
@@ -15,14 +15,29 @@ const RegisterScreen = ({navigation}) => {
   }
 
   const phoneNumberChecker = () => {
-    phoneNumber[0] === '0'
-      && setPhoneNumber(phoneNumber.slice(1))  
-    return true
+    if(phoneNumber[0] === '0'){
+      const newNumber = "+62" + phoneNumber.slice(1)
+      return newNumber;
+    } else if(phoneNumber[0] === "8"){
+      const newNumber = "+62" + phoneNumber
+      return newNumber
+    }
   }
 
   const handleSubmitNumber = () => {
+    const phoneNumber = phoneNumberChecker()
+    serverAPI({
+      url: "/user/otp",
+      method: "POST",
+      data: {
+        phoneNumber
+      }
+    }).then(() => {
+      navigation.navigate("VerifyOTPScreen", {phoneNumber})
+    }).catch((err) => {
+      console.log(err)
+    })
     // navigation.navigate("VerifyOTPScreen")
-    navigation.navigate("VerifyOTPScreen")
   }
 
   return (
@@ -45,9 +60,9 @@ const RegisterScreen = ({navigation}) => {
             <Form style={{ justifyContent: "center", alignItems: "center", flex: 1, marginTop: 30, marginBottom: 30}}>
               <View style={{ alignItems: "center", justifyContent: "center", flexDirection: "row", marginBottom: 20 }}>
                 <Image source={{ uri: phone}} style={{width: 30, height: 30}} />
-                <Text style={{fontSize: 15, paddingLeft: 5}}>+62</Text>
+                <Text style={{fontSize: 15, paddingLeft: 5, fontWeight: '700'}}>+62</Text>
                 <Item style={{ width: '60%' }} underline={false} >
-                    <Input keyboardType={"number-pad"} style={{fontSize: 15}} value={phoneNumber} placeholder="Mobile Ex: 8123..." onChangeText={(phoneNumber) => {
+                    <Input keyboardType={"number-pad"} style={{fontSize: 15}} value={phoneNumber} placeholder="8123..." onChangeText={(phoneNumber) => {
                       handleOnChangePhone(phoneNumber)
                     }} />
                 </Item>

@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, SafeAreaView, KeyboardAvoidingView, Image, TouchableOpacity } from 'react-native'
-import { Container, Content, Item, Input, Header, Form, Left, Body, Title } from "native-base";
+import { Header } from "native-base";
 import Constants from 'expo-constants';
 import SmoothPinCodeInput from "react-native-smooth-pincode-input"
 import { back } from "../assets/icons"
+import serverAPI from "../API/serverAPI"
 
 const VerifyOTPScreen = ({navigation}) => {
     // Variables
     const [token, setToken] = useState('');
+    const phoneNumber = navigation.getParam("phoneNumber")
     
     //Function
     const handleOnPressBack = () => {
@@ -15,13 +17,26 @@ const VerifyOTPScreen = ({navigation}) => {
     }
     const handleOnChangeToken = (token) => {
         setToken(token)
-        handleOnComplete()
     }
-    const handleOnComplete = () => {
-        if(token.length === 4){
-            // POST to Server API
+    useEffect(() => {
+        console.log("triggered")
+        if(token.length === 6){
+            serverAPI({
+                method: "POST",
+                url: "/user/verify",
+                data: {
+                    token
+                }
+            }).then(() => {
+                console.log("hello result")
+                navigation.navigate("PinCreateScreen", { phoneNumber })
+            }).catch((err) => {
+                console.log("yah error")
+                console.log(err)
+            })
         }
-    }
+    }, [token])
+
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <KeyboardAvoidingView
@@ -36,7 +51,7 @@ const VerifyOTPScreen = ({navigation}) => {
               style={{
                 flexDirection: 'row',
                 justifyContent: 'center',
-                alignItems: 'center',
+                alignItems: 'center'
               }}
             >
               <TouchableOpacity onPress={handleOnPressBack}>
@@ -69,7 +84,7 @@ const VerifyOTPScreen = ({navigation}) => {
             </View>
             <View style={{ marginTop: 20 }}>
               <SmoothPinCodeInput
-              autoFocus
+                autoFocus
                 cellStyle={{
                   borderBottomWidth: 2,
                   borderColor: 'gray'
@@ -77,6 +92,7 @@ const VerifyOTPScreen = ({navigation}) => {
                 cellStyleFocused={{
                   borderColor: '#016AFB'
                 }}
+                codeLength={6}
                 textStyle={{
                   color: '#016AFB',
                   fontSize: 25

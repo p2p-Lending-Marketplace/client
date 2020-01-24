@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -26,10 +26,13 @@ const PinCreateScreen = ({ navigation }) => {
     const handleOnChangeConfirmPin = (confirmPin) => {
         setConfirmPin(confirmPin)
     }
-    const handleValidationPin = () => {
-        if(pinValid){
-            navigation.navigate("Home")
+    useEffect(() => {
+        if(pin.length === 6 && confirmPin.length === 6 && pin === confirmPin){
+            setPinValid(true)
         }
+    }, [pin, confirmPin])
+    const handleOnPressSubmit = () => {
+        navigation.navigate("HomeScreen")
     }
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -134,6 +137,7 @@ const PinCreateScreen = ({ navigation }) => {
                     paddingHorizontal: 50,
                     borderRadius: 7
                   }}
+                  onPress={handleOnPressSubmit}
                 >
                   <Text style={{ fontSize: 15, color: '#FFF' }}>Finish</Text>
                 </TouchableOpacity>
