@@ -13,23 +13,14 @@ import {
 } from 'native-base';
 import Constants from 'expo-constants';
 import { multiply } from '../assets/icons';
+import colors from "../assets/colors"
 
 const HomeScreen = ({ navigation }) => {
   // Variables
-  const [token, setToken] = useState('');
 
   //Function
   const handleOnPressBack = () => {
     navigation.navigate('RegisterScreen');
-  };
-  const handleOnChangeToken = token => {
-    setToken(token);
-    handleOnComplete();
-  };
-  const handleOnComplete = () => {
-    if (token.length === 4) {
-      // POST to Server API
-    }
   };
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -91,13 +82,18 @@ const HomeScreen = ({ navigation }) => {
                     flex: 4,
                     margin: 5,
                     justifyContent: 'center',
-                    alignItems: 'center',
-                    paddingVertical: 10
+                    // alignItems: 'center',
+                    paddingVertical: 10,
+                    // borderColor: 'black',
+                    // borderWidth: 1
                   }}
                 >
                   <Text style={{ textAlign: 'justify' }}>
                     one more step to apply for installments, let's complete your
                     profile.
+                  </Text>
+                  <Text style={{textAlign: "left", color: colors.mainBackground, fontWeight: '700'}}>
+                      Go To Profile
                   </Text>
                 </View>
                 <View style={{ flex: 0.3 }}>
@@ -140,7 +136,7 @@ const HomeScreen = ({ navigation }) => {
                     borderBottomWidth: 4
                   }}
                 >
-                  <Text style={{ fontSize: 15, color: '#1C8C9B', fontWeight: '600' }}>
+                  <Text style={{ fontSize: 15, color: '#1C8C9B', fontWeight: '700' }}>
                     Apply Now
                   </Text>
                 </TouchableOpacity>

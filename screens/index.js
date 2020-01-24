@@ -6,6 +6,8 @@ import PinCreateScreen from "./PinCreateScreen";
 import HomeScreen from "./HomeScreen";
 import LoginScreen from "./LoginScreen";
 import MemberScreen from "./MemberScreen";
+import UploadDataScreen from './UploadDataScreen';
+
 export {
   LoginScreen,
   LandingScreen,
@@ -14,5 +16,6 @@ export {
   PinCreateScreen,
   HomeScreen,
   ProfileScreen,
+  UploadDataScreen,
   MemberScreen
 };
