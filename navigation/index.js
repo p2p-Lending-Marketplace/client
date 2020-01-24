@@ -1,9 +1,20 @@
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
-import { LandingScreen, RegisterScreen } from "../screens";
+import { 
+  LandingScreen, 
+  RegisterScreen, 
+  VerifyOTPScreen, 
+  PinCreateScreen, 
+  HomeScreen,
+  LoginScreen
+} from "../screens";
 
 const rootNavigator = createSwitchNavigator({
-  LandingScreen,
-  RegisterScreen
+  // LandingScreen,
+  // RegisterScreen,
+  // VerifyOTPScreen, 
+  // PinCreateScreen,
+  // HomeScreen,
+  LoginScreen
 });
 
 export default createAppContainer(rootNavigator);
