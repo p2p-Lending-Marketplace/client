@@ -5,7 +5,7 @@ import { Container, Text } from "native-base";
 const LandingScreen = ({ navigation }) => {
   useEffect(() => {
     setTimeout(() => {
-      navigation.navigate("RegisterScreen");
+      navigation.navigate("Home");
     }, 5000);
   }, []);
 
