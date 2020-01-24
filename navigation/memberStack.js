@@ -3,7 +3,11 @@ import { MemberScreen } from "../screens";
 
 const memberStack = createStackNavigator({
   Member: {
-    screen: MemberScreen
+    screen: MemberScreen,
+    navigationOptions: {
+      headerTransparent: true,
+      title: ""
+    }
   }
 });
 

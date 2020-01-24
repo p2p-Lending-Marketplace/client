@@ -3,7 +3,11 @@ import { ProfileScreen } from "../screens";
 
 const profileStack = createStackNavigator({
   Profile: {
-    screen: ProfileScreen
+    screen: ProfileScreen,
+    navigationOptions: {
+      headerTransparent: true,
+      title: ""
+    }
   }
 });
 

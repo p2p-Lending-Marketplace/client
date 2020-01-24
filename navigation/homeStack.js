@@ -3,7 +3,11 @@ import { HomeScreen } from "../screens";
 
 const homeStack = createStackNavigator({
   Home: {
-    screen: HomeScreen
+    screen: HomeScreen,
+    navigationOptions: {
+      headerTransparent: true,
+      title: ""
+    }
   }
 });
 
