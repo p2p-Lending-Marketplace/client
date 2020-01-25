@@ -1,105 +1,123 @@
-import React, { useState } from 'react'
-import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, Image, ImageBackground } from 'react-native'
-import { Item, Form, Input, Label,Container } from "native-base"
-import colors from "../assets/colors"
-import Constants from 'expo-constants';
-import * as Permissions from 'expo-permissions';
-import * as ImagePicker from 'expo-image-picker';
-import { plus } from "../assets/icons"
+import React, { useState, useEffect } from 'react'
+import {
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  ImageBackground,
+} from 'react-native'
+import { Item, Form, Input, Label, Container } from 'native-base'
+import colors from '../assets/colors'
+import Constants from 'expo-constants'
+import * as Permissions from 'expo-permissions'
+import * as ImagePicker from 'expo-image-picker'
+import { plus } from '../assets/icons'
+import { useMutation } from '@apollo/react-hooks'
+import { UPLOAD_IMAGE } from '../API/graphQuery'
 
 const UploadDataScreen = () => {
   // Variables
   const [dataUser, setDataUser] = useState({
-    name: "",
-    email: "",
-    phoneNumber: "",
-    address: "",
-    photo: "",
-    idCard: "",
-    salarySlip: "",
-    currentJob: "",
-    Salary: ""
+    name: '',
+    email: '',
+    phoneNumber: '',
+    address: '',
+    photo: '',
+    idCard: '',
+    salarySlip: '',
+    currentJob: '',
+    Salary: '',
   })
   const [imageView, setImageView] = useState({
-    photoUri: "",
-    idCardUri: "",
-    salarySlipUri: ""
+    photoUri: '',
+    idCardUri: '',
+    salarySlipUri: '',
   })
 
+  const [uploadImage, { loading, error, data }] = useMutation(UPLOAD_IMAGE)
+  useEffect(() => {
+    console.log(data)
+  }, [data])
 
   // Function
   const getPermissionAsync = async () => {
     // if (Constants.platform.ios) {
-      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-      if (status !== 'granted') {
-        alert('Sorry, we need camera roll permissions to make this work!');
-        return false
-      } else {
-        return true
-      }
+    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL)
+    if (status !== 'granted') {
+      alert('Sorry, we need camera roll permissions to make this work!')
+      return false
+    } else {
+      return true
+    }
     // }
-  };
+  }
 
-  const _pickImage = async (field, rasio) => {
+  const _pickImage = async (field, ratio) => {
     const status = await getPermissionAsync()
-    if(!status){
+    if (!status) {
       return
     }
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: rasio,
+      aspect: ratio,
       quality: 1,
-      // base64: true
-    });
+      base64: true,
+    })
 
-    console.log(result)
 
     if (!result.cancelled) {
       if (field === 'photo') {
-        let fd = new FormData()
-        fd.append("image", result.uri)
+        uploadImage({ variables: { file: result } })
         setDataUser({
           ...dataUser,
-          photo: fd
-        });
+          photo: fd,
+        })
         setImageView({
           ...imageView,
-          photoUri: result.uri
-        });
+          photoUri: result.uri,
+        })
+        console.log('di sini')
       } else if (field === 'idCard') {
-        let fd = new FormData();
-        fd.append("image", result.uri);
+        let fd = new FormData()
+        fd.append('image', result.uri)
         setDataUser({
           ...dataUser,
-          idCard: fd
-        });
+          idCard: fd,
+        })
         setImageView({
           ...imageView,
-          idCardUri: result.uri
-        });
-      } else if(field === 'salarySlip'){
-        let fd = new FormData();
-        fd.append("image", result.uri);
+          idCardUri: result.uri,
+        })
+      } else if (field === 'salarySlip') {
+        let fd = new FormData()
+        fd.append('image', result.uri)
         setDataUser({
           ...dataUser,
-          salarySlip: fd
-        });
+          salarySlip: fd,
+        })
         setImageView({
           ...imageView,
-          salarySlipUri: result.uri
-        });
+          salarySlipUri: result.uri,
+        })
       }
-    } 
-  };
+    }
+  }
 
   return (
-    <SafeAreaView style={{ flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       {/* <Container> */}
 
-      <ScrollView style={{ flex: 1}}>
-        <View style={{marginBottom: 60, flex: 1}}>
-          <Form style={{ width: '100%', justifyContent: "center", alignItems: "center" }}>
+      <ScrollView style={{ flex: 1 }}>
+        <View style={{ marginBottom: 60, flex: 1 }}>
+          <Form
+            style={{
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
             <Item floatingLabel style={{ width: '80%' }} last>
               <Label>Name</Label>
               <Input />
@@ -122,7 +140,7 @@ const UploadDataScreen = () => {
                 width: '100%',
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginVertical: 20
+                marginVertical: 20,
               }}
             >
               <View
@@ -133,13 +151,21 @@ const UploadDataScreen = () => {
                   height: 200,
                   borderRadius: 10,
                   justifyContent: 'center',
-                  alignItems: 'center'
+                  alignItems: 'center',
                 }}
               >
-                <ImageBackground source={{uri: imageView.photoUri}} style={{width: '100%', height: '100%', alignItems: "center", justifyContent: "center"}}>
+                <ImageBackground
+                  source={{ uri: imageView.photoUri }}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
                   <TouchableOpacity
                     onPress={() => {
-                      _pickImage('photo', [3, 4]);
+                      _pickImage('photo', [3, 4])
                     }}
                   >
                     <Image
@@ -150,7 +176,11 @@ const UploadDataScreen = () => {
                 </ImageBackground>
               </View>
               <View
-                style={{ justifyContent: 'flex-end', alignItems: 'flex-end', marginVertical: 5 }}
+                style={{
+                  justifyContent: 'flex-end',
+                  alignItems: 'flex-end',
+                  marginVertical: 5,
+                }}
               >
                 <Text>Photo</Text>
               </View>
@@ -161,7 +191,7 @@ const UploadDataScreen = () => {
                 height: '100%',
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginVertical: 20
+                marginVertical: 20,
               }}
             >
               <View
@@ -172,13 +202,21 @@ const UploadDataScreen = () => {
                   height: 120,
                   borderRadius: 10,
                   justifyContent: 'center',
-                  alignItems: 'center'
+                  alignItems: 'center',
                 }}
               >
-                <ImageBackground source={{uri: imageView.idCardUri}} style={{width: '100%', height: '100%', alignItems: "center", justifyContent: "center"}}>
+                <ImageBackground
+                  source={{ uri: imageView.idCardUri }}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
                   <TouchableOpacity
                     onPress={() => {
-                      _pickImage('idCard', [5, 3]);
+                      _pickImage('idCard', [5, 3])
                     }}
                   >
                     <Image
@@ -189,7 +227,11 @@ const UploadDataScreen = () => {
                 </ImageBackground>
               </View>
               <View
-                style={{ justifyContent: 'flex-end', alignItems: 'center', marginVertical: 5 }}
+                style={{
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
+                  marginVertical: 5,
+                }}
               >
                 <Text>ID Card</Text>
               </View>
@@ -200,7 +242,7 @@ const UploadDataScreen = () => {
                 width: '100%',
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginVertical: 20
+                marginVertical: 20,
               }}
             >
               <View
@@ -211,14 +253,22 @@ const UploadDataScreen = () => {
                   height: 200,
                   borderRadius: 10,
                   justifyContent: 'center',
-                  alignItems: 'center'
+                  alignItems: 'center',
                 }}
               >
-                <ImageBackground source={{uri: imageView.salarySlipUri}} style={{width: '100%', height: '100%', alignItems: "center", justifyContent: "center"}}>
+                <ImageBackground
+                  source={{ uri: imageView.salarySlipUri }}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
                   <TouchableOpacity
                     style={{ justifyContent: 'center', alignItems: 'center' }}
                     onPress={() => {
-                      _pickImage('salarySlip', [5, 7]);
+                      _pickImage('salarySlip', [5, 7])
                     }}
                   >
                     <Image
@@ -229,7 +279,11 @@ const UploadDataScreen = () => {
                 </ImageBackground>
               </View>
               <View
-                style={{ justifyContent: 'flex-end', alignItems: 'flex-end', marginVertical: 5 }}
+                style={{
+                  justifyContent: 'flex-end',
+                  alignItems: 'flex-end',
+                  marginVertical: 5,
+                }}
               >
                 <Text>Salary Slip</Text>
               </View>
@@ -247,7 +301,7 @@ const UploadDataScreen = () => {
       </ScrollView>
       {/* </Container> */}
     </SafeAreaView>
-  );
+  )
 }
 
 export default UploadDataScreen
