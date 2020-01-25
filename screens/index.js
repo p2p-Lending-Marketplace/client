@@ -10,6 +10,8 @@ import UploadDataScreen from "./UploadDataScreen";
 import HistoryScreen from "./HistoryScreen";
 import HelpCenterScreen from "./HelpCenterScreen";
 import SettingScreen from "./SettingScreen";
+import UploadData2Screen from "./UploadDataSecondScreen"
+import DetailFintechScreen from "./DetailFintechScreen"
 
 export {
   LoginScreen,
@@ -23,5 +25,7 @@ export {
   MemberScreen,
   HistoryScreen,
   HelpCenterScreen,
-  SettingScreen
+  SettingScreen,
+  UploadData2Screen,
+  DetailFintechScreen
 };

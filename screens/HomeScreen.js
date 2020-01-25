@@ -33,7 +33,7 @@ const HomeScreen = ({ navigation }) => {
         style={{ flex: 1, marginTop: Constants.statusBarHeight }}
       >
         <Header
-          style={{ backgroundColor: '#FFF', justifyContent: 'flex-start' }}
+          style={{ backgroundColor: colors.mainBackground, justifyContent: 'flex-start' }}
         >
           <View
             style={{
@@ -57,7 +57,7 @@ const HomeScreen = ({ navigation }) => {
           }}
         >
           <SafeAreaView style={{ flex: 1 }}>
-            <ScrollView style={{ marginHorizontal: 20, paddingTop: 10 }}>
+            <ScrollView style={{ marginHorizontal: 20, paddingTop: 10 }} showsVerticalScrollIndicator={false}>
               <View
                 style={{
                   justifyContent: 'center',
@@ -85,10 +85,7 @@ const HomeScreen = ({ navigation }) => {
                     flex: 4,
                     margin: 5,
                     justifyContent: 'center',
-                    // alignItems: 'center',
                     paddingVertical: 10
-                    // borderColor: 'black',
-                    // borderWidth: 1
                   }}
                 >
                   <Text style={{ textAlign: 'justify' }}>

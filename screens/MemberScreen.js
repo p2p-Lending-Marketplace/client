@@ -3,27 +3,77 @@ import {
   SafeAreaView,
   Image,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
+  ScrollView
 } from "react-native";
 import { Container, Header, View, Text } from "native-base";
 import colors from "../assets/colors";
+import Constants from 'expo-constants';
 
-const MemberScreen = () => {
+const MemberScreen = ({navigation}) => {
+  // Variables
+  const dummiesData = ['','','','','','','','']
+
+  // Function
+  const goToDetailMember = (data) => {
+    console.log("hello")
+    navigation.navigate("Detail Fintech")
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Container>
-        <Header style={styles.container}></Header>
-        <View style={styles.underHeader}>
-          <Text>tes</Text>
-        </View>
-        <View style={styles.contentWrapper}>
-          <View style={styles.contentTop}>
-            <Text>TOP</Text>
-          </View>
-          <View style={styles.contentMid}>
-            <Text>MID</Text>
-          </View>
-        </View>
+      <Container style={{ backgroundColor: colors.whiteBackground }}>
+        <Header
+          style={{
+            backgroundColor: colors.mainBackground,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: Constants.statusBarHeight
+          }}
+        >
+          <Text style={{ fontSize: 20, fontWeight: '600', color: '#FFF' }}>
+            Fintech Member
+          </Text>
+        </Header>
+        <ScrollView style={{ flex: 1, marginHorizontal: 10, paddingTop: 10 }} showsVerticalScrollIndicator={false}>
+          {
+            dummiesData.map((data, index) => {
+              return (
+                <TouchableOpacity key={index} onPress={() => {
+                  goToDetailMember()
+                }}>
+                  <View style={styles.content}>
+                    <View
+                      style={{
+                        flex: 1,
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
+                    >
+                      <Image
+                        source={{
+                          uri:
+                            'https://www.logoisus.com/wp-content/uploads/2018/04/blue_triangle_finance.jpg'
+                        }}
+                        style={{ width: 80, height: 80 }}
+                      />
+                    </View>
+                    <View
+                      style={{
+                        flex: 3,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                      }}
+                    >
+                      <Text style={{ fontSize: 20, fontWeight: '700' }}>Fintech Member Name</Text>
+                      <Text>7% interest per year</Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              )
+            })
+          }
+        </ScrollView>
       </Container>
     </SafeAreaView>
   );
@@ -35,34 +85,13 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     alignItems: "flex-end"
   },
-  underHeader: {
-    flex: 1,
-    backgroundColor: colors.mainBackground,
+  content: {
     flexDirection: "row",
-    justifyContent: "center"
-  },
-  contentWrapper: {
-    flex: 4,
-    backgroundColor: colors.whiteBackground,
-    alignItems: "center"
-  },
-  contentTop: {
-    width: "90%",
-    height: "30%",
-    position: "absolute",
-    top: "-6%",
-    borderRadius: 15,
-    backgroundColor: "white",
-    flexDirection: "row"
-  },
-  contentMid: {
-    width: "90%",
-    height: "20%",
-    position: "absolute",
-    top: "30%",
-    borderRadius: 15,
-    backgroundColor: "white",
-    flexDirection: "row"
+    margin: 10,
+    borderRadius: 7,
+    height: 100,
+    backgroundColor: "#FFF",
+    padding: 10
   }
 });
 

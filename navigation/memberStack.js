@@ -1,5 +1,5 @@
 import { createStackNavigator } from "react-navigation-stack";
-import { MemberScreen } from "../screens";
+import { MemberScreen, DetailFintechScreen } from "../screens";
 
 const memberStack = createStackNavigator({
   Member: {
@@ -8,6 +8,9 @@ const memberStack = createStackNavigator({
       headerTransparent: true,
       title: ""
     }
+  },
+  "Detail Fintech": {
+    screen: DetailFintechScreen,
   }
 });
 
