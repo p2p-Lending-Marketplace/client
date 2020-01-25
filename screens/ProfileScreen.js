@@ -1,25 +1,21 @@
 import React from "react";
-import { Image, SafeAreaView } from "react-native";
+import {
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity
+} from "react-native";
 import { Container, Header, View, Text } from "native-base";
 import colors from "../assets/colors";
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Container>
-        <Header
-          style={{
-            backgroundColor: colors.mainBackground,
-            justifyContent: "flex-end",
-            alignItems: "flex-end"
-          }}
-        >
-          <View
-            style={{
-              width: "12%",
-              justifyContent: "center",
-              alignItems: "center"
-            }}
+        <Header style={styles.container}>
+          <TouchableOpacity
+            style={styles.header}
+            onPress={() => navigation.navigate("Setting")}
           >
             <Image
               source={{
@@ -28,25 +24,13 @@ const ProfileScreen = () => {
               }}
               style={{ width: "60%", height: "60%" }}
             />
-          </View>
+          </TouchableOpacity>
         </Header>
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: "#12cad6",
-            flexDirection: "row",
-            justifyContent: "center"
-          }}
-        >
+        <View style={styles.underHeader}>
           <View style={{ width: "30%", alignItems: "center" }}>
             <Image
               source={require("../assets/images/man.png")}
-              style={{
-                width: 60,
-                height: 60,
-                borderRadius: 100,
-                backgroundColor: "white"
-              }}
+              style={styles.imageUnderHeader}
             ></Image>
           </View>
           <View style={{ width: "60%", paddingTop: "2%" }}>
@@ -56,30 +40,11 @@ const ProfileScreen = () => {
             <Text style={{ color: "white", fontSize: 12 }}>+628*****3207</Text>
           </View>
         </View>
-        <View
-          style={{
-            flex: 4,
-            backgroundColor: "#f1f9f9",
-            alignItems: "center"
-          }}
-        >
-          <View
-            style={{
-              width: "90%",
-              height: "30%",
-              position: "absolute",
-              top: "-6%",
-              borderRadius: 15,
-              backgroundColor: "white",
-              flexDirection: "row"
-            }}
-          >
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center"
-              }}
+        <View style={styles.contentWrapper}>
+          <View style={styles.contentTop}>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("History")}
+              style={styles.cardWrapper}
             >
               <Image
                 source={require("../assets/images/history.png")}
@@ -90,13 +55,10 @@ const ProfileScreen = () => {
               >
                 History
               </Text>
-            </View>
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center"
-              }}
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Help Center")}
+              style={styles.cardWrapper}
             >
               <Image
                 source={require("../assets/images/helpcenter.png")}
@@ -107,13 +69,10 @@ const ProfileScreen = () => {
               >
                 Help Center
               </Text>
-            </View>
-            <View
-              style={{
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center"
-              }}
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Upload Data")}
+              style={styles.cardWrapper}
             >
               <Image
                 source={require("../assets/images/information.png")}
@@ -124,27 +83,10 @@ const ProfileScreen = () => {
               >
                 Information
               </Text>
-            </View>
+            </TouchableOpacity>
           </View>
-          <View
-            style={{
-              width: "90%",
-              height: "20%",
-              position: "absolute",
-              top: "30%",
-              borderRadius: 15,
-              backgroundColor: "white",
-              flexDirection: "row"
-            }}
-          >
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-                flex: 1
-              }}
-            >
+          <View style={styles.contentMid}>
+            <View style={styles.cardWrapperMid}>
               <View style={{ flex: 3 }}>
                 <View style={{ flexDirection: "row", paddingHorizontal: 30 }}>
                   <Text>Reward up to</Text>
@@ -169,5 +111,64 @@ const ProfileScreen = () => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: colors.mainBackground,
+    justifyContent: "flex-end",
+    alignItems: "flex-end"
+  },
+  header: {
+    width: "12%",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  underHeader: {
+    flex: 1,
+    backgroundColor: colors.mainBackground,
+    flexDirection: "row",
+    justifyContent: "center"
+  },
+  imageUnderHeader: {
+    width: 60,
+    height: 60,
+    borderRadius: 100,
+    backgroundColor: "white"
+  },
+  contentWrapper: {
+    flex: 4,
+    backgroundColor: colors.whiteBackground,
+    alignItems: "center"
+  },
+  contentTop: {
+    width: "90%",
+    height: "30%",
+    position: "absolute",
+    top: "-6%",
+    borderRadius: 15,
+    backgroundColor: "white",
+    flexDirection: "row"
+  },
+  cardWrapper: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  },
+  contentMid: {
+    width: "90%",
+    height: "20%",
+    position: "absolute",
+    top: "30%",
+    borderRadius: 15,
+    backgroundColor: "white",
+    flexDirection: "row"
+  },
+  cardWrapperMid: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    flex: 1
+  }
+});
 
 export default ProfileScreen;
