@@ -22,6 +22,9 @@ const HomeScreen = ({ navigation }) => {
   const handleOnPressBack = () => {
     navigation.navigate('RegisterScreen');
   };
+  const handleOnPressApply = () => {
+      navigation.navigate('Upload Data')
+  }
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <KeyboardAvoidingView
@@ -83,7 +86,7 @@ const HomeScreen = ({ navigation }) => {
                     margin: 5,
                     justifyContent: 'center',
                     // alignItems: 'center',
-                    paddingVertical: 10,
+                    paddingVertical: 10
                     // borderColor: 'black',
                     // borderWidth: 1
                   }}
@@ -92,8 +95,14 @@ const HomeScreen = ({ navigation }) => {
                     one more step to apply for installments, let's complete your
                     profile.
                   </Text>
-                  <Text style={{textAlign: "left", color: colors.mainBackground, fontWeight: '700'}}>
-                      Go To Profile
+                  <Text
+                    style={{
+                      textAlign: 'left',
+                      color: colors.mainBackground,
+                      fontWeight: '700'
+                    }}
+                  >
+                    Go To Profile
                   </Text>
                 </View>
                 <View style={{ flex: 0.3 }}>
@@ -122,7 +131,14 @@ const HomeScreen = ({ navigation }) => {
                   }}
                   style={{ width: 450, height: 300, padding: 20 }}
                 />
-                <Text style={{color: 'white', textAlign: "center", marginVertical: 10, fontSize: 15}}>
+                <Text
+                  style={{
+                    color: 'white',
+                    textAlign: 'center',
+                    marginVertical: 10,
+                    fontSize: 15
+                  }}
+                >
                   Collect all the necessary documents and start the loan
                 </Text>
                 <TouchableOpacity
@@ -135,8 +151,15 @@ const HomeScreen = ({ navigation }) => {
                     borderBottomColor: '#a3dbe3',
                     borderBottomWidth: 4
                   }}
+                  onPress={handleOnPressApply}
                 >
-                  <Text style={{ fontSize: 15, color: '#1C8C9B', fontWeight: '700' }}>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color: '#1C8C9B',
+                      fontWeight: '700'
+                    }}
+                  >
                     Apply Now
                   </Text>
                 </TouchableOpacity>

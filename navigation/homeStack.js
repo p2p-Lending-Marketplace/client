@@ -12,7 +12,7 @@ const homeStack = createStackNavigator({
   "Upload Data" : {
     screen: UploadDataScreen,
     navigationOptions: {
-      headerTransparent: true,
+      // headerTransparent: true,
       title: ""
     }
   }
