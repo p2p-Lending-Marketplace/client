@@ -9,32 +9,15 @@ import {
   ScrollView, 
   AsyncStorage
 } from 'react-native';
-import {
-  Header,
-} from 'native-base';
 import Constants from 'expo-constants';
 import { multiply } from '../assets/icons';
 import colors from "../assets/colors"
+import { APP_NAME } from "../assets/variables"
 
 const HomeScreen = ({ navigation }) => {
   // Variables
 
   //Function
-  const _retrieveData = async () => {
-    try {
-      // const keys = await AsyncStorage
-      const value = await AsyncStorage.getItem("phoneNumber")
-      if (value !== null) {
-        // We have data!!
-      }
-    } catch (error) {
-      // Error retrieving data
-    }
-  }
-  _retrieveData()
-  const handleOnPressBack = () => {
-    navigation.navigate('RegisterScreen');
-  };
   const handleOnPressApply = () => {
       navigation.navigate('Upload Data')
   }
@@ -43,7 +26,7 @@ const HomeScreen = ({ navigation }) => {
       <KeyboardAvoidingView
         behavior="height"
         enabled
-        style={{ flex: 1, marginTop: Constants.statusBarHeight }}
+        style={{ flex: 1}}
       >
         <View
           style={{

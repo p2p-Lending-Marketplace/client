@@ -15,7 +15,7 @@ const rootNavigator = createSwitchNavigator(
     VerifyOTPScreen,
     PinCreateScreen,
     LoginScreen,
-    tabNavigator,
+    tabNavigator
   },
   { initialRouteName: 'LandingScreen' }
 )

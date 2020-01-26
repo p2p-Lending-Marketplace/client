@@ -29,30 +29,18 @@ const RegisterScreen = ({navigation}) => {
 
   const handleSubmitNumber = () => {
     const phoneNumber = phoneNumberChecker()
-    console.log("hello")
     runQuery({
       variables: {
         phone_number: phoneNumber
       }
     })
-    // serverAPI({
-    //   url: "/user/otp",
-    //   method: "POST",
-    //   data: {
-    //     phoneNumber
-    //   }
-    // }).then(() => {
-    // }).catch((err) => {
-    //   console.log(err)
-    // })
   }
   if (error) {
     console.log(error)
   }
   useEffect(() => {
     if (data) {
-      console.log('masuk')
-      console.log(data)
+      const phoneNumber = phoneNumberChecker()
       navigation.navigate("VerifyOTPScreen", { phoneNumber })
       // return null
     } 
