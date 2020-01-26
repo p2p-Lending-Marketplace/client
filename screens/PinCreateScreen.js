@@ -11,6 +11,7 @@ import Constants from 'expo-constants';
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
 import { useMutation } from '@apollo/react-hooks'
 import { REGISTER_USER } from "../API/graphQuery"
+import { APP_NAME } from "../assets/variables"
 
 const PinCreateScreen = ({ navigation }) => {
     // Variables
@@ -24,7 +25,7 @@ const PinCreateScreen = ({ navigation }) => {
     const [addNewUser, { error, data }] = useMutation(REGISTER_USER)
     const _storeData = async () => {
       try {
-        await AsyncStorage.setItem("phoneNumber", phoneNumber)
+        await AsyncStorage.setItem(APP_NAME + ":phoneNumber", phoneNumber)
       } catch (error) {
         // Error saving data
         console.log(error)
@@ -49,7 +50,6 @@ const PinCreateScreen = ({ navigation }) => {
             pin
           }
         })
-        console.log("hihihihi")
     }
     if(error){
       console.log(error)

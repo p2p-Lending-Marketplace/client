@@ -4,25 +4,27 @@ import {
   Text,
   SafeAreaView,
   KeyboardAvoidingView,
+  AsyncStorage
 } from 'react-native';
 import Constants from 'expo-constants';
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
 import { LOGIN_USER } from "../API/graphQuery"
 import { useLazyQuery } from "@apollo/react-hooks"
+import { APP_NAME } from "../assets/variables"
 
 const PinCreateScreen = ({ navigation }) => {
   // Variables
   const [pin, setPin] = useState('');
-  const phoneNumber = navigation.getParam("phoneNumber")
   const [runQuery, { loading, error, data }] = useLazyQuery(LOGIN_USER)
   if(error){
     console.log(error)
   }
 
-  const handleLazyQuery = () => {
+  const handleLazyQuery = async () => {
+    const phone_number = await AsyncStorage.getItem(APP_NAME + ":phoneNumber")
     runQuery({
       variables: {
-        phone_number: phoneNumber,
+        phone_number,
         pin
       }
     })
@@ -30,13 +32,24 @@ const PinCreateScreen = ({ navigation }) => {
 
   useEffect(() => {
     if(data){
-      if(data.signInUser.status){
+      if(data.signInUser){
+        const user = data.signInUser
+        _storeData(JSON.stringify(user))
         navigation.navigate("tabNavigator")
       }
     }
   }, [data])
 
   //Function
+  const _storeData = async (user) => {
+    try {
+      await AsyncStorage.setItem(APP_NAME + ':user', user)
+      console.log("berhasil set data", user)
+    } catch (error) {
+      // Error saving data
+      console.log(error)
+    }
+  }
   const handleOnChangePin = pin => {
     setPin(pin);
   };
