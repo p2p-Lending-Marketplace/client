@@ -1,29 +1,44 @@
-import React, { useEffect } from "react";
-import { SafeAreaView, StyleSheet } from "react-native";
-import { Container, Text } from "native-base";
+import React, { useState, useEffect } from 'react'
+import { AppLoading } from 'expo'
+import { APP_NAME } from '../assets/variables'
+import { AsyncStorage } from 'react-native'
+import { useLazyQuery } from '@apollo/react-hooks'
+import { CHECK_PHONE } from '../API/graphQuery'
 
 const LandingScreen = ({ navigation }) => {
+  const [checkUserPhoneNumber, { data }] = useLazyQuery(CHECK_PHONE)
+  const [phoneConfirmed, setPhoneConfirmed] = useState(null)
+
+  async function checkUserPhone() {
+    const phoneNumber = await AsyncStorage.getItem(APP_NAME + ':phoneNumber')
+    if (phoneNumber) {
+      await AsyncStorage.removeItem(APP_NAME + ':phoneNumber')
+      checkUserPhoneNumber({ variables: { phoneNumber } })
+    } else {
+      await AsyncStorage.setItem(APP_NAME + ':phoneNumber', '123')
+      setPhoneConfirmed(false)
+    }
+  }
+
   useEffect(() => {
-    setTimeout(() => {
-      navigation.navigate("Home");
-    }, 5000);
-  }, []);
+    if (data) {
+      if (data.checkPhoneNumber.status) setPhoneConfirmed(true)
+      else setPhoneConfirmed(false)
+    }
+  }, [data])
+
+  useEffect(() => {
+    if (phoneConfirmed === true) navigation.navigate('LoginScreen')
+    else if (phoneConfirmed === false) navigation.navigate('RegisterScreen')
+  }, [phoneConfirmed])
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Container style={styles.container}>
-        <Text>Landing Page</Text>
-      </Container>
-    </SafeAreaView>
-  );
-};
+    <AppLoading
+      startAsync={checkUserPhone}
+      onError={console.log}
+      onFinish={() => {}}
+    />
+  )
+}
 
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: "#40bfc1",
-    justifyContent: "center",
-    alignItems: "center"
-  }
-});
-
-export default LandingScreen;
+export default LandingScreen

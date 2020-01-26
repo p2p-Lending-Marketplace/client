@@ -8,3 +8,11 @@ export const UPLOAD_IMAGE = gql`
     }
   }
 `
+
+export const CHECK_PHONE = gql`
+  query($phoneNumber: String!) {
+    checkPhoneNumber(phone_number: $phoneNumber) {
+      status
+    }
+  }
+`
