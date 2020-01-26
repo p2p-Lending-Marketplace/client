@@ -6,7 +6,8 @@ import {
   KeyboardAvoidingView,
   Image,
   TouchableOpacity, 
-  ScrollView
+  ScrollView, 
+  AsyncStorage
 } from 'react-native';
 import {
   Header,
@@ -19,6 +20,18 @@ const HomeScreen = ({ navigation }) => {
   // Variables
 
   //Function
+  const _retrieveData = async () => {
+    try {
+      // const keys = await AsyncStorage
+      const value = await AsyncStorage.getItem("phoneNumber")
+      if (value !== null) {
+        // We have data!!
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+  }
+  _retrieveData()
   const handleOnPressBack = () => {
     navigation.navigate('RegisterScreen');
   };
@@ -32,22 +45,6 @@ const HomeScreen = ({ navigation }) => {
         enabled
         style={{ flex: 1, marginTop: Constants.statusBarHeight }}
       >
-        <Header
-          style={{ backgroundColor: colors.mainBackground, justifyContent: 'flex-start' }}
-        >
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
-            {/* <TouchableOpacity onPress={handleOnPressBack}>
-              <Image source={{ uri: back }} style={{ width: 25, height: 25 }} />
-            </TouchableOpacity>
-            <Text>Back</Text> */}
-          </View>
-        </Header>
         <View
           style={{
             backgroundColor: '#EEEEEE',
@@ -57,7 +54,7 @@ const HomeScreen = ({ navigation }) => {
           }}
         >
           <SafeAreaView style={{ flex: 1 }}>
-            <ScrollView style={{ marginHorizontal: 20, paddingTop: 10 }} showsVerticalScrollIndicator={false}>
+            <ScrollView style={{ marginHorizontal: 10, paddingTop: 10 }} showsVerticalScrollIndicator={false}>
               <View
                 style={{
                   justifyContent: 'center',
@@ -65,14 +62,17 @@ const HomeScreen = ({ navigation }) => {
                   backgroundColor: '#FFF',
                   borderRadius: 15,
                   marginVertical: 10,
-                  flexDirection: 'row'
+                  flexDirection: 'row',
+                  elevation: 5,
+                  marginHorizontal: 10
+
                 }}
               >
                 <View
                   style={{
                     flex: 1,
                     justifyContent: 'center',
-                    alignItems: 'center'
+                    alignItems: 'center',
                   }}
                 >
                   <Image
@@ -92,15 +92,19 @@ const HomeScreen = ({ navigation }) => {
                     one more step to apply for installments, let's complete your
                     profile.
                   </Text>
-                  <Text
-                    style={{
-                      textAlign: 'left',
-                      color: colors.mainBackground,
-                      fontWeight: '700'
-                    }}
-                  >
-                    Go To Profile
-                  </Text>
+                  <TouchableOpacity onPress={
+                    handleOnPressApply
+                  }>
+                    <Text
+                      style={{
+                        textAlign: 'left',
+                        color: colors.mainBackground,
+                        fontWeight: '700'
+                      }}
+                    >
+                      Go To Profile
+                    </Text>
+                  </TouchableOpacity>
                 </View>
                 <View style={{ flex: 0.3 }}>
                   <TouchableOpacity>
@@ -118,7 +122,11 @@ const HomeScreen = ({ navigation }) => {
                   padding: 20,
                   backgroundColor: '#1C8C9B',
                   borderRadius: 15,
-                  marginVertical: 10
+                  marginVertical: 10,
+                  marginHorizontal: 10,
+                  overflow: "hidden",
+                  elevation: 5,
+                  marginBottom: 30
                 }}
               >
                 <Image
@@ -126,7 +134,7 @@ const HomeScreen = ({ navigation }) => {
                     uri:
                       'https://img.jakpost.net/c/2018/01/29/2018_01_29_39564_1517188935._large.jpg'
                   }}
-                  style={{ width: 450, height: 300, padding: 20 }}
+                  style={{ width: 300, height: 300, padding: 20 }}
                 />
                 <Text
                   style={{
@@ -148,7 +156,7 @@ const HomeScreen = ({ navigation }) => {
                     borderBottomColor: '#a3dbe3',
                     borderBottomWidth: 4
                   }}
-                  onPress={handleOnPressApply}
+                  // onPress={handleOnPressApply}
                 >
                   <Text
                     style={{

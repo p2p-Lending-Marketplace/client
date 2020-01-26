@@ -5,21 +5,31 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   TouchableOpacity,
-  Button
+  AsyncStorage
 } from 'react-native';
-import {
-  Content,
-} from 'native-base';
 import Constants from 'expo-constants';
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
+import { useMutation } from '@apollo/react-hooks'
+import { REGISTER_USER } from "../API/graphQuery"
 
 const PinCreateScreen = ({ navigation }) => {
     // Variables
+    const phoneNumber = navigation.getParam("phoneNumber")
+    console.log(phoneNumber)
     const [pin, setPin] = useState('');
     const [confirmPin, setConfirmPin] = useState('');
     const [pinValid, setPinValid] = useState(false)
 
     //Function
+    const [addNewUser, { error, data }] = useMutation(REGISTER_USER)
+    const _storeData = async () => {
+      try {
+        await AsyncStorage.setItem("phoneNumber", phoneNumber)
+      } catch (error) {
+        // Error saving data
+        console.log(error)
+      }
+    }
     const handleOnChangePin = (pin) => {
         setPin(pin);
     };
@@ -32,8 +42,23 @@ const PinCreateScreen = ({ navigation }) => {
         }
     }, [pin, confirmPin])
     const handleOnPressSubmit = () => {
-        navigation.navigate("HomeScreen")
+        _storeData()
+        addNewUser({
+          variables: {
+            phone_number: phoneNumber,
+            pin
+          }
+        })
+        console.log("hihihihi")
     }
+    if(error){
+      console.log(error)
+    }
+    useEffect(() => {
+      if(data){
+        navigation.navigate("tabNavigator")
+      }
+    }, [data])
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <KeyboardAvoidingView

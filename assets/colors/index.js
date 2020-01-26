@@ -1,7 +1,9 @@
 const colors = {
-  mainBackground: "#12cad6",
-  whiteBackground: "#f1f9f9",
-  textColor: "#758184"
-};
+  mainBackground: '#026AA7',
+  secondBackground: '#0079BF',
+  whiteBackground: '#E4F0F6',
+  textColor: '#111111',
+  shadowColor: '#8BBDD9',
+}
 
 export default colors;
