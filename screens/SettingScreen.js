@@ -5,7 +5,7 @@ import colors from "../assets/colors";
 const SettingScreen = () => {
   return (
     <SafeAreaView
-      style={{ flex: 1, alignItems: "center", paddingVertical: "5%" }}
+      style={{ flex: 1, alignItems: "center", paddingVertical: "5%", backgroundColor: colors.whiteBackground }}
     >
       <View style={{ width: "90%" }}>
         <View

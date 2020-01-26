@@ -1,32 +1,51 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
   SafeAreaView,
   KeyboardAvoidingView,
-  TouchableOpacity,
 } from 'react-native';
 import Constants from 'expo-constants';
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
+import { LOGIN_USER } from "../API/graphQuery"
+import { useLazyQuery } from "@apollo/react-hooks"
 
 const PinCreateScreen = ({ navigation }) => {
   // Variables
   const [pin, setPin] = useState('');
-  const [confirmPin, setConfirmPin] = useState('');
-  const [pinValid, setPinValid] = useState(false);
+  const phoneNumber = navigation.getParam("phoneNumber")
+  const [runQuery, { loading, error, data }] = useLazyQuery(LOGIN_USER)
+  if(error){
+    console.log(error)
+  }
+
+  const handleLazyQuery = () => {
+    runQuery({
+      variables: {
+        phone_number: phoneNumber,
+        pin
+      }
+    })
+  }
+
+  useEffect(() => {
+    if(data){
+      if(data.signInUser.status){
+        navigation.navigate("tabNavigator")
+      }
+    }
+  }, [data])
 
   //Function
   const handleOnChangePin = pin => {
     setPin(pin);
   };
-  const handleOnChangeConfirmPin = confirmPin => {
-    setConfirmPin(confirmPin);
-  };
-  const handleValidationPin = () => {
-    if (pinValid) {
-      navigation.navigate('Home');
+  useEffect(() => {
+    if(pin.length === 6){
+      handleLazyQuery()
     }
-  };
+  }, [pin])
+
   return (
     <SafeAreaView style={{ flex: 1, marginTop: Constants.statusBarHeight }}>
       <KeyboardAvoidingView

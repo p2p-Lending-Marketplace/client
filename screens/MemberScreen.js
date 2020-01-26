@@ -3,66 +3,93 @@ import {
   SafeAreaView,
   Image,
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
+  ScrollView
 } from "react-native";
 import { Container, Header, View, Text } from "native-base";
 import colors from "../assets/colors";
+import Constants from 'expo-constants';
+import { useQuery } from "@apollo/react-hooks"
+import { FETCH_FINTECH_MEMBER } from "../API/graphQuery"
 
-const MemberScreen = () => {
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Container>
-        <Header style={styles.container}></Header>
-        <View style={styles.underHeader}>
-          <Text>tes</Text>
-        </View>
-        <View style={styles.contentWrapper}>
-          <View style={styles.contentTop}>
-            <Text>TOP</Text>
-          </View>
-          <View style={styles.contentMid}>
-            <Text>MID</Text>
-          </View>
-        </View>
-      </Container>
-    </SafeAreaView>
-  );
-};
+const MemberScreen = ({navigation}) => {
+  // Variables
+  const dummiesData = ['','','','','','','','']
 
+  // Function
+  const goToDetailMember = (id) => {
+    navigation.navigate("Detail Fintech", { id })
+  }
+
+  const { loading, error, data } = useQuery(FETCH_FINTECH_MEMBER)
+
+  if(loading){
+    return (
+      <Text>Loading...</Text>
+    )
+  }
+  if(data){
+    const members = data.getAllFinteches
+    return (
+      <SafeAreaView style={{ flex: 1 }}>
+        <Container style={{ backgroundColor: colors.whiteBackground }}>
+          <ScrollView style={{ flex: 1, marginHorizontal: 10, paddingTop: 10 }} showsVerticalScrollIndicator={false}>
+            {
+              members.map((member, index) => {
+                return (
+                  <TouchableOpacity key={index} onPress={() => {
+                    goToDetailMember(member._id)
+                  }}>
+                    <View style={styles.content}>
+                      <View
+                        style={{
+                          flex: 1,
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        <Image
+                          source={{
+                            uri: member.logoURL
+                          }}
+                          style={{ width: 80, height: 80 }}
+                        />
+                      </View>
+                      <View
+                        style={{
+                          flex: 3,
+                          justifyContent: 'center',
+                          alignItems: 'center'
+                        }}
+                      >
+                        <Text style={{ fontSize: 20, fontWeight: '700' }}>{member.company_name}</Text>
+                        <Text>Interest: {member.min_interest} - {member.max_interest}% p.a.</Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                )
+              })
+            }
+          </ScrollView>
+        </Container>
+      </SafeAreaView>
+    );
+  };
+}
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.mainBackground,
     justifyContent: "flex-end",
     alignItems: "flex-end"
   },
-  underHeader: {
-    flex: 1,
-    backgroundColor: colors.mainBackground,
+  content: {
     flexDirection: "row",
-    justifyContent: "center"
-  },
-  contentWrapper: {
-    flex: 4,
-    backgroundColor: colors.whiteBackground,
-    alignItems: "center"
-  },
-  contentTop: {
-    width: "90%",
-    height: "30%",
-    position: "absolute",
-    top: "-6%",
-    borderRadius: 15,
-    backgroundColor: "white",
-    flexDirection: "row"
-  },
-  contentMid: {
-    width: "90%",
-    height: "20%",
-    position: "absolute",
-    top: "30%",
-    borderRadius: 15,
-    backgroundColor: "white",
-    flexDirection: "row"
+    margin: 10,
+    borderRadius: 7,
+    height: 100,
+    backgroundColor: "#FFF",
+    padding: 10,
+    elevation: 5
   }
 });
 

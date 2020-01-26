@@ -138,9 +138,10 @@ const styles = StyleSheet.create({
   contentWrapper: {
     flex: 4,
     backgroundColor: colors.whiteBackground,
-    alignItems: "center"
+    alignItems: "center",
   },
   contentTop: {
+    elevation: 5,
     width: "90%",
     height: "30%",
     position: "absolute",
@@ -161,7 +162,8 @@ const styles = StyleSheet.create({
     top: "30%",
     borderRadius: 15,
     backgroundColor: "white",
-    flexDirection: "row"
+    flexDirection: "row", 
+    elevation: 5
   },
   cardWrapperMid: {
     flexDirection: "row",

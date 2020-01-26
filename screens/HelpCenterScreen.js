@@ -39,14 +39,13 @@ const HelpCenterScreen = ({ navigation }) => {
             padding: 13
           }}
         >
-          {listQuestion.map((item, index) => {
+          {listQuestion.map((question, index) => {
             return (
               <TouchableOpacity
                 key={index}
                 onPress={() => navigation.navigate("Answer")}
-                // onPress={() => alert("tes")}
               >
-                <QuestionComponent data={item} />
+                <QuestionComponent data={question} />
               </TouchableOpacity>
             );
           })}
