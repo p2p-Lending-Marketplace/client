@@ -20,4 +20,6 @@ const rootNavigator = createSwitchNavigator(
   { initialRouteName: 'LandingScreen' }
 )
 
+
+
 export default createAppContainer(rootNavigator)

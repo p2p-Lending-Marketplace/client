@@ -147,7 +147,6 @@ const UploadDataScreen = ({ navigation }) => {
   const [updateUserData, { data, error, loading }] = useMutation(UPDATE_USER_DATA)
   
   const handleSaveButton = async () => {
-    console.log(user)
     const variables = {
         num_id: dataUser.numId,
         name: dataUser.name, 
@@ -161,9 +160,9 @@ const UploadDataScreen = ({ navigation }) => {
         salary: dataUser.salary,
         id: dataUser._id,
         date_of_birth: dataUser.dateOfBirth,
-        place_of_birth: dataUser.placeOfBirth
+        place_of_birth: dataUser.placeOfBirth,
+        token: dataUser.token
       }
-      console.log(variables)
     updateUserData({
       variables
     })

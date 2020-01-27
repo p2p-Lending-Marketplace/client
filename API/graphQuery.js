@@ -83,6 +83,7 @@ export const LOGIN_USER = gql`
       salary_slip_url
       status
       data_completed
+      token
     }
   }
 `
@@ -99,10 +100,12 @@ export const UPDATE_USER_DATA = gql`
     $id_url: String, 
     $salary_slip_url: String, 
     $current_job: String, 
-    $salary: String, 
+    $salary: Int, 
     $place_of_birth: String, 
     $date_of_birth: String,
-    $num_id: String){
+    $num_id: String,
+    $token: String
+    ){
     updateUserData (
       id: $id, 
       name: $name, 
@@ -117,7 +120,8 @@ export const UPDATE_USER_DATA = gql`
       salary: $salary,
       date_of_birth: $date_of_birth,
       place_of_birth: $place_of_birth,
-      num_id: $num_id
+      num_id: $num_id,
+      token: $token
       ) {
         _id
     }
@@ -125,16 +129,19 @@ export const UPDATE_USER_DATA = gql`
 `
 
 export const FETCH_APPLICATION_BY_UID = gql`
-  query ($userId: String!) {
-    getAllUserApplications (userId: $userId) {
-      id
-      userID
-      fintechID
-      
+  query ($userID: ID!, $token: String!) {
+    getAllUserApplications (userID: $userID, token: $token ) {
+      _id
+      user_id
+      fintech_id
       amount
+      logoURL
+      company_name
       loan_term
       objective
       decision 
+      createdAt
+      status
     }
   }
 `
@@ -146,8 +153,9 @@ export const SUBMIT_APPLICATION = gql`
       $amount: Int!
       $loan_term: Int!
       $objective: String!
+      $token: String!
     ) {
-      addNewApplication (userID: $userID, fintechID: $fintechID, amount: $amount, loan_term: $loan_term, objective: $objective) {
+      addNewApplication (userID: $userID, fintechID: $fintechID, amount: $amount, loan_term: $loan_term, objective: $objective, token: $token) {
         _id
       }
     
