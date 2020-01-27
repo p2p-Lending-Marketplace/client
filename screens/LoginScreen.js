@@ -40,6 +40,7 @@ const PinCreateScreen = ({ navigation }) => {
 
   useEffect(() => {
     if(data){
+      // console.log(data)
       if(data.signInUser){
         const user = data.signInUser
         _storeData(JSON.stringify(user))

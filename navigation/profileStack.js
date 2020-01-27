@@ -4,7 +4,7 @@ import {
   HistoryScreen,
   HelpCenterScreen,
   UploadDataScreen,
-  SettingScreen
+  SettingScreen,
 } from "../screens";
 import { AnswerComponent } from "../components";
 
@@ -57,7 +57,8 @@ const profileStack = createStackNavigator({
         shadowOpacity: 0
       }
     }
-  }
+  },
+  // rootNavigator
 });
 
 export default profileStack;
