@@ -1,5 +1,5 @@
 import { createStackNavigator } from "react-navigation-stack";
-import { MemberScreen, DetailFintechScreen } from "../screens";
+import { MemberScreen, DetailFintechScreen, ApplicationScreen } from "../screens";
 import colors from "../assets/colors"
 
 const memberStack = createStackNavigator({
@@ -26,6 +26,9 @@ const memberStack = createStackNavigator({
       headerTintColor: '#FFF',
     },
   },
+  "Apply Fintech": {
+    screen: ApplicationScreen
+  }
 })
 
 export default memberStack;

@@ -21,19 +21,20 @@ import { APP_NAME } from '../assets/variables'
 
 const UploadDataScreen = ({ navigation }) => {
   // Variables
-  const getUser = async () => {
-    try {
-      const user = await AsyncStorage.getItem(APP_NAME + ":user")
-      console.log(JSON.parse(user))
-      if (user !== null) {
+  const [dataUser, setDataUser] = useState({})
+  useEffect(() => {
+    console.log("triggered")
+    const getCurrentUser = async () => {
+      const userString = await AsyncStorage.getItem(APP_NAME + ":user")
+      console.log(userString)
+      if (userString !== null) {
+        const user = JSON.parse(userString)
         // We have data!!
-        return JSON.parse(user)
+        setDataUser(user)
       }
-    } catch (error) {
-      // Error retrieving data
-      console.log(error)
     }
-  }
+    getCurrentUser()
+  }, [])
   const [datePicker, setDatePicker] = useState({
     date: new Date(),
     mode: "date",
@@ -51,7 +52,7 @@ const UploadDataScreen = ({ navigation }) => {
   }
   const setDate = (_, date) => {
     date = date || datePicker.date
-
+    
     setDatePicker({
       // show: Platform.OS === 'ios' ? true : false,
       show: !datePicker.show,
@@ -64,20 +65,20 @@ const UploadDataScreen = ({ navigation }) => {
   }
   const [personal, setPersonal] = useState(true)
   const [financial, setFinancial] = useState(false)
-  const [dataUser, setDataUser] = useState({
-    numId: "",
-    name: "",
-    placeOfBirth: "",
-    dateOfBirth: "",
-    email: "",
-    phoneNumber: "",
-    address: "",
-    photo: "",
-    idCard: "",
-    currentJob: "",
-    salary: "",
-    salarySlip: ""
-  })
+  // const [dataUser, setDataUser] = useState({
+  //   numId: user.num_id,
+  //   name: "",
+  //   placeOfBirth: "",
+  //   dateOfBirth: "",
+  //   email: "",
+  //   phoneNumber: "",
+  //   address: "",
+  //   photo: "",
+  //   idCard: "",
+  //   currentJob: "",
+  //   salary: "",
+  //   salarySlip: ""
+  // })
   const [uploadPhoto, { loading: photoLoading, error: photoError, data: photoData }] = useMutation(UPLOAD_IMAGE)
   const [uploadIdCard, { loading: idCardLoading, error: idCardError, data: idCardData }] = useMutation(UPLOAD_IMAGE)
   const [uploadSalarySlip, { loading: salarySlipLoading, error: salarySlipError, data: salarySlipData }] = useMutation(UPLOAD_IMAGE)
@@ -145,15 +146,27 @@ const UploadDataScreen = ({ navigation }) => {
   }
   const [updateUserData, { data, error, loading }] = useMutation(UPDATE_USER_DATA)
   
-  const handleSaveButton = () => {
-    const user = getUser()
+  const handleSaveButton = async () => {
     console.log(user)
-    // updateUserData({
-    //   variables: {
-    //     ...dataUser,
-    //     // id: user._id
-    //   }
-    // })
+    const variables = {
+        num_id: dataUser.numId,
+        name: dataUser.name, 
+        email: dataUser.email, 
+        phone_number: dataUser.phoneNumber, 
+        address: dataUser.address,
+        photo_url: dataUser.photo, 
+        id_url: dataUser.idCard, 
+        salary_slip_url: dataUser.salarySlip,
+        current_job: dataUser.currentJob, 
+        salary: dataUser.salary,
+        id: dataUser._id,
+        date_of_birth: dataUser.dateOfBirth,
+        place_of_birth: dataUser.placeOfBirth
+      }
+      console.log(variables)
+    updateUserData({
+      variables
+    })
   }
 
 
@@ -204,10 +217,10 @@ const UploadDataScreen = ({ navigation }) => {
               <Item floatingLabel style={{ width: '80%' }} last>
                 <Label style={{ color: colors.mainBackground }}>No. ID</Label>
                 <Input
-                  value={dataUser.numId}
+                  value={dataUser.num_id}
                   keyboardType={'number-pad'}
-                  onChangeText={numId => {
-                    handleDataChange('numId', numId)
+                  onChangeText={num_id => {
+                    handleDataChange('num_id', num_id)
                   }}
                 />
               </Item>
@@ -225,9 +238,9 @@ const UploadDataScreen = ({ navigation }) => {
                   Place of Birth
                 </Label>
                 <Input
-                  value={dataUser.placeOfBirth}
-                  onChangeText={placeOfBirth => {
-                    handleDataChange('placeOfBirth', placeOfBirth)
+                  value={dataUser.place_of_birth}
+                  onChangeText={place_of_birth => {
+                    handleDataChange('place_of_birth', place_of_birth)
                   }}
                 />
               </Item>
@@ -265,8 +278,9 @@ const UploadDataScreen = ({ navigation }) => {
                   Phone Number
                 </Label>
                 <Input
-                  onChangeText={phoneNumber => {
-                    handleDataChange('phoneNumber', phoneNumber)
+                value={dataUser.phone_number}
+                  onChangeText={phone_number => {
+                    handleDataChange('phone_number', phone_number)
                   }}
                   keyboardType={'number-pad'}
                 />
@@ -454,16 +468,16 @@ const UploadDataScreen = ({ navigation }) => {
                   Current Job
                 </Label>
                 <Input
-                  value={dataUser.currentJob}
-                  onChangeText={currentJob => {
-                    handleDataChange('currentJob', currentJob)
+                  value={dataUser.current_job}
+                  onChangeText={current_job => {
+                    handleDataChange('current_job', current_job)
                   }}
                 />
               </Item>
               <Item floatingLabel style={{ width: '80%' }} last>
                 <Label style={{ color: colors.mainBackground }}>Salary</Label>
                 <Input
-                  value={dataUser.salary}
+                  value={String(dataUser.salary)}
                   onChangeText={salary => {
                     handleDataChange('salary', salary)
                   }}

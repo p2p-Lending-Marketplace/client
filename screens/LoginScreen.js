@@ -15,13 +15,21 @@ import { APP_NAME } from "../assets/variables"
 const PinCreateScreen = ({ navigation }) => {
   // Variables
   const [pin, setPin] = useState('');
+  const getPhoneNumber = async () => {
+    const phoneNumber = await AsyncStorage.getItem(APP_NAME + ':phoneNumber')
+    if (phoneNumber) {
+      return phoneNumber
+    } else {
+      return false
+    }
+  }
   const [runQuery, { loading, error, data }] = useLazyQuery(LOGIN_USER)
   if(error){
     console.log(error)
   }
 
   const handleLazyQuery = async () => {
-    const phone_number = await AsyncStorage.getItem(APP_NAME + ":phoneNumber")
+    const phone_number = await getPhoneNumber()
     runQuery({
       variables: {
         phone_number,
@@ -44,7 +52,6 @@ const PinCreateScreen = ({ navigation }) => {
   const _storeData = async (user) => {
     try {
       await AsyncStorage.setItem(APP_NAME + ':user', user)
-      console.log("berhasil set data", user)
     } catch (error) {
       // Error saving data
       console.log(error)

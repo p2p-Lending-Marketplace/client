@@ -10,15 +10,10 @@ const LandingScreen = ({ navigation }) => {
   const [phoneConfirmed, setPhoneConfirmed] = useState(null)
 
   async function checkUserPhone() {
-    // await AsyncStorage.removeItem(APP_NAME + ':phoneNumber')
-
     const phoneNumber = await AsyncStorage.getItem(APP_NAME + ':phoneNumber')
-    // console.log(phoneNumber)
     if (phoneNumber) {
-      // await AsyncStorage.removeItem(APP_NAME + ':phoneNumber')
       checkUserPhoneNumber({ variables: { phoneNumber } })
     } else {
-      // await AsyncStorage.setItem(APP_NAME + ':phoneNumber', '123')
       setPhoneConfirmed(false)
     }
   }
