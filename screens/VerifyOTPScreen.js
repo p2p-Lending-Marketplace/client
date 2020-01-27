@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, SafeAreaView, KeyboardAvoidingView, Image, TouchableOpacity } from 'react-native'
+import { View, Text, SafeAreaView, KeyboardAvoidingView, Image, TouchableOpacity, AsyncStorage } from 'react-native'
 import { Header } from "native-base";
 import Constants from 'expo-constants';
 import SmoothPinCodeInput from "react-native-smooth-pincode-input"
 import { back } from "../assets/icons"
-import serverAPI from "../API/serverAPI"
 import { useLazyQuery } from "@apollo/react-hooks"
 import { VERIFY_OTP } from "../API/graphQuery"
+import { APP_NAME } from "../assets/variables"
 
 const VerifyOTPScreen = ({navigation}) => {
   // Variables
@@ -27,8 +27,8 @@ const VerifyOTPScreen = ({navigation}) => {
   }
   useEffect(() => {
     if (data) {
-      if (data.verifyOTP.phone_number) {
-        navigation.navigate("LoginScreen", { phoneNumber })
+      if (data.verifyOTP._id) {
+        _storeData()
       } else {
         navigation.navigate("PinCreateScreen", { phoneNumber })
       }
@@ -48,6 +48,15 @@ const VerifyOTPScreen = ({navigation}) => {
     }
   }, [token])
 
+  const _storeData = async () => {
+    try {
+      await AsyncStorage.setItem(APP_NAME + ":phoneNumber", phoneNumber)
+      navigation.navigate("LoginScreen", { phoneNumber })
+    } catch (error) {
+      // Error saving data
+      console.log(error)
+    }
+  }
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <KeyboardAvoidingView

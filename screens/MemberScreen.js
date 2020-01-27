@@ -14,8 +14,6 @@ import { FETCH_FINTECH_MEMBER } from "../API/graphQuery"
 
 const MemberScreen = ({navigation}) => {
   // Variables
-  const dummiesData = ['','','','','','','','']
-
   // Function
   const goToDetailMember = (id) => {
     navigation.navigate("Detail Fintech", { id })

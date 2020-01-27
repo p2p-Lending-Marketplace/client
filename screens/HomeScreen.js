@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,14 +9,25 @@ import {
   ScrollView, 
   AsyncStorage
 } from 'react-native';
-import Constants from 'expo-constants';
 import { multiply } from '../assets/icons';
 import colors from "../assets/colors"
 import { APP_NAME } from "../assets/variables"
+import { useQuery } from "@apollo/react-hooks"
 
 const HomeScreen = ({ navigation }) => {
   // Variables
-
+  const [dataUser, setDataUser] = useState({})
+  useEffect(() => {
+    const getCurrentUser = async () => {
+      const userString = await AsyncStorage.getItem(APP_NAME + ":user")
+      if (userString !== null) {
+        const user = JSON.parse(userString)
+        // We have data!!
+        setDataUser(user)
+      }
+    }
+    getCurrentUser()
+  }, [])
   //Function
   const handleOnPressApply = () => {
       navigation.navigate('Upload Data')
@@ -38,66 +49,69 @@ const HomeScreen = ({ navigation }) => {
         >
           <SafeAreaView style={{ flex: 1 }}>
             <ScrollView style={{ marginHorizontal: 10, paddingTop: 10 }} showsVerticalScrollIndicator={false}>
-              <View
-                style={{
-                  justifyContent: 'center',
-                  padding: 10,
-                  backgroundColor: '#FFF',
-                  borderRadius: 15,
-                  marginVertical: 10,
-                  flexDirection: 'row',
-                  elevation: 5,
-                  marginHorizontal: 10
+              {
+                !dataUser.data_completed
+                && <View
+                  style={{
+                    justifyContent: 'center',
+                    padding: 10,
+                    backgroundColor: '#FFF',
+                    borderRadius: 15,
+                    marginVertical: 10,
+                    flexDirection: 'row',
+                    elevation: 5,
+                    marginHorizontal: 10
 
-                }}
-              >
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: 'center',
-                    alignItems: 'center',
                   }}
                 >
-                  <Image
-                    source={require('../assets/icons/cry.png')}
-                    style={{ width: 50, height: 50 }}
-                  />
-                </View>
-                <View
-                  style={{
-                    flex: 4,
-                    margin: 5,
-                    justifyContent: 'center',
-                    paddingVertical: 10
-                  }}
-                >
-                  <Text style={{ textAlign: 'justify' }}>
-                    one more step to apply for installments, let's complete your
-                    profile.
-                  </Text>
-                  <TouchableOpacity onPress={
-                    handleOnPressApply
-                  }>
-                    <Text
-                      style={{
-                        textAlign: 'left',
-                        color: colors.mainBackground,
-                        fontWeight: '700'
-                      }}
-                    >
-                      Go To Profile
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={{ flex: 0.3 }}>
-                  <TouchableOpacity>
+                  <View
+                    style={{
+                      flex: 1,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
                     <Image
-                      source={{ uri: multiply }}
-                      style={{ width: 20, height: 20 }}
+                      source={require('../assets/icons/cry.png')}
+                      style={{ width: 50, height: 50 }}
                     />
-                  </TouchableOpacity>
+                  </View>
+                  <View
+                    style={{
+                      flex: 4,
+                      margin: 5,
+                      justifyContent: 'center',
+                      paddingVertical: 10
+                    }}
+                  >
+                    <Text style={{ textAlign: 'justify' }}>
+                      one more step to apply for installments, let's complete your
+                      profile.
+                  </Text>
+                    <TouchableOpacity onPress={
+                      handleOnPressApply
+                    }>
+                      <Text
+                        style={{
+                          textAlign: 'left',
+                          color: colors.mainBackground,
+                          fontWeight: '700'
+                        }}
+                      >
+                        Go To Profile
+                    </Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={{ flex: 0.3 }}>
+                    <TouchableOpacity>
+                      <Image
+                        source={{ uri: multiply }}
+                        style={{ width: 20, height: 20 }}
+                      />
+                    </TouchableOpacity>
+                  </View>
                 </View>
-              </View>
+              }
               <View
                 style={{
                   alignItems: 'center',
@@ -127,7 +141,14 @@ const HomeScreen = ({ navigation }) => {
                     fontSize: 15
                   }}
                 >
-                  Collect all the necessary documents and start the loan
+                  {
+                    dataUser.data_completed
+                      ? "You've completed all documents !"
+                      : dataUser.data_completed
+                        ? "Collect all the necessary documents and start the loan"
+                        : ""
+                    
+                  }
                 </Text>
                 <TouchableOpacity
                   style={{

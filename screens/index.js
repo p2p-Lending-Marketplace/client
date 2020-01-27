@@ -12,6 +12,7 @@ import HelpCenterScreen from "./HelpCenterScreen";
 import SettingScreen from "./SettingScreen";
 import UploadData2Screen from "./UploadDataSecondScreen"
 import DetailFintechScreen from "./DetailFintechScreen"
+import ApplicationScreen from "./ApplicationScren"
 
 export {
   LoginScreen,
@@ -27,5 +28,6 @@ export {
   HelpCenterScreen,
   SettingScreen,
   UploadData2Screen,
-  DetailFintechScreen
+  DetailFintechScreen,
+  ApplicationScreen
 };

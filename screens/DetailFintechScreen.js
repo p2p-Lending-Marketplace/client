@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, SafeAreaView, ScrollView, Image, TouchableOpacity } from 'react-native'
 import colors from "../assets/colors"
 import Divider from "react-native-divider"
@@ -15,7 +15,9 @@ const DetailScreen = ({ navigation }) => {
   })
 
   // Functions
-
+  const handleApplyButton = () => {
+    navigation.navigate("Apply Fintech", {fintech_id: id})
+  }
 
   if(loading){
     return(
@@ -55,15 +57,8 @@ const DetailScreen = ({ navigation }) => {
                 </View>
                 <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
                   <Text>Interest: {company.min_interest} - {company.max_interest}% p.a.</Text>
-                    {/* <View style={{}}>
-                        <Image source={require("../assets/icons/rp-symbol.png")} />
-                        <Text>
-                            7 % Interest per year
-                        </Text>
-                    </View> */}
                 </View>
               </View>
-          {/* Description */}
           <View style={{ marginVertical: 10 }}>
             <Divider borderColor={colors.mainBackground} orientation="left">
                 <Text style={{fontWeight: '700', color: colors.mainBackground}}>
@@ -77,7 +72,9 @@ const DetailScreen = ({ navigation }) => {
             </Text>
           </View>
           <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                <TouchableOpacity style={{width: 150, backgroundColor: colors.mainBackground, borderRadius: 7, marginHorizontal: 5, marginVertical: 30}}>
+                <TouchableOpacity style={{width: 150, backgroundColor: colors.mainBackground, borderRadius: 7, marginHorizontal: 5, marginVertical: 30}} onPress={() => {
+                  handleApplyButton()
+                }}>
                     <Text style={{textAlign: "center", paddingVertical: 5, fontSize: 15, color: "#FFF", fontWeight: '700'}}>
                         Apply Now
                     </Text>
