@@ -1,57 +1,92 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'
 import {
   View,
   Text,
   SafeAreaView,
   KeyboardAvoidingView,
   Image,
-  TouchableOpacity, 
-  ScrollView, 
-  AsyncStorage
-} from 'react-native';
-import { multiply } from '../assets/icons';
-import colors from "../assets/colors"
-import { APP_NAME } from "../assets/variables"
-import { useLazyQuery } from "@apollo/react-hooks"
-import { FETCH_APPLICATION_BY_UID } from "../API/graphQuery"
+  TouchableOpacity,
+  ScrollView,
+  AsyncStorage,
+} from 'react-native'
+import { Notifications } from 'expo'
+import * as Permissions from 'expo-permissions'
+import { multiply } from '../assets/icons'
+import colors from '../assets/colors'
+import { APP_NAME } from '../assets/variables'
+import { useLazyQuery, useMutation } from '@apollo/react-hooks'
+import {
+  FETCH_APPLICATION_BY_UID,
+  REGISTER_PUSH_NOTIFICATION,
+} from '../API/graphQuery'
 import Divider from 'react-native-divider'
 import { format } from 'date-fns'
-import rupiah from "rupiah-format"
-
+import rupiah from 'rupiah-format'
 
 const HomeScreen = ({ navigation }) => {
   // Variables
   const [dataUser, setDataUser] = useState({})
+  const [registerPush] = useMutation(REGISTER_PUSH_NOTIFICATION)
+
+  const registerForPushNotificationsAsync = async () => {
+    const pushToken = await AsyncStorage.getItem(APP_NAME + ':pushToken')
+    // await AsyncStorage.removeItem('@app:pushToken')
+    if (!pushToken) {
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS)
+      if (status !== 'granted') {
+        return
+      }
+
+      const token = await Notifications.getExpoPushTokenAsync()
+      const phoneNumber = await AsyncStorage.getItem(APP_NAME + ':phoneNumber')
+
+      registerPush({ variables: { token, phoneNumber } }).then(
+        async ({ data }) =>
+          await AsyncStorage.setItem(
+            APP_NAME + ':pushToken',
+            data.registerPushNotification.token
+          )
+      )
+    }
+    // Notifications.addListener(({ data }) => {
+    //   navigation.navigate('ApplicationDetail', { id: data.application_id })
+    // })
+  }
+
+  useEffect(() => {
+    registerForPushNotificationsAsync()
+  }, [])
+
   useEffect(() => {
     const getCurrentUser = async () => {
-      const userString = await AsyncStorage.getItem(APP_NAME + ":user")
+      const userString = await AsyncStorage.getItem(APP_NAME + ':user')
       if (userString !== null) {
         const user = JSON.parse(userString)
         // We have data!!
-        setDataUser(user);
+        setDataUser(user)
         // console.log(user, "ini useer use effect")
         // console.log(user.token)
         runQuery({
           variables: {
             userID: user._id,
-            token: user.token
+            token: user.token,
           },
         })
       }
     }
-    getCurrentUser();
+    getCurrentUser()
   }, [])
   //Function
-  const [runQuery, { loading, data, error }] = useLazyQuery(FETCH_APPLICATION_BY_UID)
-  if(error){
+  const [runQuery, { loading, data, error }] = useLazyQuery(
+    FETCH_APPLICATION_BY_UID
+  )
+  if (error) {
     console.log(error)
   }
   const handleOnPressApply = () => {
-      navigation.navigate('Upload Data')
+    navigation.navigate('Upload Data')
   }
-  if(data){
-    // console.log(data)
-  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
@@ -186,7 +221,7 @@ const HomeScreen = ({ navigation }) => {
                 </TouchableOpacity>
               </View>
               {data && (
-                <View style={{marginHorizontal: 10}}>
+                <View style={{ marginHorizontal: 10 }}>
                   <Divider
                     borderColor={colors.mainBackground}
                     orientation="left"
@@ -238,24 +273,30 @@ const HomeScreen = ({ navigation }) => {
                               flex: 4,
                               justifyContent: 'center',
                               // alignItems: 'center',
-                              paddingHorizontal: 20
+                              paddingHorizontal: 20,
                             }}
                           >
-                            <Text style={{fontWeight: 'bold'}}>Application Date: </Text>
+                            <Text style={{ fontWeight: 'bold' }}>
+                              Application Date:{' '}
+                            </Text>
                             <Text>
                               {format(
                                 new Date(application.createdAt),
                                 'do MMMM YYY'
                               )}
                             </Text>
-                            <Text style={{fontWeight: 'bold'}}>Fintech Company: </Text>
+                            <Text style={{ fontWeight: 'bold' }}>
+                              Fintech Company:{' '}
+                            </Text>
                             <Text>{application.company_name}</Text>
-                            <Text style={{fontWeight: 'bold'}}>Amount: </Text>
+                            <Text style={{ fontWeight: 'bold' }}>Amount: </Text>
                             <Text>{rupiah.convert(application.amount)}</Text>
-                            <Text style={{fontWeight: 'bold'}}>Loan Term: </Text>
+                            <Text style={{ fontWeight: 'bold' }}>
+                              Loan Term:{' '}
+                            </Text>
                             <Text>{application.loan_term}</Text>
                           </View>
-                          <View style={{alignItems: "center", flex: 2}}>
+                          <View style={{ alignItems: 'center', flex: 2 }}>
                             <Text>{application.decision}</Text>
                           </View>
                         </View>
@@ -270,6 +311,6 @@ const HomeScreen = ({ navigation }) => {
       </KeyboardAvoidingView>
     </SafeAreaView>
   )
-};
+}
 
-export default HomeScreen;
+export default HomeScreen
