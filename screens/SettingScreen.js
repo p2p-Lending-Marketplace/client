@@ -8,7 +8,7 @@ const SettingScreen = ({navigation}) => {
   const handleSignOut = async () => {
     console.log(await AsyncStorage.getAllKeys())
     await AsyncStorage.removeItem(APP_NAME + ":phoneNumber")
-    await AsyncStorage.removeItem(APP_NAME + ':user')
+    await AsyncStorage.removeItem(APP_NAME + ':token')
     navigation.navigate("LandingScreen")
   }
   return (

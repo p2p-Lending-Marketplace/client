@@ -11,10 +11,14 @@ import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
 import { LOGIN_USER } from "../API/graphQuery"
 import { useLazyQuery } from "@apollo/react-hooks"
 import { APP_NAME } from "../assets/variables"
+import colors from "../assets/colors";
 
 const PinCreateScreen = ({ navigation }) => {
   // Variables
   const [pin, setPin] = useState('');
+  const [loginUser, { loading, error, data }] = useLazyQuery(LOGIN_USER)
+  
+  //Function
   const getPhoneNumber = async () => {
     const phoneNumber = await AsyncStorage.getItem(APP_NAME + ':phoneNumber')
     if (phoneNumber) {
@@ -23,38 +27,28 @@ const PinCreateScreen = ({ navigation }) => {
       return false
     }
   }
-  const [runQuery, { loading, error, data }] = useLazyQuery(LOGIN_USER)
-  if(error){
-    console.log(error)
-  }
-
   const handleLazyQuery = async () => {
     const phone_number = await getPhoneNumber()
-    runQuery({
+    loginUser({
       variables: {
         phone_number,
         pin
       }
     })
   }
-
   useEffect(() => {
     if(data){
-      // console.log(data)
       if(data.signInUser){
-        const user = data.signInUser
-        _storeData(JSON.stringify(user))
+        const token = data.signInUser
+        saveToken(JSON.stringify(token))
         navigation.navigate("tabNavigator")
       }
     }
   }, [data])
-
-  //Function
-  const _storeData = async (user) => {
+  const saveToken = async (token) => {
     try {
-      await AsyncStorage.setItem(APP_NAME + ':user', user)
+      await AsyncStorage.setItem(APP_NAME + ':token', token)
     } catch (error) {
-      // Error saving data
       console.log(error)
     }
   }
@@ -66,9 +60,12 @@ const PinCreateScreen = ({ navigation }) => {
       handleLazyQuery()
     }
   }, [pin])
-
+  
+  if(error){
+    console.log(error)
+  }
   return (
-    <SafeAreaView style={{ flex: 1, marginTop: Constants.statusBarHeight }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.whiteBackground }}>
       <KeyboardAvoidingView
         behavior="padding"
         enabled
@@ -105,7 +102,7 @@ const PinCreateScreen = ({ navigation }) => {
                     width: 10,
                     height: 10,
                     borderRadius: 25,
-                    backgroundColor: '#016AFB'
+                    backgroundColor: colors.mainBackground
                   }}
                 ></View>
               }
