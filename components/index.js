@@ -10,6 +10,7 @@ import PersonalDataComponent from "./PersonalDataComponent";
 import FinancialDataComponent from "./FinancialDataComponent"
 import SegmentUploadComponent from "./SegmentUploadComponent"
 import HistoryComponent from "./HistoryComponent"
+import BoardScoreComponent from "./BoardScoreComponent"
 
 export { 
     QuestionComponent, 
@@ -23,5 +24,6 @@ export {
     PersonalDataComponent,
     FinancialDataComponent,
     SegmentUploadComponent,
-    HistoryComponent
+    HistoryComponent,
+    BoardScoreComponent
 };
