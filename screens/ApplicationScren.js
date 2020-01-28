@@ -5,7 +5,6 @@ import {
   SafeAreaView,
   ScrollView,
   TouchableOpacity,
-  ImageBackground,
   AsyncStorage
 } from 'react-native'
 import { Item, Form, Input, Label } from 'native-base'
@@ -18,28 +17,18 @@ import { FETCH_USER_DETAIL } from "../API/graphQuery"
 
 const ApplicationScreen = ({ navigation }) => {
   // Variables
-    const fintech_id = navigation.getParam("fintech_id")
-    const [dataUser, setDataUser] = useState({})
-    const [token, setToken] = useState("")
-    const [fetchUser, { loading: userLoading, data: user, error: userError }] = useLazyQuery(FETCH_USER_DETAIL)
-    // useEffect(() => {
-    //     const getCurrentUser = async () => {
-    //         const userString = await AsyncStorage.getItem(APP_NAME + ":user")
-    //         if (userString !== null) {
-    //             const user = JSON.parse(userString)
-    //             // We have data!!
-    //             setDataUser(user)
-    //         }
-    //     }
-    //     getCurrentUser()
-    // }, [])
-    const [dataApplication, setDataApplication] = useState({
-        amount: "",
-        loan_term: "",
-        objective: "",
-        additional_data: ""
-    })
+  const fintech_id = navigation.getParam("fintech_id")
+  const [token, setToken] = useState("")
+  const [fetchUser, { loading: userLoading, data: user, error: userError }] = useLazyQuery(FETCH_USER_DETAIL)
+  const [dataApplication, setDataApplication] = useState({
+      amount: "",
+      loan_term: "",
+      objective: "",
+      additional_data: ""
+  })
+  
   // Function
+
   useEffect(() => {
     const getToken = async () => {
       const tokenString = await AsyncStorage.getItem(APP_NAME + ':token')
@@ -55,18 +44,20 @@ const ApplicationScreen = ({ navigation }) => {
     }
     getToken()
   }, [])
-    const [submitData, { data, error }] = useMutation(SUBMIT_APPLICATION)
-    function handleDataChange(type, value) {
-        setDataApplication({
-        ...dataApplication,
-        [type]: value
-        })
-    }
+
+  const [submitData, { data, error }] = useMutation(SUBMIT_APPLICATION)
+  function handleDataChange(type, value) {
+      setDataApplication({
+      ...dataApplication,
+      [type]: value
+      })
+  }
+
   if(data){
       navigation.goBack()
   }
+
   const handleApplyButton = async () => {
-    console.log(fintech_id)
     submitData({
         variables: {
             ...dataApplication,
@@ -78,6 +69,7 @@ const ApplicationScreen = ({ navigation }) => {
         }
     })
   }
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.whiteBackground }}>
       <ScrollView style={{ flex: 1 }}>

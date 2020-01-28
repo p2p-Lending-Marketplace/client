@@ -13,14 +13,17 @@ import { APP_NAME } from "../assets/variables"
 import { TokenFormComponent, CustomButtonBackComponent } from "../components";
 import CountDown from 'react-native-countdown-component'
 import colors from "../assets/colors";
-
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { REQUEST_OTP } from "../API/graphQuery"
 const VerifyOTPScreen = ({navigation}) => {
   // Variables
   const [token, setToken] = useState('');
   const phoneNumber = navigation.getParam("phoneNumber")
   const [runQuery ,{ loading, error, data }] = useLazyQuery(VERIFY_OTP)
+  const [requestOTP, { loading: otpLoading, error: otpError, data: otpData }] = useLazyQuery(REQUEST_OTP)
   
   //Function
+  const [resendStatus, setResendStatus] = useState(false)
   const handleOnPressBack = () => {
       navigation.navigate("RegisterScreen")
   }
@@ -67,6 +70,19 @@ const VerifyOTPScreen = ({navigation}) => {
     console.log(error)
   }
 
+  const handleOnFinish = () => {
+    setResendStatus(true)
+  } 
+
+  const handleResendButton = async () => {
+    setResendStatus(false)
+    requestOTP({
+      variables: {
+        phone_number: phoneNumber,
+      },
+    })
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
@@ -76,19 +92,48 @@ const VerifyOTPScreen = ({navigation}) => {
             <Text style={{ fontSize: 25, fontWeight: '600' }}>
               Verification Code
             </Text>
-            <CountDown
-              until={60}
-              onFinish={() => alert('finished')}
-              size={20}
-              digitStyle={{ backgroundColor: '#FFF' }}
-              digitTxtStyle={{ color: colors.mainBackground }}
-              timeToShow={['M', 'S']}
-              timeLabels={{ m: 'Minute', s: 'Second' }}
-            />
+            {
+              !resendStatus
+                ? <CountDown
+                    until={60}
+                    onFinish={() => handleOnFinish()}
+                    size={20}
+                    digitStyle={{ backgroundColor: colors.whiteBackground }}
+                    digitTxtStyle={{ color: colors.mainBackground }}
+                    timeToShow={['S']}
+                  />
+                : <CountDown
+                    until={0}
+                    onFinish={() => handleOnFinish()}
+                    size={20}
+                    digitStyle={{ backgroundColor: colors.whiteBackground }}
+                    digitTxtStyle={{ color: colors.mainBackground }}
+                    timeToShow={['S']}
+                  />
+            }
+            
             <Text style={{ fontSize: 18 }}>Input the 6-digit code sent to</Text>
             <Text style={{ fontSize: 18 }}>{phoneNumber}</Text>
           </View>
           <TokenFormComponent data={{ token, handleOnChangeToken }} />
+          {
+            resendStatus 
+              ? <View style={{marginVertical: 70, backgroundColor: colors.mainBackground, borderRadius: 7}}>
+                  <TouchableOpacity style={{marginVertical: 10,  marginHorizontal: 20}} onPress={() => handleResendButton()}>
+                    <Text style={{color: 'white'}}>
+                      Resend OTP
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              : <View style={{marginVertical: 70, backgroundColor: "grey", borderRadius: 7}}>
+                  <TouchableOpacity disabled style={{marginVertical: 10,  marginHorizontal: 20}} onPress={() => handleResendButton}>
+                    <Text style={{color: 'white'}}>
+                      Resend OTP
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+          }
+          
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>

@@ -137,21 +137,21 @@ const UploadDataScreen = ({ navigation }) => {
   
   const handleSaveButton = async () => {
     const variables = {
-        num_id: dataUser.num_id,
-        name: dataUser.name, 
-        email: dataUser.email, 
-        phone_number: dataUser.phone_number, 
-        address: dataUser.address,
-        photo_url: dataUser.photo_url, 
-        id_url: dataUser.id_url, 
-        salary_slip_url: dataUser.salary_slip_url,
-        current_job: dataUser.current_job, 
-        salary: Number(dataUser.salary),
-        id: dataUser._id,
-        date_of_birth: dataUser.date_of_birth,
-        place_of_birth: dataUser.place_of_birth,
-        token
-      }
+      num_id: dataUser.num_id,
+      name: dataUser.name, 
+      email: dataUser.email, 
+      phone_number: dataUser.phone_number, 
+      address: dataUser.address,
+      photo_url: dataUser.photo_url, 
+      id_url: dataUser.id_url, 
+      salary_slip_url: dataUser.salary_slip_url,
+      current_job: dataUser.current_job, 
+      salary: Number(dataUser.salary),
+      id: dataUser._id,
+      date_of_birth: dataUser.date_of_birth,
+      place_of_birth: dataUser.place_of_birth,
+      token
+    }
     updateUserData({
       variables
     })

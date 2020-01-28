@@ -13,6 +13,7 @@ import SettingScreen from "./SettingScreen";
 import UploadData2Screen from "./UploadDataSecondScreen"
 import DetailFintechScreen from "./DetailFintechScreen"
 import ApplicationScreen from "./ApplicationScren"
+import IntroScreen from "./IntroScreen"
 
 export {
   LoginScreen,
@@ -29,5 +30,6 @@ export {
   SettingScreen,
   UploadData2Screen,
   DetailFintechScreen,
-  ApplicationScreen
+  ApplicationScreen,
+  IntroScreen
 };
