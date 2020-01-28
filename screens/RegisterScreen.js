@@ -17,7 +17,7 @@ const RegisterScreen = ({navigation}) => {
   const handleOnChangePhone = (phoneNumber) => {
     setPhoneNumber(phoneNumber)
   }
-  const [runQuery, { loading, error, data }] = useLazyQuery(REQUEST_OTP)
+  const [requestOTP, { loading, error, data }] = useLazyQuery(REQUEST_OTP)
   const phoneNumberChecker = () => {
     if(phoneNumber[0] === '0'){
       const newNumber = "+62" + phoneNumber.slice(1)
@@ -30,7 +30,7 @@ const RegisterScreen = ({navigation}) => {
 
   const handleSubmitNumber = () => {
     const phoneNumber = phoneNumberChecker()
-    runQuery({
+    requestOTP({
       variables: {
         phone_number: phoneNumber
       }
@@ -58,32 +58,6 @@ const RegisterScreen = ({navigation}) => {
             <RegisterPhoneComponent
               data={{ phoneNumber, setPhoneNumber, handleOnChangePhone, handleSubmitNumber }}
             />
-            {/* <View
-              style={{
-                flex: 2,
-                backgroundColor: colors.secondBackground,
-                borderTopRightRadius: 20,
-                borderTopLeftRadius: 20,
-                elevation: 10
-              }}
-            >
-              <Form style={{ justifyContent: "center", alignItems: "center", flex: 1, marginTop: 30, marginBottom: 30}}>
-                <View style={{ alignItems: "center", justifyContent: "center", flexDirection: "row", marginBottom: 20 }}>
-                  <Image source={{ uri: phone}} style={{width: 30, height: 30}} />
-                  <Text style={{fontSize: 15, paddingLeft: 5, fontWeight: '700', color: "#FFF"}}>+62</Text>
-                  <Item style={{ width: '60%' }} underline={false} >
-                      <Input keyboardType={"number-pad"} style={{fontSize: 15, color: "#FFF"}} value={phoneNumber} placeholder="8123..." placeholderTextColor="#FFF"  onChangeText={(phoneNumber) => {
-                        handleOnChangePhone(phoneNumber)
-                      }} />
-                  </Item>
-                </View>
-                <View style={{alignItems: "center", justifyContent: "center", width: '100%'}}>
-                  <TouchableOpacity style={{ backgroundColor: '#FFF',  width: '40%', padding: 10, borderRadius: 7}} onPress={handleSubmitNumber}>
-                    <Text style={{color: colors.secondBackground, textAlign: "center", fontWeight: '700' }}>START</Text>
-                  </TouchableOpacity>
-                </View>
-              </Form>
-            </View> */}
           </View>
         </KeyboardAvoidingView>
       </SafeAreaView>

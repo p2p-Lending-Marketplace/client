@@ -85,28 +85,7 @@ const ProfileScreen = ({ navigation }) => {
               </Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.contentMid}>
-            <View style={styles.cardWrapperMid}>
-              <View style={{ flex: 3 }}>
-                <View style={{ flexDirection: "row", paddingHorizontal: 30 }}>
-                  <Text>Reward up to</Text>
-                  <Text style={{ color: "#12cad6" }}> 1 juta</Text>
-                </View>
-                <View style={{ paddingHorizontal: 30 }}>
-                  <Text style={{ color: "#758184", fontSize: 14 }}>
-                    Refer friends to get it
-                  </Text>
-                </View>
-              </View>
-              <View style={{ flex: 1 }}>
-                <Image
-                  source={require("../assets/images/wallet.png")}
-                  style={{ width: "60%", height: "60%" }}
-                />
-              </View>
-            </View>
           </View>
-        </View>
       </Container>
     </SafeAreaView>
   );
