@@ -11,10 +11,10 @@ import {
 import { Notifications } from 'expo'
 import * as Permissions from 'expo-permissions'
 import { APP_NAME } from '../assets/variables'
-import { useLazyQuery, useMutation } from '@apollo/react-hooks'
+import { useLazyQuery, useMutation, useQuery } from '@apollo/react-hooks'
 import colors from "../assets/colors"
-import { highScore } from "../assets/icons"
-import { FETCH_APPLICATION_BY_UID, FETCH_USER_DETAIL, REGISTER_PUSH_NOTIFICATION } from "../API/graphQuery"
+import Constants from "expo-constants"
+import { FETCH_APPLICATION_BY_UID, FETCH_USER_DETAIL, REGISTER_PUSH_NOTIFICATION, FETCH_USER_SCORE } from "../API/graphQuery"
 import { ActiveApplicationComponent, BannerHomeComponent, AlertProfileComponent, BoardScoreComponent } from "../components";
 
 
@@ -23,6 +23,7 @@ const HomeScreen = ({ navigation }) => {
   const [token, setToken] = useState("")
   const [fetchApplications, { loading: appLoading, data: appData, error: appError }] = useLazyQuery(FETCH_APPLICATION_BY_UID)
   const [fetchUser, { loading: userLoading, data: user, error: userError }] = useLazyQuery(FETCH_USER_DETAIL)
+  const [fetchUserScore,{ loading: scoreLoading, data: score, error: scoreError }] = useLazyQuery(FETCH_USER_SCORE)
 
   const [registerPush] = useMutation(REGISTER_PUSH_NOTIFICATION)
 
@@ -49,7 +50,6 @@ const HomeScreen = ({ navigation }) => {
     //   navigation.navigate('ApplicationDetail', { id: data.application_id })
     // })
   }
-
   useEffect(() => {
     registerForPushNotificationsAsync()
   }, [])
@@ -59,7 +59,6 @@ const HomeScreen = ({ navigation }) => {
       const tokenString = await AsyncStorage.getItem(APP_NAME + ":token")
       if (tokenString !== null) {
         const { token } = JSON.parse(tokenString)
-        console.log(token)
         setToken(token)
         fetchUser({
           variables: {
@@ -71,6 +70,15 @@ const HomeScreen = ({ navigation }) => {
     }
     getToken();
   }, [])
+  useEffect(() => {
+    if(token){
+      fetchUserScore({
+        variables: {
+          token
+        }
+      })
+    }
+  }, [token])
   const handleOnPressApply = () => {
     navigation.navigate('Upload Data')
   }
@@ -100,10 +108,46 @@ const HomeScreen = ({ navigation }) => {
             flex: 1,
           }}
         >
-          <SafeAreaView style={{ flex: 1, justifyContent: "center", alignItems: "center", width: '100%' }}>
-            <BoardScoreComponent />
+          <SafeAreaView
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%',
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: colors.mainBackground,
+                width: '100%',
+                height: 150,
+                marginBottom: 35,
+                paddingTop: Constants.statusBarHeight,
+                alignItems: 'center',
+              }}
+            >
+              <Text
+                style={{
+                  color: '#FFF',
+                  fontSize: 30,
+                  textAlign: 'left',
+                  width: '90%',
+                  paddingVertical: 5,
+                  fontWeight: '700',
+                }}
+              >
+                {
+                  user
+                    ? `Hello, ${user.getUserById.name.split(" ")[0]}!`
+                    : "Welcome to finteur"
+                }
+              </Text>
+              {score && (
+                <BoardScoreComponent data={{ score: score.getUserScoring.score}} />
+              )}
+            </View>
             <ScrollView
-              style={{ paddingTop: 10, width: '100%' }}
+              style={{ width: '100%' }}
               showsVerticalScrollIndicator={false}
             >
               {user && !user.getUserById.data_completed && (

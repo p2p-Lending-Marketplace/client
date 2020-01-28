@@ -4,21 +4,24 @@ import {
   Image,
   Text,
 } from 'react-native'
-import { highScore } from '../assets/icons'
+import { highScore, lowScore } from '../assets/icons'
 
-const BoardScoreComponent = () => {
+const BoardScoreComponent = ({data}) => {
+    // Variables
+    const score = data.score
     return (
       <View
         style={{
-          flexDirection: 'row',
-          marginVertical: 10,
-          borderRadius: 7,
-          backgroundColor: '#FFF',
-          padding: 10,
-          elevation: 5,
-          width: '90%',
-          alignItems: 'center',
-          justifyContent: 'center',
+            flexDirection: 'row',
+            position: "absolute",
+            top: 80,
+            borderRadius: 7,
+            backgroundColor: '#FFF',
+            padding: 10,
+            elevation: 5,
+            width: '90%',
+            alignItems: 'center',
+            justifyContent: 'center',
         }}
       >
         <View
@@ -28,12 +31,24 @@ const BoardScoreComponent = () => {
             justifyContent: 'center',
           }}
         >
-          <Image
-            source={{
-              uri: highScore,
-            }}
-            style={{ width: 80, height: 80 }}
-          />
+            {
+                score === 'A' || score === 'B'
+                    ?   <Image
+                            source={{
+                            uri: highScore,
+                            }}
+                            style={{ width: 80, height: 80 }}
+                        />
+                    :   score === 'C' || score === 'D'
+                        ?   <Image
+                                source={{
+                                uri: lowScore,
+                                }}
+                                style={{ width: 80, height: 80 }}
+                            />
+                        : null
+            }
+          
         </View>
         <View
           style={{
@@ -43,7 +58,7 @@ const BoardScoreComponent = () => {
           }}
         >
           <Text style={{ fontSize: 25, fontWeight: '700' }}>
-            Credit Score "A"
+            Credit Score "{score}"
           </Text>
         </View>
       </View>

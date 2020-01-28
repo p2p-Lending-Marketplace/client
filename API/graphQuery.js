@@ -182,3 +182,11 @@ export const FETCH_USER_DETAIL = gql`
     }
   }
 `
+
+export const FETCH_USER_SCORE = gql`
+  query ($token: String!) {
+    getUserScoring (token: $token) {
+      score
+    }
+  }
+`
