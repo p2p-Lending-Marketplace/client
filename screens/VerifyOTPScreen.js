@@ -1,39 +1,43 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, SafeAreaView, KeyboardAvoidingView, Image, TouchableOpacity, AsyncStorage } from 'react-native'
-import { Header } from "native-base";
-import Constants from 'expo-constants';
-import SmoothPinCodeInput from "react-native-smooth-pincode-input"
-import { back } from "../assets/icons"
+import { 
+  View,
+  Text, 
+  SafeAreaView, 
+  KeyboardAvoidingView,
+  AsyncStorage,
+  StyleSheet
+} from 'react-native'
 import { useLazyQuery } from "@apollo/react-hooks"
 import { VERIFY_OTP } from "../API/graphQuery"
 import { APP_NAME } from "../assets/variables"
+import { TokenFormComponent, CustomButtonBackComponent } from "../components";
+import CountDown from 'react-native-countdown-component'
+import colors from "../assets/colors";
 
 const VerifyOTPScreen = ({navigation}) => {
   // Variables
   const [token, setToken] = useState('');
   const phoneNumber = navigation.getParam("phoneNumber")
+  const [runQuery ,{ loading, error, data }] = useLazyQuery(VERIFY_OTP)
   
   //Function
   const handleOnPressBack = () => {
       navigation.navigate("RegisterScreen")
   }
   const handleOnChangeToken = (token) => {
-    console.log(token)
     setToken(token)
   }
-  const [runQuery ,{ loading, error, data }] = useLazyQuery(VERIFY_OTP)
-  if(error){
-    console.log(error)
-  }
+
   useEffect(() => {
     if (data) {
       if (data.verifyOTP._id) {
-        _storeData()
+        savePhoneNumber()
       } else {
         navigation.navigate("PinCreateScreen", { phoneNumber })
       }
     }
   }, [data])
+
   const handleLazyQuery = () => {
     runQuery({
       variables: {
@@ -42,13 +46,14 @@ const VerifyOTPScreen = ({navigation}) => {
       }
     })
   }
+
   useEffect(() => {
     if(token.length === 6){
       handleLazyQuery()
     }
   }, [token])
 
-  const _storeData = async () => {
+  const savePhoneNumber = async () => {
     try {
       await AsyncStorage.setItem(APP_NAME + ":phoneNumber", phoneNumber)
       navigation.navigate("LoginScreen", { phoneNumber })
@@ -57,74 +62,47 @@ const VerifyOTPScreen = ({navigation}) => {
       console.log(error)
     }
   }
+  
+  if (error) {
+    console.log(error)
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <KeyboardAvoidingView
-        behavior="height"
-        enabled
-        style={{ flex: 1, marginTop: Constants.statusBarHeight }}
-      >
-        <Header
-          style={{ backgroundColor: '#FFF', justifyContent: 'flex-start' }}
-        >
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
-            <TouchableOpacity onPress={handleOnPressBack}>
-              <Image
-                source={{ uri: back }}
-                style={{ width: 25, height: 25 }}
-              />
-            </TouchableOpacity>
-            <Text>Back</Text>
-          </View>
-        </Header>
-        <View
-          style={{
-            backgroundColor: '#EEEEEE',
-            width: '100%',
-            paddingVertical: 50,
-            alignItems: 'center',
-            flex: 1
-          }}
-        >
+      <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
+        <CustomButtonBackComponent data={{ handleOnPressBack }} />
+        <View style={styles.container}>
           <View style={{ alignItems: 'center' }}>
             <Text style={{ fontSize: 25, fontWeight: '600' }}>
               Verification Code
             </Text>
-            <Text style={{ fontSize: 18 }}>60s</Text>
-            <Text style={{ fontSize: 18 }}>
-              Input the 4-digit code sent to
-            </Text>
-            <Text style={{ fontSize: 18 }}>+62 822 4248 3727</Text>
-          </View>
-          <View style={{ marginTop: 20 }}>
-            <SmoothPinCodeInput
-              autoFocus
-              cellStyle={{
-                borderBottomWidth: 2,
-                borderColor: 'gray'
-              }}
-              cellStyleFocused={{
-                borderColor: '#016AFB'
-              }}
-              codeLength={6}
-              textStyle={{
-                color: '#016AFB',
-                fontSize: 25
-              }}
-              value={token}
-              onTextChange={token => handleOnChangeToken(token)}
+            <CountDown
+              until={60}
+              onFinish={() => alert('finished')}
+              size={20}
+              digitStyle={{ backgroundColor: '#FFF' }}
+              digitTxtStyle={{ color: colors.mainBackground }}
+              timeToShow={['M', 'S']}
+              timeLabels={{ m: 'Minute', s: 'Second' }}
             />
+            <Text style={{ fontSize: 18 }}>Input the 6-digit code sent to</Text>
+            <Text style={{ fontSize: 18 }}>{phoneNumber}</Text>
           </View>
+          <TokenFormComponent data={{ token, handleOnChangeToken }} />
         </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
-  );
+  )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    backgroundColor: colors.whiteBackground,
+    width: '100%',
+    paddingVertical: 50,
+    alignItems: 'center',
+    flex: 1,
+  },
+})
 
 export default VerifyOTPScreen

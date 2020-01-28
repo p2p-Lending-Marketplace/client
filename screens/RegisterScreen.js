@@ -7,6 +7,7 @@ import serverAPI from "../API/serverAPI"
 import colors from "../assets/colors";
 import { useLazyQuery } from "@apollo/react-hooks"
 import { REQUEST_OTP } from "../API/graphQuery"
+import { RegisterPhoneComponent } from "../components/";
 
 const RegisterScreen = ({navigation}) => {
   // Variables
@@ -42,10 +43,8 @@ const RegisterScreen = ({navigation}) => {
     if (data) {
       const phoneNumber = phoneNumberChecker()
       navigation.navigate("VerifyOTPScreen", { phoneNumber })
-      // return null
     } 
   }, [data])
-  // else {
     
     return (
       <SafeAreaView style={{ flex: 1, marginTop: Constants.statusBarHeight }}>
@@ -56,7 +55,10 @@ const RegisterScreen = ({navigation}) => {
                 <Image source={require("../assets/images/register.jpg")} style={{width: '70%', height: 250}} />
               </View>
             </View>
-            <View
+            <RegisterPhoneComponent
+              data={{ phoneNumber, setPhoneNumber, handleOnChangePhone, handleSubmitNumber }}
+            />
+            {/* <View
               style={{
                 flex: 2,
                 backgroundColor: colors.secondBackground,
@@ -81,7 +83,7 @@ const RegisterScreen = ({navigation}) => {
                   </TouchableOpacity>
                 </View>
               </Form>
-            </View>
+            </View> */}
           </View>
         </KeyboardAvoidingView>
       </SafeAreaView>
