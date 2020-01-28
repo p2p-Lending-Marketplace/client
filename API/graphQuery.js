@@ -74,26 +74,8 @@ export const FETCH_FINTECH_BY_ID = gql`
 `
 
 export const LOGIN_USER = gql`
-<<<<<<< HEAD
-  query($phone_number: String!, $pin: String!) {
-    signInUser(phone_number: $phone_number, pin: $pin) {
-      _id
-      name
-      num_id
-      place_of_birth
-      date_of_birth
-      email
-      phone_number
-      address
-      photo_url
-      id_url
-      current_job
-      salary
-      salary_slip_url
-=======
   query ($phone_number: String!, $pin: String!) {
     signInUser (phone_number: $phone_number, pin: $pin) {
->>>>>>> refactore some scree
       status
       token
     }
@@ -179,8 +161,6 @@ export const SUBMIT_APPLICATION = gql`
     }
   }
 `
-<<<<<<< HEAD
-=======
 
 export const FETCH_USER_DETAIL = gql`
   query ($token: String!) {
@@ -202,4 +182,3 @@ export const FETCH_USER_DETAIL = gql`
     }
   }
 `
->>>>>>> refactore some scree

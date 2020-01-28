@@ -4,13 +4,18 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   AsyncStorage,
+  ScrollView,
+  Image,
+  Text
 } from 'react-native'
 import { Notifications } from 'expo'
 import * as Permissions from 'expo-permissions'
 import { APP_NAME } from '../assets/variables'
 import { useLazyQuery, useMutation } from '@apollo/react-hooks'
-import { FETCH_APPLICATION_BY_UID, FETCH_USER_DETAIL } from "../API/graphQuery"
-import { ActiveApplicationComponent, BannerHomeComponent, AlertProfileComponent } from "../components";
+import colors from "../assets/colors"
+import { highScore } from "../assets/icons"
+import { FETCH_APPLICATION_BY_UID, FETCH_USER_DETAIL, REGISTER_PUSH_NOTIFICATION } from "../API/graphQuery"
+import { ActiveApplicationComponent, BannerHomeComponent, AlertProfileComponent, BoardScoreComponent } from "../components";
 
 
 const HomeScreen = ({ navigation }) => {
@@ -54,6 +59,7 @@ const HomeScreen = ({ navigation }) => {
       const tokenString = await AsyncStorage.getItem(APP_NAME + ":token")
       if (tokenString !== null) {
         const { token } = JSON.parse(tokenString)
+        console.log(token)
         setToken(token)
         fetchUser({
           variables: {
@@ -94,19 +100,26 @@ const HomeScreen = ({ navigation }) => {
             flex: 1,
           }}
         >
-          <SafeAreaView style={{ flex: 1 }}>
+          <SafeAreaView style={{ flex: 1, justifyContent: "center", alignItems: "center", width: '100%' }}>
+            <BoardScoreComponent />
             <ScrollView
-              style={{ marginHorizontal: 10, paddingTop: 10 }}
+              style={{ paddingTop: 10, width: '100%' }}
               showsVerticalScrollIndicator={false}
             >
-              {(user && !user.getUserById.data_completed) && (
-                <AlertProfileComponent data={{handleOnPressApply}} />
+              {user && !user.getUserById.data_completed && (
+                <AlertProfileComponent data={{ handleOnPressApply }} />
               )}
-              {(user && appData && appData.getAllUserApplications.length <= 0) && (
-                <BannerHomeComponent data={{ data_completed: user.getUserById.data_completed }} />
-              )}
-              {appData && (  
-                <ActiveApplicationComponent data={{ applications: appData.getAllUserApplications }} />
+              {user &&
+                appData &&
+                appData.getAllUserApplications.length <= 0 && (
+                  <BannerHomeComponent
+                    data={{ data_completed: user.getUserById.data_completed }}
+                  />
+                )}
+              {appData && (
+                <ActiveApplicationComponent
+                  data={{ applications: appData.getAllUserApplications }}
+                />
               )}
             </ScrollView>
           </SafeAreaView>
