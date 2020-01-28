@@ -146,7 +146,7 @@ const UploadDataScreen = ({ navigation }) => {
         id_url: dataUser.id_url, 
         salary_slip_url: dataUser.salary_slip_url,
         current_job: dataUser.current_job, 
-        salary: dataUser.salary,
+        salary: Number(dataUser.salary),
         id: dataUser._id,
         date_of_birth: dataUser.date_of_birth,
         place_of_birth: dataUser.place_of_birth,

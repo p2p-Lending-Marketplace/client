@@ -6,15 +6,16 @@ const homeStack = createStackNavigator({
   Home: {
     screen: HomeScreen,
     navigationOptions: {
-      headerStyle: {
-        backgroundColor: colors.mainBackground,
-      },
-      headerTintColor: '#FFF',
-      title: 'Fintech Members',
-      headerTitleAlign: 'center',
-      headerTitleStyle: {
-        fontWeight: '700',
-      },
+      headerShown: false
+      // headerStyle: {
+      //   backgroundColor: colors.mainBackground,
+      // },
+      // headerTintColor: '#FFF',
+      // title: 'Fintech Members',
+      // headerTitleAlign: 'center',
+      // headerTitleStyle: {
+      //   fontWeight: '700',
+      // },
     },
   },
   'Upload Data': {

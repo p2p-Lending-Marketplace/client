@@ -13,22 +13,26 @@ import colors from "../assets/colors"
 import { SUBMIT_APPLICATION } from "../API/graphQuery"
 import { useMutation } from "@apollo/react-hooks"
 import { APP_NAME } from "../assets/variables"
+import { useLazyQuery } from "@apollo/react-hooks"
+import { FETCH_USER_DETAIL } from "../API/graphQuery"
 
 const ApplicationScreen = ({ navigation }) => {
   // Variables
     const fintech_id = navigation.getParam("fintech_id")
     const [dataUser, setDataUser] = useState({})
-    useEffect(() => {
-        const getCurrentUser = async () => {
-            const userString = await AsyncStorage.getItem(APP_NAME + ":user")
-            if (userString !== null) {
-                const user = JSON.parse(userString)
-                // We have data!!
-                setDataUser(user)
-            }
-        }
-        getCurrentUser()
-    }, [])
+    const [token, setToken] = useState("")
+    const [fetchUser, { loading: userLoading, data: user, error: userError }] = useLazyQuery(FETCH_USER_DETAIL)
+    // useEffect(() => {
+    //     const getCurrentUser = async () => {
+    //         const userString = await AsyncStorage.getItem(APP_NAME + ":user")
+    //         if (userString !== null) {
+    //             const user = JSON.parse(userString)
+    //             // We have data!!
+    //             setDataUser(user)
+    //         }
+    //     }
+    //     getCurrentUser()
+    // }, [])
     const [dataApplication, setDataApplication] = useState({
         amount: "",
         loan_term: "",
@@ -36,6 +40,21 @@ const ApplicationScreen = ({ navigation }) => {
         additional_data: ""
     })
   // Function
+  useEffect(() => {
+    const getToken = async () => {
+      const tokenString = await AsyncStorage.getItem(APP_NAME + ':token')
+      if (tokenString !== null) {
+        const { token } = JSON.parse(tokenString)
+        setToken(token)
+        fetchUser({
+          variables: {
+            token,
+          },
+        })
+      }
+    }
+    getToken()
+  }, [])
     const [submitData, { data, error }] = useMutation(SUBMIT_APPLICATION)
     function handleDataChange(type, value) {
         setDataApplication({
@@ -47,15 +66,15 @@ const ApplicationScreen = ({ navigation }) => {
       navigation.goBack()
   }
   const handleApplyButton = async () => {
-      // console.log(dataUser.token)
+    console.log(fintech_id)
     submitData({
         variables: {
             ...dataApplication,
             amount: Number(dataApplication.amount),
             loan_term: Number(dataApplication.loan_term),
-            userID: dataUser._id,
+            userID: user.getUserById._id,
             fintechID: fintech_id,
-            token: dataUser.token
+            token: token
         }
     })
   }

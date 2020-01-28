@@ -15,7 +15,7 @@ const ActiveApplicationComponent = ({data}) => {
     // Variables
     const applications = data.applications
     return (
-      <View style={{ alignItems: "center", justifyContent: "center" }}>
+      <View style={{ alignItems: "center", justifyContent: "center", marginVertical: 10 }}>
         <View
           style={{
             width: '90%',
