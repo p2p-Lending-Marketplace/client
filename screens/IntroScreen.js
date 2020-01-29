@@ -31,7 +31,12 @@ class IntroScreen extends Component {
       } else if (this.state.currentPosition === 'second') {
         this.setState({ currentPosition: 'third' })
       } else if (this.state.currentPosition === 'third') {
-        this.props.navigation.navigate('tabNavigator')
+        const confirmed = this.props.navigation.getParam('confirmed')
+        if (confirmed) {
+          this.props.navigation.navigate('LoginScreen', { from: 'landing' })
+        } else {
+          this.props.navigation.navigate('tabNavigator')
+        }
       }
   }
 
@@ -52,11 +57,11 @@ class IntroScreen extends Component {
         } else if(this.state.currentPosition === "second"){
         this.setState({ currentPosition: 'third' })
         } else if(this.state.currentPosition === "third"){
-          const from = this.props.navigation.getParam("from")
-          if(from){
-            this.props.navigation.navigate('tabNavigator')
+          const confirmed = this.props.navigation.getParam("confirmed")
+          if(confirmed){
+            this.props.navigation.navigate("LoginScreen", {from: "landing"})
           } else {
-            this.props.navigation.push('tabNavigator')
+            this.props.navigation.navigate('tabNavigator')
           }
         }
         break

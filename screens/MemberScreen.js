@@ -31,11 +31,13 @@ const MemberScreen = ({navigation}) => {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <Container style={{ backgroundColor: colors.whiteBackground }}>
-          <ScrollView style={{ flex: 1, marginHorizontal: 10, paddingTop: 10 }} showsVerticalScrollIndicator={false}>
+          <ScrollView style={{ flex: 1, marginHorizontal: 10, paddingTop: 10}} showsVerticalScrollIndicator={false}>
             {
               members.map((member, index) => {
                 return (
                   <TouchableOpacity
+                  style={{
+                  }}
                     key={index}
                     onPress={() => {
                       goToDetailMember(member._id)
@@ -137,7 +139,8 @@ const styles = StyleSheet.create({
     borderLeftColor: '#4AE54A',
     borderLeftWidth: 4,
     flexDirection: 'row',
-    margin: 10,
+    marginHorizontal: 10,
+    marginVertical: 5,
     borderBottomRightRadius: 5,
     borderTopRightRadius: 5,
     backgroundColor: '#FFF',

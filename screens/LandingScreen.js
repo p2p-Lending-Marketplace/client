@@ -11,6 +11,7 @@ const LandingScreen = ({ navigation }) => {
 
   async function checkUserPhone() {
     const phoneNumber = await AsyncStorage.getItem(APP_NAME + ':phoneNumber')
+    console.log(phoneNumber)
     if (phoneNumber) {
       checkUserPhoneNumber({ variables: { phoneNumber } })
     } else {
@@ -26,8 +27,8 @@ const LandingScreen = ({ navigation }) => {
   }, [data])
 
   useEffect(() => {
-    if (phoneConfirmed === true) navigation.navigate('IntroScreen', {from: "landing"})
-    else if (phoneConfirmed === false) navigation.navigate('IntroScreen')
+    if (phoneConfirmed === true) navigation.navigate('LoginScreen', { from: 'landing' })
+    else if (phoneConfirmed === false) navigation.navigate('IntroScreen', {confirmed: false})
   }, [phoneConfirmed])
 
   return (

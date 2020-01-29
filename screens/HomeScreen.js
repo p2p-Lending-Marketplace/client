@@ -71,6 +71,7 @@ const HomeScreen = ({ navigation }) => {
     getToken();
   }, [])
   useEffect(() => {
+    console.log(token, "ini loh token")
     if(token){
       fetchUserScore({
         variables: {
@@ -85,6 +86,7 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     if(user){
+      console.log(user, "ini user ====================")
       fetchApplications({
         variables: {
           userID: user.getUserById._id,
@@ -103,11 +105,11 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     getPhoneNumber()
-    console.log(phone_number, "--------------")
   }, [phone_number])
   if(appError || userError){
     console.log(appError || userError)
   }
+
   
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -150,12 +152,16 @@ const HomeScreen = ({ navigation }) => {
                       fontWeight: '700',
                     }}
                   >
-                    {user && `Hello, ${user.getUserById.name.split(' ')[0]}!`}
+                    {(user && user.getUserById.name) && `Hello, ${user.getUserById.name.split(' ')[0]}!`}
+                    {(user && !user.getUserById.name) && `Welcome to finteur!`}
                   </Text>
                   {score && (
                     <BoardScoreComponent
                       data={{ score: score.getUserScoring.score }}
                     />
+                  )}
+                  {!score && (
+                    <GreetingComponent />
                   )}
                 </View>
                 {appData && (

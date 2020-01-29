@@ -98,7 +98,7 @@ const ApplicationScreen = ({ navigation }) => {
     }
   }
   if(data){
-      navigation.goBack()
+    navigation.push("Member")
   }
   useEffect(() => {
     if (addData) {
@@ -260,7 +260,6 @@ const ApplicationScreen = ({ navigation }) => {
               >
                 Additional Data (Option)
               </Label>
-              {dataApplication.additional_data ? (
                 <View
                   style={{
                     borderColor: 'grey',
@@ -286,7 +285,7 @@ const ApplicationScreen = ({ navigation }) => {
                     {addLoading && <Spinner color={'#1D63DB'} />}
                   </ImageBackground>
                 </View>
-              ) : null}
+
               <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity
                   style={{

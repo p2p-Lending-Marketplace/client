@@ -56,7 +56,7 @@ const PinCreateScreen = ({ navigation }) => {
     }
     useEffect(() => {
       if(data){
-        navigation.navigate("tabNavigator")
+        navigation.navigate("Home")
       }
     }, [data])
     return (

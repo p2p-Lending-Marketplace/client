@@ -74,7 +74,7 @@ const RegisterScreen = ({ parentNavigation }) => {
   }
 
   const handleOnSubmit = async () => {
-    const phoneNumber = phoneNumberChecker()
+    const phoneNumber = await phoneNumberChecker()
     verifyOTP({
       variables: {
         token: otpCode,
@@ -94,9 +94,9 @@ const RegisterScreen = ({ parentNavigation }) => {
       otpCode.length === 6 &&
       phoneNumber.length >= 9 &&
       verifyData &&
-      !verifyData.verifyOTP._id
+      verifyData.verifyOTP._id === null
     ) {
-      navigation.navigate('PinCreateScreen')
+      navigation.navigate('PinCreateScreen', {phoneNumber})
     }
   }, [verifyData])
 

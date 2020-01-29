@@ -74,7 +74,7 @@ const FinancialDataComponent = ({data}) => {
                 fontWeight: '700',
               }}
             >
-              Current Job
+              Salary
             </Label>
             <Input
               style={{

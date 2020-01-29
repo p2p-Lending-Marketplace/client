@@ -109,7 +109,7 @@ const ProfileScreen = ({ navigation }) => {
         >
           <View style={{ width: '90%' }}>
             <Text style={{ color: 'white', fontSize: 30, fontWeight: 'bold' }}>
-              {user ? user.getUserById.name : 'User name'}
+              {user && user.getUserById.name ? user.getUserById.name : 'User name'}
             </Text>
             <Text style={{ color: 'white', fontSize: 20 }}>
               {user
@@ -286,41 +286,45 @@ const ProfileScreen = ({ navigation }) => {
             </TouchableOpacity>
           </Item>
         </View>
-        <View
-          style={{
-            width: '90%',
-            backgroundColor: '#FFF',
-            position: 'absolute',
-            top: '75%',
-            borderRadius: 5,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Item
+        {
+         (user && user.getUserById.name) && (   
+          <View
             style={{
               width: '90%',
+              backgroundColor: '#FFF',
+              position: 'absolute',
+              top: '75%',
+              borderRadius: 5,
               alignItems: 'center',
-              paddingVertical: 8,
-              borderColor: 'transparent',
+              justifyContent: 'center',
             }}
-            last
           >
-            <TouchableOpacity
+            <Item
               style={{
-                width: '100%',
-                flexDirection: 'row',
+                width: '90%',
                 alignItems: 'center',
+                paddingVertical: 8,
+                borderColor: 'transparent',
               }}
-              onPress={() => {
-                handleSignOut()
-              }}
+              last
             >
-              <Text style={{ marginVertical: 10, width: '90%' }}>Sign Out</Text>
-              <AntDesign name="right" size={20} />
-            </TouchableOpacity>
-          </Item>
-        </View>
+              <TouchableOpacity
+                style={{
+                  width: '100%',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+                onPress={() => {
+                  handleSignOut()
+                }}
+              >
+                <Text style={{ marginVertical: 10, width: '90%' }}>Sign Out</Text>
+                <AntDesign name="right" size={20} />
+              </TouchableOpacity>
+            </Item>
+          </View>
+         ) 
+        }
       </View>
       {/* <View style={{marginTop: 300, alignItems: "center"}}>
         <View style={{backgroundColor: "#FFF", height: '100%', width: '90%', borderRadius: 5}}>
