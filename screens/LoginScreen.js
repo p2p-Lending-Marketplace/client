@@ -15,6 +15,7 @@ import colors from "../assets/colors";
 import { SimpleLineIcons } from "@expo/vector-icons"
 
 const PinCreateScreen = ({ navigation }) => {
+  const from = navigation.getParam("from")
   // Variables
   const [pin, setPin] = useState('');
   const [loginUser, { loading, error, data }] = useLazyQuery(LOGIN_USER)
@@ -42,7 +43,11 @@ const PinCreateScreen = ({ navigation }) => {
       if(data.signInUser){
         const token = data.signInUser
         saveToken(JSON.stringify(token))
-        navigation.navigate("tabNavigator")
+        if(from){
+          navigation.navigate('tabNavigator')
+        } else {
+          navigation.push("Home")
+        }
       }
     }
   }, [data])

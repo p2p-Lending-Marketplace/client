@@ -138,7 +138,7 @@ const FinancialDataComponent = ({data}) => {
             <View style={{ flexDirection: 'row' }}>
               <TouchableOpacity
                 style={{
-                  backgroundColor: '#1D63DB',
+                  backgroundColor: '#EEE',
                   marginRight: '1%',
                   width: '49%',
                   borderRadius: 5,
@@ -153,13 +153,13 @@ const FinancialDataComponent = ({data}) => {
                 <Entypo
                   name="attachment"
                   size={25}
-                  style={{ color: '#FFF', padding: 5 }}
+                  style={{ color: '#000', padding: 5 }}
                 />
                 <Text
                   style={{
                     textAlign: 'center',
                     paddingVertical: 10,
-                    color: '#FFF',
+                    color: '#000',
                   }}
                 >
                   Browse File
@@ -167,7 +167,7 @@ const FinancialDataComponent = ({data}) => {
               </TouchableOpacity>
               <TouchableOpacity
                 style={{
-                  backgroundColor: '#1D63DB',
+                  backgroundColor: '#EEE',
                   marginLeft: '1%',
                   width: '49%',
                   borderRadius: 5,
@@ -182,13 +182,13 @@ const FinancialDataComponent = ({data}) => {
                 <Entypo
                   name="camera"
                   size={25}
-                  style={{ color: '#FFF', padding: 5 }}
+                  style={{ color: '#000', padding: 5 }}
                 />
                 <Text
                   style={{
                     textAlign: 'center',
                     paddingVertical: 10,
-                    color: '#FFF',
+                    color: '#000',
                   }}
                 >
                   Open Camera

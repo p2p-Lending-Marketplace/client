@@ -10,12 +10,12 @@ const memberStack = createStackNavigator({
         backgroundColor: colors.mainBackground,
       },
       headerTintColor: '#FFF',
-      title: "Fintech Members",
+      title: 'Fintech Members',
       headerTitleAlign: 'center',
       headerTitleStyle: {
-        fontWeight: '700'
-      }
-    }
+        fontWeight: '700',
+      },
+    },
   },
   'Detail Fintech': {
     screen: DetailFintechScreen,
@@ -26,9 +26,15 @@ const memberStack = createStackNavigator({
       headerTintColor: '#FFF',
     },
   },
-  "Apply Fintech": {
-    screen: ApplicationScreen
-  }
+  'Apply Fintech': {
+    screen: ApplicationScreen,
+    navigationOptions: ({ navigation }) => ({
+      title: `Apply for ${navigation.getParam('name', 'Fintech')}`,
+      headerStyle: {
+        elevation: 0,
+      },
+    }),
+  },
 })
 
 export default memberStack;

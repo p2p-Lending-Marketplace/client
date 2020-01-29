@@ -19,7 +19,8 @@ const ProfileScreen = ({ navigation }) => {
   const handleSignOut = async () => {
     await AsyncStorage.removeItem(APP_NAME + ':phoneNumber')
     await AsyncStorage.removeItem(APP_NAME + ':token')
-    navigation.navigate('LandingScreen')
+    await setToken(null)
+    navigation.push('Home')
   }
   const [token, setToken] = useState('')
   const [
@@ -77,7 +78,6 @@ const ProfileScreen = ({ navigation }) => {
   const hideNumber = (phoneNumber) => {
     const count = Math.floor(phoneNumber.length/3)
     const star = phoneNumber.length - (phoneNumber.slice(0,count).length + phoneNumber.slice(phoneNumber.length - count).length)
-    console.log(star)
     const newFormatNumber = phoneNumber.slice(0,count) + "*".repeat(star) + phoneNumber.slice(phoneNumber.length - count)
     return newFormatNumber
   }
@@ -89,7 +89,6 @@ const ProfileScreen = ({ navigation }) => {
     <SafeAreaView style={{ flex: 1 }}>
       <View
         style={{
-          backgroundColor: 'red',
           height: 200,
           justifyContent: 'center',
           alignItems: 'center',
@@ -150,7 +149,9 @@ const ProfileScreen = ({ navigation }) => {
               alignItems: 'center',
             }}
             onPress={() => {
-              navigation.navigate('Upload Data')
+              token
+                ? navigation.navigate('Upload Data')
+                : navigation.push('Home')
             }}
           >
             <Image
@@ -163,11 +164,17 @@ const ProfileScreen = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+            onPress={() => {
+              token
+                ? navigation.navigate('History')
+                : navigation.push('Home')
+            }}
           >
             <Image
-              source={require('../assets/images/helpcenter.png')}
+              source={{uri: "https://img.icons8.com/color/48/000000/activity-history.png"}}
               style={{ width: 50, height: 50 }}
             />
+            <Text>History</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}

@@ -8,7 +8,11 @@ import {
 
 const BannerHome = ({data}) => {
     // Variables
-    const data_completed = data.data_completed
+    console.log(data)
+    // let data_completed
+    // if (data.data_completed.getUserById.data_completed){
+    const data_completed = data.data_completed.getUserById.data_completed
+    // }
 
     return (
       <View

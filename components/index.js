@@ -11,6 +11,8 @@ import FinancialDataComponent from "./FinancialDataComponent"
 import SegmentUploadComponent from "./SegmentUploadComponent"
 import HistoryComponent from "./HistoryComponent"
 import BoardScoreComponent from "./BoardScoreComponent"
+import GreetingComponent from "./GreetingComponent"
+import RegisterComponent from "./RegisterComponent"
 
 export { 
     QuestionComponent, 
@@ -25,5 +27,7 @@ export {
     FinancialDataComponent,
     SegmentUploadComponent,
     HistoryComponent,
-    BoardScoreComponent
+    BoardScoreComponent,
+    GreetingComponent,
+    RegisterComponent
 };

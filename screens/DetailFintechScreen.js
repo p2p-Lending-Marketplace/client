@@ -16,7 +16,7 @@ const DetailScreen = ({ navigation }) => {
 
   // Functions
   const handleApplyButton = () => {
-    navigation.navigate("Apply Fintech", {fintech_id: id})
+    navigation.navigate("Apply Fintech", {fintech_id: id, name: data.getFintechById.company_name})
   }
 
   if(loading){

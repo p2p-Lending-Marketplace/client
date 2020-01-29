@@ -6,11 +6,11 @@ import colors from "../assets/colors";
 
 const tabNavigator = createBottomTabNavigator(
   {
-    Home: {
-      screen: HomeStack
-    },
     Member: {
       screen: MemberStack
+    },
+    Home: {
+      screen: HomeStack
     },
     Me: {
       screen: ProfileStack

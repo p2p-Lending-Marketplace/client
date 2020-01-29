@@ -13,14 +13,14 @@ import * as Permissions from 'expo-permissions'
 import { APP_NAME } from '../assets/variables'
 import { useLazyQuery, useMutation, useQuery } from '@apollo/react-hooks'
 import colors from "../assets/colors"
+import Divider from "react-native-divider"
 import Constants from "expo-constants"
 import { FETCH_APPLICATION_BY_UID, FETCH_USER_DETAIL, REGISTER_PUSH_NOTIFICATION, FETCH_USER_SCORE } from "../API/graphQuery"
-import { ActiveApplicationComponent, BannerHomeComponent, AlertProfileComponent, BoardScoreComponent } from "../components";
-
-
+import { RegisterComponent, ActiveApplicationComponent, BannerHomeComponent, AlertProfileComponent, BoardScoreComponent, GreetingComponent } from "../components";
 const HomeScreen = ({ navigation }) => {
   // Variables
-  const [token, setToken] = useState("")
+  const [token, setToken] = useState(null)
+  const [phone_number, setPhone_number] = useState(null)
   const [fetchApplications, { loading: appLoading, data: appData, error: appError }] = useLazyQuery(FETCH_APPLICATION_BY_UID)
   const [fetchUser, { loading: userLoading, data: user, error: userError }] = useLazyQuery(FETCH_USER_DETAIL)
   const [fetchUserScore,{ loading: scoreLoading, data: score, error: scoreError }] = useLazyQuery(FETCH_USER_SCORE)
@@ -93,6 +93,18 @@ const HomeScreen = ({ navigation }) => {
       })
     }
   }, [user])
+
+  const getPhoneNumber = async () => {
+    const phoneNumber = await AsyncStorage.getItem(APP_NAME + ':phoneNumber')
+    if (phoneNumber) {
+      setPhone_number(phone_number)
+    }
+  }
+
+  useEffect(() => {
+    getPhoneNumber()
+    console.log(phone_number, "--------------")
+  }, [phone_number])
   if(appError || userError){
     console.log(appError || userError)
   }
@@ -112,60 +124,80 @@ const HomeScreen = ({ navigation }) => {
             style={{
               flex: 1,
               justifyContent: 'center',
-              alignItems: 'center',
+              // alignItems: 'center',
               width: '100%',
             }}
           >
-            <View
-              style={{
-                backgroundColor: colors.mainBackground,
-                width: '100%',
-                height: 150,
-                marginBottom: 35,
-                paddingTop: Constants.statusBarHeight,
-                alignItems: 'center',
-              }}
-            >
-              <Text
-                style={{
-                  color: '#FFF',
-                  fontSize: 30,
-                  textAlign: 'left',
-                  width: '90%',
-                  paddingVertical: 5,
-                  fontWeight: '700',
-                }}
-              >
-                {
-                  user
-                    ? `Hello, ${user.getUserById.name.split(" ")[0]}!`
-                    : "Welcome to finteur"
-                }
-              </Text>
-              {score && (
-                <BoardScoreComponent data={{ score: score.getUserScoring.score}} />
-              )}
-            </View>
-            <ScrollView
-              style={{ width: '100%' }}
-              showsVerticalScrollIndicator={false}
-            >
-              {user && !user.getUserById.data_completed && (
-                <AlertProfileComponent data={{ handleOnPressApply }} />
-              )}
-              {user &&
-                appData &&
-                appData.getAllUserApplications.length <= 0 && (
-                  <BannerHomeComponent
-                    data={{ data_completed: user.getUserById.data_completed }}
-                  />
+            {token && (
+              <View style={{ flex: 1 }}>
+                <View
+                  style={{
+                    backgroundColor: colors.mainBackground,
+                    width: '100%',
+                    height: 150,
+                    marginBottom: 35,
+                    paddingTop: Constants.statusBarHeight,
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text
+                    style={{
+                      color: '#FFF',
+                      fontSize: 30,
+                      textAlign: 'left',
+                      width: '90%',
+                      paddingVertical: 5,
+                      fontWeight: '700',
+                    }}
+                  >
+                    {user && `Hello, ${user.getUserById.name.split(' ')[0]}!`}
+                  </Text>
+                  {score && (
+                    <BoardScoreComponent
+                      data={{ score: score.getUserScoring.score }}
+                    />
+                  )}
+                </View>
+                {appData && (
+                  <View style={{marginTop: 20, justifyContent: "center", alignItems: "center"}}>
+                    <View style={{ width: '90%'}}>
+                      <Divider
+                        borderColor={colors.mainBackground}
+                        orientation="left"
+                      >
+                        <Text
+                          style={{
+                            fontWeight: '700',
+                            color: colors.mainBackground,
+                          }}
+                        >
+                          Active Application
+                        </Text>
+                      </Divider>
+                    </View>
+                  </View>
                 )}
-              {appData && (
-                <ActiveApplicationComponent
-                  data={{ applications: appData.getAllUserApplications }}
-                />
-              )}
-            </ScrollView>
+                <ScrollView
+                  style={{ width: '100%' }}
+                  showsVerticalScrollIndicator={false}
+                >
+                  {user && !user.getUserById.data_completed && (
+                    <AlertProfileComponent data={{ handleOnPressApply }} />
+                  )}
+                  {user &&
+                    appData &&
+                    appData.getAllUserApplications.length <= 0 && (
+                      <BannerHomeComponent data={{ data_completed: user }} />
+                    )}
+                  {appData && (
+                    <ActiveApplicationComponent
+                      data={{ applications: appData.getAllUserApplications }}
+                    />
+                  )}
+                </ScrollView>
+              </View>
+            )}
+            {!token && <RegisterComponent parentNavigation={{ navigation }} />}
           </SafeAreaView>
         </View>
       </KeyboardAvoidingView>

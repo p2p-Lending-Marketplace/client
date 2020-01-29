@@ -18,8 +18,8 @@ const SegmentUploadComponent = ({data}) => {
             style={{
               borderTopLeftRadius: 5,
               borderBottomLeftRadius: 5,
-              height: '80%',
-              width: '45%',
+              height: '60%',
+              width: '30%',
               borderColor: '#1D63DB',
               backgroundColor: '#1D63DB',
               justifyContent: 'center',
@@ -36,8 +36,8 @@ const SegmentUploadComponent = ({data}) => {
               // paddingHorizontal: 20,
               borderTopLeftRadius: 5,
               borderBottomLeftRadius: 5,
-              height: '80%',
-              width: '45%',
+              height: '60%',
+              width: '30%',
               borderColor: '#1D63DB',
               justifyContent: 'center',
               alignItems: 'center',
@@ -61,8 +61,8 @@ const SegmentUploadComponent = ({data}) => {
               alignItems: 'center',
               justifyContent: 'center',
               borderWidth: 1,
-              height: '80%',
-              width: '45%',
+              height: '60%',
+              width: '30%',
               borderBottomRightRadius: 5,
             }}
             active={financial}
@@ -78,8 +78,8 @@ const SegmentUploadComponent = ({data}) => {
               alignItems: 'center',
               justifyContent: 'center',
               borderWidth: 1,
-              height: '80%',
-              width: '45%',
+              height: '60%',
+              width: '30%',
               borderBottomRightRadius: 5,
             }}
             active={financial}
