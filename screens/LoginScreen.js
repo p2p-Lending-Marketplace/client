@@ -4,14 +4,15 @@ import {
   Text,
   SafeAreaView,
   KeyboardAvoidingView,
-  AsyncStorage
+  AsyncStorage,
+  Image
 } from 'react-native';
-import Constants from 'expo-constants';
 import SmoothPinCodeInput from 'react-native-smooth-pincode-input';
 import { LOGIN_USER } from "../API/graphQuery"
 import { useLazyQuery } from "@apollo/react-hooks"
 import { APP_NAME } from "../assets/variables"
 import colors from "../assets/colors";
+import { SimpleLineIcons } from "@expo/vector-icons"
 
 const PinCreateScreen = ({ navigation }) => {
   // Variables
@@ -65,24 +66,23 @@ const PinCreateScreen = ({ navigation }) => {
     console.log(error)
   }
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.whiteBackground }}>
-      <KeyboardAvoidingView
-        behavior="padding"
-        enabled
-        style={{ flex: 1}}
-      >
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#FFF' }}>
         <View
           style={{
             width: '100%',
             alignItems: 'center',
-            justifyContent: 'center',
-            flex: 1
+            justifyContent: "center",
+            // paddingTop: 50,
+            flex: 1,
           }}
         >
           <View
             style={{ marginVertical: 10, width: '90%', alignItems: 'center' }}
           >
-            <Text style={{ fontSize: 15, fontWeight: '400', marginBottom: 30 }}>Enter PIN bellow :</Text>
+            <SimpleLineIcons name="lock" size={70} style={{marginVertical: 30}} />
+            <Text style={{ fontSize: 20, fontWeight: '400', marginBottom: 50 }}>
+              Enter Security PIN bellow :
+            </Text>
             <SmoothPinCodeInput
               autoFocus
               placeholder={
@@ -92,7 +92,7 @@ const PinCreateScreen = ({ navigation }) => {
                     height: 10,
                     borderRadius: 25,
                     opacity: 0.3,
-                    backgroundColor: '#016AFB'
+                    backgroundColor: '#016AFB',
                   }}
                 ></View>
               }
@@ -102,7 +102,7 @@ const PinCreateScreen = ({ navigation }) => {
                     width: 10,
                     height: 10,
                     borderRadius: 25,
-                    backgroundColor: colors.mainBackground
+                    backgroundColor: colors.mainBackground,
                   }}
                 ></View>
               }
@@ -116,9 +116,8 @@ const PinCreateScreen = ({ navigation }) => {
             />
           </View>
         </View>
-      </KeyboardAvoidingView>
     </SafeAreaView>
-  );
+  )
 };
 
 export default PinCreateScreen;

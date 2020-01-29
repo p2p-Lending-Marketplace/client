@@ -12,37 +12,86 @@ const SegmentUploadComponent = ({data}) => {
     const setFinancial = data.setFinancial
     const setPersonal = data.setPersonal
     return (
-      <Segment style={{ backgroundColor: colors.whiteBackground }}>
-        <Button
-          style={{
-            paddingHorizontal: 20,
-            borderTopLeftRadius: 7,
-            borderBottomLeftRadius: 7,
-          }}
-          active={personal}
-          first
-          onPress={() => {
-            setPersonal(true)
-            setFinancial(false)
-          }}
-        >
-          <Text>Personal Data</Text>
-        </Button>
-        <Button
-          style={{
-            paddingHorizontal: 20,
-            borderTopRightRadius: 7,
-            borderBottomRightRadius: 7,
-          }}
-          active={financial}
-          last
-          onPress={() => {
-            setFinancial(true)
-            setPersonal(false)
-          }}
-        >
-          <Text>Financial Data</Text>
-        </Button>
+      <Segment style={{ backgroundColor: '#FFF', height: 50 }}>
+        {personal ? (
+          <Button
+            style={{
+              borderTopLeftRadius: 5,
+              borderBottomLeftRadius: 5,
+              height: '80%',
+              width: '45%',
+              borderColor: '#1D63DB',
+              backgroundColor: '#1D63DB',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            active={personal}
+            first
+          >
+            <Text style={{ color: '#FFF' }}>Personal Data</Text>
+          </Button>
+        ) : (
+          <Button
+            style={{
+              // paddingHorizontal: 20,
+              borderTopLeftRadius: 5,
+              borderBottomLeftRadius: 5,
+              height: '80%',
+              width: '45%',
+              borderColor: '#1D63DB',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            active={personal}
+            first
+            onPress={() => {
+              setPersonal(true)
+              setFinancial(false)
+            }}
+          >
+            <Text style={{ color: '#1D63DB' }}>Personal Data</Text>
+          </Button>
+        )}
+        {financial ? (
+          <Button
+            style={{
+              borderTopRightRadius: 5,
+              backgroundColor: '#1D63DB',
+              borderColor: '#1D63DB',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderWidth: 1,
+              height: '80%',
+              width: '45%',
+              borderBottomRightRadius: 5,
+            }}
+            active={financial}
+            last
+          >
+            <Text style={{ color: '#FFF' }}>Financial Data</Text>
+          </Button>
+        ) : (
+          <Button
+            style={{
+              borderTopRightRadius: 5,
+              borderColor: '#1D63DB',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderWidth: 1,
+              height: '80%',
+              width: '45%',
+              borderBottomRightRadius: 5,
+            }}
+            active={financial}
+            last
+            onPress={() => {
+              setFinancial(true)
+              setPersonal(false)
+            }}
+          >
+            <Text style={{ color: '#1D63DB' }}>Financial Data</Text>
+          </Button>
+        )}
       </Segment>
     )
 }

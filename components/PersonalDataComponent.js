@@ -4,6 +4,7 @@ import {
   Text,
   TouchableOpacity,
   ImageBackground,
+  Image
 } from 'react-native'
 import {
   Item,
@@ -31,258 +32,619 @@ const PersonalDataComponent = ({data}) => {
     const idCardLoading = data.idCardLoading
     const idCardData = data.idCardData
     return (
-         <View style={{ flex: 1 }}>
-            <Form
+      <View style={{ flex: 1, backgroundColor: '#FFF' }}>
+        <Form
+          style={{
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Item
+            stackedLabel
+            style={{ width: '90%', borderColor: 'transparent', paddingLeft: 0 }}
+            last
+          >
+            <Label
               style={{
-                width: '100%',
-                justifyContent: 'center',
-                alignItems: 'center',
+                color: colors.mainBackground,
+                marginBottom: 10,
+                fontSize: 15,
+                fontWeight: '700',
               }}
             >
-              <Item floatingLabel style={{ width: '80%' }} last>
-                <Label style={{ color: colors.mainBackground }}>No. ID</Label>
-                <Input
-                  value={dataUser.num_id}
-                  keyboardType={'number-pad'}
-                  onChangeText={num_id => {
-                    handleDataChange('num_id', num_id)
-                  }}
-                />
-              </Item>
-              <Item floatingLabel style={{ width: '80%' }} last>
-                <Label style={{ color: colors.mainBackground }}>Name</Label>
-                <Input
-                  value={dataUser.name}
-                  onChangeText={name => {
-                    handleDataChange('name', name)
-                  }}
-                />
-              </Item>
-              <Item floatingLabel style={{ width: '80%' }} last>
-                <Label style={{ color: colors.mainBackground }}>
-                  Place of Birth
-                </Label>
-                <Input
-                  value={dataUser.place_of_birth}
-                  onChangeText={place_of_birth => {
-                    handleDataChange('place_of_birth', place_of_birth)
-                  }}
-                />
-              </Item>
-              <Item floatingLabel style={{ width: '80%' }} last>
-                <Label style={{ color: colors.mainBackground }}>
-                  Date of Birth
-                </Label>
-                <Input
-                  onFocus={() => {
-                    datepicker()
-                  }}
-                  value={format(datePicker.date, 'EEE, do MMMM YYY')}
-                />
-              </Item>
-              {datePicker.show && (
-                <DateTimePicker
-                  value={datePicker.date}
-                  mode={datePicker.mode}
-                  is24Hour={true}
-                  display="default"
-                  onChange={setDate}
-                />
-              )}
-              <Item floatingLabel style={{ width: '80%' }} last>
-                <Label style={{ color: colors.mainBackground }}>Email</Label>
-                <Input
-                  value={dataUser.email}
-                  onChangeText={email => {
-                    handleDataChange('email', email)
-                  }}
-                />
-              </Item>
-              <Item floatingLabel style={{ width: '80%' }} last>
-                <Label style={{ color: colors.mainBackground }}>
-                  Phone Number
-                </Label>
-                <Input
-                value={dataUser.phone_number}
-                  onChangeText={phone_number => {
-                    handleDataChange('phone_number', phone_number)
-                  }}
-                  keyboardType={'number-pad'}
-                />
-              </Item>
-              <Item floatingLabel style={{ width: '80%' }} last>
-                <Label style={{ color: colors.mainBackground }}>Address</Label>
-                <Input
-                  value={dataUser.address}
-                  onChangeText={address => {
-                    handleDataChange('address', address)
-                  }}
-                />
-              </Item>
-              <View
-                style={{
-                  flex: 1,
-                  width: '100%',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  marginVertical: 20,
-                }}
-              >
-                <View
+              No. ID
+            </Label>
+            <Input
+              style={{
+                borderColor: 'grey',
+                borderWidth: 1,
+                width: '100%',
+                borderRadius: 5,
+                paddingHorizontal: 10,
+              }}
+              value={dataUser.num_id}
+              keyboardType={'number-pad'}
+              onChangeText={num_id => {
+                handleDataChange('num_id', num_id)
+              }}
+            />
+          </Item>
+          <Item
+            stackedLabel
+            style={{ width: '90%', borderColor: 'transparent', paddingLeft: 0 }}
+            last
+          >
+            <Label
+              style={{
+                color: colors.mainBackground,
+                marginBottom: 10,
+                fontSize: 15,
+                fontWeight: '700',
+              }}
+            >
+              Name
+            </Label>
+            <Input
+              style={{
+                borderColor: 'grey',
+                borderWidth: 1,
+                width: '100%',
+                borderRadius: 5,
+                paddingHorizontal: 10,
+              }}
+              value={dataUser.name}
+              onChangeText={name => {
+                handleDataChange('name', name)
+              }}
+            />
+          </Item>
+          <Item
+            stackedLabel
+            style={{ width: '90%', borderColor: 'transparent', paddingLeft: 0 }}
+            last
+          >
+            <Label
+              style={{
+                color: colors.mainBackground,
+                marginBottom: 10,
+                fontSize: 15,
+                fontWeight: '700',
+              }}
+            >
+              Place of Birth
+            </Label>
+            <Input
+              style={{
+                borderColor: 'grey',
+                borderWidth: 1,
+                width: '100%',
+                borderRadius: 5,
+                paddingHorizontal: 10,
+              }}
+              value={dataUser.place_of_birth}
+              onChangeText={place_of_birth => {
+                handleDataChange('place_of_birth', place_of_birth)
+              }}
+            />
+          </Item>
+          <Item
+            stackedLabel
+            style={{ width: '90%', borderColor: 'transparent', paddingLeft: 0 }}
+            last
+          >
+            <Label
+              style={{
+                color: colors.mainBackground,
+                marginBottom: 10,
+                fontSize: 15,
+                fontWeight: '700',
+              }}
+            >
+              Date of Birth
+            </Label>
+            <Input
+              style={{
+                borderColor: 'grey',
+                borderWidth: 1,
+                width: '100%',
+                borderRadius: 5,
+                paddingHorizontal: 10,
+              }}
+              onFocus={() => {
+                datepicker()
+              }}
+              value={format(new Date(dataUser.date_of_birth), 'do MMMM YYY')}
+            />
+          </Item>
+          {datePicker.show && (
+            <DateTimePicker
+              value={datePicker.date}
+              mode={datePicker.mode}
+              is24Hour={true}
+              display="default"
+              onChange={setDate}
+            />
+          )}
+          <Item
+            stackedLabel
+            style={{ width: '90%', borderColor: 'transparent', paddingLeft: 0 }}
+            last
+          >
+            <Label
+              style={{
+                color: colors.mainBackground,
+                marginBottom: 10,
+                fontSize: 15,
+                fontWeight: '700',
+              }}
+            >
+              Email
+            </Label>
+            <Input
+              style={{
+                borderColor: 'grey',
+                borderWidth: 1,
+                width: '100%',
+                borderRadius: 5,
+                paddingHorizontal: 10,
+              }}
+              value={dataUser.email}
+              onChangeText={email => {
+                handleDataChange('email', email)
+              }}
+            />
+          </Item>
+          <Item
+            stackedLabel
+            style={{ width: '90%', borderColor: 'transparent', paddingLeft: 0 }}
+            last
+          >
+            <Label
+              style={{
+                color: colors.mainBackground,
+                marginBottom: 10,
+                fontSize: 15,
+                fontWeight: '700',
+              }}
+            >
+              Phone Number
+            </Label>
+            <Input
+              style={{
+                borderColor: 'grey',
+                borderWidth: 1,
+                width: '100%',
+                borderRadius: 5,
+                paddingHorizontal: 10,
+              }}
+              value={dataUser.phone_number}
+              onChangeText={phone_number => {
+                handleDataChange('phone_number', phone_number)
+              }}
+              keyboardType={'number-pad'}
+            />
+          </Item>
+          <Item
+            stackedLabel
+            style={{ width: '90%', borderColor: 'transparent', paddingLeft: 0 }}
+            last
+          >
+            <Label
+              style={{
+                color: colors.mainBackground,
+                marginBottom: 10,
+                fontSize: 15,
+                fontWeight: '700',
+              }}
+            >
+              Address
+            </Label>
+            <Input
+              style={{
+                borderColor: 'grey',
+                borderWidth: 1,
+                width: '100%',
+                borderRadius: 5,
+                paddingHorizontal: 10,
+              }}
+              value={dataUser.address}
+              onChangeText={address => {
+                handleDataChange('address', address)
+              }}
+            />
+          </Item>
+          <View
+            style={{
+              flex: 1,
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginVertical: 20,
+            }}
+          >
+            {/* <View
+              style={{
+                borderColor: colors.mainBackground,
+                borderWidth: 1,
+                width: 150,
+                height: 200,
+                borderRadius: 10,
+                justifyContent: 'center',
+                alignItems: 'center',
+                overflow: 'hidden',
+              }}
+            >
+              {photoLoading ? (
+                <Spinner color={colors.mainBackground} />
+              ) : photoData ? (
+                <ImageBackground
+                  source={{ uri: photoData.singleUpload.imageURL }}
                   style={{
-                    borderColor: colors.mainBackground,
-                    borderWidth: 1,
                     width: 150,
                     height: 200,
-                    borderRadius: 10,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() => {
+                      _pickImage('photo', [3, 4])
+                    }}
+                  >
+                    <Entypo
+                      name="cycle"
+                      style={{ fontSize: 70, color: colors.mainBackground }}
+                    />
+                  </TouchableOpacity>
+                </ImageBackground>
+              ) : (
+                <ImageBackground
+                  source={{ uri: dataUser.photo_url }}
+                  style={{
+                    width: '100%',
+                    height: '100%',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    overflow: 'hidden',
                   }}
                 >
-                  {photoLoading ? (
-                    <Spinner color={colors.mainBackground} />
-                  ) : photoData ? (
-                    <ImageBackground
-                      source={{ uri: photoData.singleUpload.imageURL }}
-                      style={{
-                        width: 150,
-                        height: 200,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      <TouchableOpacity
-                        onPress={() => {
-                          _pickImage('photo', [3, 4])
-                        }}
-                      >
-                        <Entypo
-                          name="cycle"
-                          style={{ fontSize: 70, color: colors.mainBackground }}
-                        />
-                      </TouchableOpacity>
-                    </ImageBackground>
-                  ) : (
-                        <ImageBackground source={{uri: dataUser.photo_url}} style={{width: '100%', height: '100%', justifyContent: "center", alignItems: "center"}}>
-                            <TouchableOpacity
-                            onPress={() => {
-                                _pickImage('photo', [3, 4])
-                            }}
-                            >
-                            <AntDesign
-                                name="plus"
-                                style={{ fontSize: 70, color: colors.mainBackground }}
-                            />
-                            </TouchableOpacity>
-                        </ImageBackground>
-                  )}
-                </View>
-                <View
-                  style={{
-                    justifyContent: 'flex-end',
-                    alignItems: 'flex-end',
-                    marginVertical: 5,
-                  }}
-                >
-                  <Text style={{ fontSize: 20, color: colors.mainBackground }}>
-                    Photo
-                  </Text>
-                </View>
-              </View>
+                  <TouchableOpacity
+                    onPress={() => {
+                      _pickImage('photo', [3, 4])
+                    }}
+                  >
+                    <AntDesign
+                      name="plus"
+                      style={{ fontSize: 70, color: colors.mainBackground }}
+                    />
+                  </TouchableOpacity>
+                </ImageBackground>
+              )}
+            </View>
+            <View
+              style={{
+                justifyContent: 'flex-end',
+                alignItems: 'flex-end',
+                marginVertical: 5,
+              }}
+            >
+              <Text style={{ fontSize: 20, color: colors.mainBackground }}>
+                Photo
+              </Text>
+            </View> */}
+            <Item
+              stackedLabel
+              style={{
+                width: '90%',
+                borderColor: 'transparent',
+                paddingLeft: 0,
+              }}
+              last
+            >
+              <Label
+                style={{
+                  color: colors.mainBackground,
+                  marginBottom: 10,
+                  fontSize: 15,
+                  fontWeight: '700',
+                }}
+              >
+                Photo
+              </Label>
               <View
                 style={{
-                  flex: 1,
-                  width: '100%',
+                  borderColor: 'grey',
+                  borderWidth: 1,
+                  width: 150,
+                  height: 200,
+                  borderRadius: 5,
                   justifyContent: 'center',
                   alignItems: 'center',
-                  marginVertical: 20,
+                  overflow: 'hidden',
+                  marginBottom: 10,
                 }}
               >
-                <View
+                <ImageBackground
+                  source={{ uri: dataUser.photo_url }}
                   style={{
-                    borderColor: colors.mainBackground,
-                    borderWidth: 1,
-                    width: 170,
-                    height: 120,
-                    borderRadius: 10,
+                    width: '100%',
+                    height: '100%',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    overflow: 'hidden',
                   }}
                 >
-                  {idCardLoading ? (
-                    <Spinner color={colors.mainBackground} />
-                  ) : idCardData ? (
-                    <ImageBackground
-                      source={{ uri: idCardData.singleUpload.imageURL }}
-                      style={{
-                        width: 170,
-                        height: 120,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      <TouchableOpacity
-                        onPress={() => {
-                          _pickImage('idCard', [4, 2])
-                        }}
-                      >
-                        <Entypo
-                          name="cycle"
-                          style={{ fontSize: 70, color: colors.mainBackground }}
-                        />
-                      </TouchableOpacity>
-                    </ImageBackground>
-                  ) : (
-                    <ImageBackground source={{uri: dataUser.id_url}} style={{width: '100%', height: '100%', justifyContent: "center", alignItems: "center"}}>
-                        <TouchableOpacity
-                        onPress={() => {
-                            _pickImage('idCard', [4, 2])
-                        }}
-                        >
-                        <AntDesign
-                            name="plus"
-                            style={{ fontSize: 70, color: colors.mainBackground }}
-                        />
-                        </TouchableOpacity>
-                    </ImageBackground>
-                  )}
-                </View>
-                <View
-                  style={{
-                    justifyContent: 'flex-end',
-                    alignItems: 'flex-end',
-                    marginVertical: 5,
-                  }}
-                >
-                  <Text style={{ fontSize: 20, color: colors.mainBackground }}>
-                    ID Card
-                  </Text>
-                </View>
+                  {photoLoading && <Spinner color={'#1D63DB'} />}
+                </ImageBackground>
               </View>
-              <TouchableOpacity
+              <View style={{ flexDirection: 'row' }}>
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: '#1D63DB',
+                    marginRight: '1%',
+                    width: '49%',
+                    borderRadius: 5,
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                  onPress={() => {
+                    _pickImage('photo', [3, 4], 'file')
+                  }}
+                >
+                  <Entypo
+                    name="attachment"
+                    size={25}
+                    style={{ color: '#FFF', padding: 5 }}
+                  />
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      paddingVertical: 10,
+                      color: '#FFF',
+                    }}
+                  >
+                    Browse File
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: '#1D63DB',
+                    marginLeft: '1%',
+                    width: '49%',
+                    borderRadius: 5,
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                  onPress={() => {
+                    _pickImage('photo', [3, 4], 'camera')
+                  }}
+                >
+                  <Entypo
+                    name="camera"
+                    size={25}
+                    style={{ color: '#FFF', padding: 5 }}
+                  />
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      paddingVertical: 10,
+                      color: '#FFF',
+                    }}
+                  >
+                    Open Camera
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </Item>
+            <Item
+              stackedLabel
+              style={{
+                width: '90%',
+                borderColor: 'transparent',
+                paddingLeft: 0,
+              }}
+              last
+            >
+              <Label
                 style={{
-                  backgroundColor: colors.mainBackground,
-                  borderRadius: 7,
-                  marginVertical: 20
-                }}
-                onPress={() => {
-                  handleSaveButton()
+                  color: colors.mainBackground,
+                  marginBottom: 10,
+                  fontSize: 15,
+                  fontWeight: '700',
                 }}
               >
-                <Text
+                ID Card
+              </Label>
+              <View
+                style={{
+                  borderColor: 'grey',
+                  borderWidth: 1,
+                  width: 170,
+                  height: 120,
+                  borderRadius: 5,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  overflow: 'hidden',
+                  marginBottom: 10,
+                }}
+              >
+                <ImageBackground
+                  source={{ uri: dataUser.id_url }}
                   style={{
-                    marginHorizontal: 25,
-                    marginVertical: 10,
-                    color: '#FFF',
+                    width: '100%',
+                    height: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}
                 >
-                  Save
-                </Text>
-              </TouchableOpacity>
-            </Form>
+                  {idCardLoading && <Spinner color={'#1D63DB'} />}
+                </ImageBackground>
+              </View>
+              <View style={{ flexDirection: 'row' }}>
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: '#1D63DB',
+                    marginRight: '1%',
+                    width: '49%',
+                    borderRadius: 5,
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                  onPress={() => {
+                    _pickImage('idCard', [4, 2], 'file')
+                  }}
+                >
+                  <Entypo
+                    name="attachment"
+                    size={25}
+                    style={{ color: '#FFF', padding: 5 }}
+                  />
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      paddingVertical: 10,
+                      color: '#FFF',
+                    }}
+                  >
+                    Browse File
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: '#1D63DB',
+                    marginLeft: '1%',
+                    width: '49%',
+                    borderRadius: 5,
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                  onPress={() => {
+                    _pickImage('idCard', [4, 2], 'camera')
+                  }}
+                >
+                  <Entypo
+                    name="camera"
+                    size={25}
+                    style={{ color: '#FFF', padding: 5 }}
+                  />
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      paddingVertical: 10,
+                      color: '#FFF',
+                    }}
+                  >
+                    Open Camera
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </Item>
           </View>
+          {/* <View
+            style={{
+              flex: 1,
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginVertical: 20,
+            }}
+          >
+            <View
+              style={{
+                borderColor: colors.mainBackground,
+                borderWidth: 1,
+                width: 170,
+                height: 120,
+                borderRadius: 10,
+                justifyContent: 'center',
+                alignItems: 'center',
+                overflow: 'hidden',
+              }}
+            >
+              {idCardLoading ? (
+                <Spinner color={colors.mainBackground} />
+              ) : idCardData ? (
+                <ImageBackground
+                  source={{ uri: idCardData.singleUpload.imageURL }}
+                  style={{
+                    width: 170,
+                    height: 120,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() => {
+                      _pickImage('idCard', [4, 2])
+                    }}
+                  >
+                    <Entypo
+                      name="cycle"
+                      style={{ fontSize: 70, color: colors.mainBackground }}
+                    />
+                  </TouchableOpacity>
+                </ImageBackground>
+              ) : (
+                <ImageBackground
+                  source={{ uri: dataUser.id_url }}
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}
+                >
+                  <TouchableOpacity
+                    onPress={() => {
+                      _pickImage('idCard', [4, 2])
+                    }}
+                  >
+                    <AntDesign
+                      name="plus"
+                      style={{ fontSize: 70, color: colors.mainBackground }}
+                    />
+                  </TouchableOpacity>
+                </ImageBackground>
+              )}
+            </View>
+            <View
+              style={{
+                justifyContent: 'flex-end',
+                alignItems: 'flex-end',
+                marginVertical: 5,
+              }}
+            >
+              <Text style={{ fontSize: 20, color: colors.mainBackground }}>
+                ID Card
+              </Text>
+            </View>
+          </View> */}
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#1D63DB',
+              borderRadius: 5,
+              marginVertical: 20,
+              width: '90%',
+            }}
+            onPress={() => {
+              handleSaveButton()
+            }}
+          >
+            <Text
+              style={{
+                textAlign: 'center',
+                marginVertical: 10,
+                color: '#FFF',
+              }}
+            >
+              Save Data
+            </Text>
+          </TouchableOpacity>
+        </Form>
+      </View>
     )
 }
 

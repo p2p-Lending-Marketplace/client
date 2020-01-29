@@ -53,6 +53,10 @@ const UploadDataScreen = ({ navigation }) => {
   useEffect(() => {
     if(data){
       setDataUser(data.getUserById)
+      setDatePicker({
+        ...datePicker,
+        date: new Date(data.getUserById.date_of_birth),
+      })
     }
   }, [data])
 
@@ -86,17 +90,27 @@ const UploadDataScreen = ({ navigation }) => {
         return true
       }
   };
-  const _pickImage = async (field, ratio) => {
+  const _pickImage = async (field, ratio, uploadOpt) => {
     const status = await getPermissionAsync()
     if (!status) {
       return
     }
-    let result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      aspect: ratio,
-      quality: 1,
-      base64: true,
-    })
+    let result
+    if(uploadOpt === "file"){
+      result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing: true,
+        aspect: ratio,
+        quality: 1,
+        base64: true,
+      })
+    } else if(uploadOpt === "camera"){
+      result = await ImagePicker.launchCameraAsync({
+        allowsEditing: true,
+        aspect: ratio,
+        quality: 1,
+        base64: true,
+      })
+    }
     if (!result.cancelled) {
       if (field === 'photo') {
         uploadPhoto({ variables: { file: result } })
@@ -166,7 +180,7 @@ const UploadDataScreen = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.whiteBackground }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#FFF" }}>
       <SegmentUploadComponent data={{ setPersonal, setFinancial, personal, financial }} />
       <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
         {personal && dataUser._id ? (
