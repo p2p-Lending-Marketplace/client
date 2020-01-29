@@ -32,18 +32,58 @@ const FinancialDataComponent = ({data}) => {
             alignItems: 'center',
           }}
         >
-          <Item floatingLabel style={{ width: '80%' }} last>
-            <Label style={{ color: colors.mainBackground }}>Current Job</Label>
+          <Item
+            stackedLabel
+            style={{ width: '90%', borderColor: 'transparent', paddingLeft: 0 }}
+            last
+          >
+            <Label
+              style={{
+                color: colors.mainBackground,
+                marginBottom: 10,
+                fontSize: 15,
+                fontWeight: '700',
+              }}
+            >
+              Current Job
+            </Label>
             <Input
+              style={{
+                borderColor: 'grey',
+                borderWidth: 1,
+                width: '100%',
+                borderRadius: 5,
+                paddingHorizontal: 10,
+              }}
               value={dataUser.current_job}
               onChangeText={current_job => {
                 handleDataChange('current_job', current_job)
               }}
             />
           </Item>
-          <Item floatingLabel style={{ width: '80%' }} last>
-            <Label style={{ color: colors.mainBackground }}>Salary</Label>
+          <Item
+            stackedLabel
+            style={{ width: '90%', borderColor: 'transparent', paddingLeft: 0 }}
+            last
+          >
+            <Label
+              style={{
+                color: colors.mainBackground,
+                marginBottom: 10,
+                fontSize: 15,
+                fontWeight: '700',
+              }}
+            >
+              Current Job
+            </Label>
             <Input
+              style={{
+                borderColor: 'grey',
+                borderWidth: 1,
+                width: '100%',
+                borderRadius: 5,
+                paddingHorizontal: 10,
+              }}
               value={String(dataUser.salary)}
               onChangeText={salary => {
                 handleDataChange('salary', salary)
@@ -51,7 +91,112 @@ const FinancialDataComponent = ({data}) => {
               keyboardType={'number-pad'}
             />
           </Item>
-          <View
+          <Item
+            stackedLabel
+            style={{
+              width: '90%',
+              borderColor: 'transparent',
+              paddingLeft: 0,
+            }}
+            last
+          >
+            <Label
+              style={{
+                color: colors.mainBackground,
+                marginBottom: 10,
+                fontSize: 15,
+                fontWeight: '700',
+              }}
+            >
+              Salary Slip
+            </Label>
+            <View
+              style={{
+                borderColor: 'grey',
+                borderWidth: 1,
+                width: 150,
+                height: 200,
+                borderRadius: 5,
+                justifyContent: 'center',
+                alignItems: 'center',
+                overflow: 'hidden',
+                marginBottom: 10,
+              }}
+            >
+              <ImageBackground
+                source={{ uri: dataUser.salary_slip_url }}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                {salarySlipLoading && <Spinner color={'#1D63DB'} />}
+              </ImageBackground>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: '#1D63DB',
+                  marginRight: '1%',
+                  width: '49%',
+                  borderRadius: 5,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+                onPress={() => {
+                  _pickImage('salarySlip', [3, 4], 'file')
+                }}
+              >
+                <Entypo
+                  name="attachment"
+                  size={25}
+                  style={{ color: '#FFF', padding: 5 }}
+                />
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    paddingVertical: 10,
+                    color: '#FFF',
+                  }}
+                >
+                  Browse File
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: '#1D63DB',
+                  marginLeft: '1%',
+                  width: '49%',
+                  borderRadius: 5,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+                onPress={() => {
+                  _pickImage('salarySlip', [3, 4], 'camera')
+                }}
+              >
+                <Entypo
+                  name="camera"
+                  size={25}
+                  style={{ color: '#FFF', padding: 5 }}
+                />
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    paddingVertical: 10,
+                    color: '#FFF',
+                  }}
+                >
+                  Open Camera
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </Item>
+          {/* <View
             style={{
               flex: 1,
               width: '100%',
@@ -121,12 +266,13 @@ const FinancialDataComponent = ({data}) => {
                 Salary Slip
               </Text>
             </View>
-          </View>
+          </View> */}
           <TouchableOpacity
             style={{
-              backgroundColor: colors.mainBackground,
+              backgroundColor: '#1D63DB',
               borderRadius: 7,
               marginVertical: 20,
+              width: '90%',
             }}
             onPress={() => {
               handleSaveButton()
@@ -134,12 +280,13 @@ const FinancialDataComponent = ({data}) => {
           >
             <Text
               style={{
-                marginHorizontal: 25,
+                // marginHorizontal: 25,
+                textAlign: 'center',
                 marginVertical: 10,
                 color: '#FFF',
               }}
             >
-              Save
+              Save Data
             </Text>
           </TouchableOpacity>
         </Form>
