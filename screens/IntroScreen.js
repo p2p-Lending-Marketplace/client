@@ -15,8 +15,9 @@ class IntroScreen extends Component {
     this.onSwipeRight = this.onSwipeRight.bind(this)
     this.onSwipe = this.onSwipe.bind(this)
   }
+  
 
-  onSwipeLeft(gestureState) {
+  onSwipeRight(gestureState) {
     if (this.state.currentPosition === 'second') {
       this.setState({ currentPosition: 'first' })
     } else if (this.state.currentPosition === 'third') {
@@ -24,7 +25,7 @@ class IntroScreen extends Component {
     }
   }
 
-  onSwipeRight(gestureState) {
+  onSwipeLeft(gestureState) {
       if (this.state.currentPosition === 'first') {
         this.setState({ currentPosition: 'second' })
       } else if (this.state.currentPosition === 'second') {
@@ -38,20 +39,25 @@ class IntroScreen extends Component {
     const { SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections
     this.setState({ gestureName: gestureName })
     switch (gestureName) {
-      case SWIPE_LEFT:
+      case SWIPE_RIGHT:
         if (this.state.currentPosition === 'second') {
           this.setState({ currentPosition: 'first' })
         } else if (this.state.currentPosition === 'third') {
           this.setState({ currentPosition: 'second' })
         }
         break
-      case SWIPE_RIGHT:
+      case SWIPE_LEFT:
         if(this.state.currentPosition === "first"){
         this.setState({currentPosition: "second"})
         } else if(this.state.currentPosition === "second"){
         this.setState({ currentPosition: 'third' })
         } else if(this.state.currentPosition === "third"){
-        this.props.navigation.navigate('tabNavigator')
+          const from = this.props.navigation.getParam("from")
+          if(from){
+            this.props.navigation.navigate('tabNavigator')
+          } else {
+            this.props.navigation.push('tabNavigator')
+          }
         }
         break
     }
@@ -74,14 +80,77 @@ class IntroScreen extends Component {
           backgroundColor: this.state.backgroundColor,
         }}
       >
-          {
-              this.state.currentPosition === 'first' && (
-                  <View style={{ flex: 1, alignItems: "center", justifyContent: "center"}}>
-                      <Image source={require("../assets/images/start.jpg")} style={{width: 150, height: 150}} />
-                      <Text>First</Text>
-                  </View>
-              )
-          }
+        <View style={{ position: "absolute", top: '20%', width: '100%', justifyContent: "center", alignItems: "center"}}>
+          <Image
+            source={require('../assets/images/logo.png')}
+            style={{ width: 190, height: 64 }}
+          />
+        </View>
+        {this.state.currentPosition === 'first' && (
+          <View
+            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+          >
+            <View
+              style={{
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '80%',
+              }}
+            >
+              <Image
+                source={require('../assets/images/second.jpg')}
+                style={{ width: 150, height: 150 }}
+              />
+              <Text
+                style={{
+                  textAlign: 'center',
+                  marginTop: 20,
+                  fontSize: 20,
+                }}
+              >
+                Get all fintech list, complete your data at once, get your
+                credit score
+              </Text>
+            </View>
+          </View>
+        )}
+        {this.state.currentPosition === 'second' && (
+          <View
+            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+          >
+            <View
+              style={{
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '80%',
+              }}
+            >
+              <Image
+                source={require('../assets/images/start.jpg')}
+                style={{ width: 150, height: 150 }}
+              />
+              <Text
+                style={{
+                  textAlign: 'center',
+                  marginTop: 20,
+                  fontSize: 20,
+                }}
+              >
+                Reimburse your accepted loan,
+              </Text>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 20,
+                }}
+              >
+                All in One Platform.
+              </Text>
+            </View>
+          </View>
+        )}
         {/* <Text style={{marginVertical: 200, marginHorizontal: 100}}>{this.state.currentPosition}</Text> */}
       </GestureRecognizer>
     )
