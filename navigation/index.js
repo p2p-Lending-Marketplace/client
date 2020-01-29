@@ -11,8 +11,8 @@ import tabNavigator from './tab'
 
 const rootNavigator = createSwitchNavigator(
   {
-    // IntroScreen,
     LandingScreen,
+    IntroScreen,
     RegisterScreen,
     VerifyOTPScreen,
     PinCreateScreen,

@@ -133,11 +133,8 @@ const RegisterScreen = ({ parentNavigation }) => {
           }}
         >
           <Image
-            source={{
-              uri:
-                'https://www.fintechnews.org/wp-content/uploads/2019/01/f122-1.png',
-            }}
-            style={{ width: '60%', height: 101, margin: 20 }}
+            source={require("../assets/images/logo.png")}
+            style={{ width: 190, height: 65, marginBottom: 70 }}
           />
         </View>
         <Item style={{ width: '90%' }}>
