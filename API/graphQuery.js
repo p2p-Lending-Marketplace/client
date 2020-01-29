@@ -43,7 +43,7 @@ export const REQUEST_OTP = gql`
 export const REGISTER_USER = gql`
   mutation addNewUser($phone_number: String!, $pin: String!) {
     addNewUser(phone_number: $phone_number, pin: $pin) {
-      phone_number
+      token
     }
   }
 `
@@ -74,8 +74,8 @@ export const FETCH_FINTECH_BY_ID = gql`
 `
 
 export const LOGIN_USER = gql`
-  query ($phone_number: String!, $pin: String!) {
-    signInUser (phone_number: $phone_number, pin: $pin) {
+  query($phone_number: String!, $pin: String!) {
+    signInUser(phone_number: $phone_number, pin: $pin) {
       status
       token
     }
@@ -163,8 +163,8 @@ export const SUBMIT_APPLICATION = gql`
 `
 
 export const FETCH_USER_DETAIL = gql`
-  query ($token: String!) {
-    getUserById (token: $token){
+  query($token: String!) {
+    getUserById(token: $token) {
       _id
       name
       num_id
@@ -184,8 +184,8 @@ export const FETCH_USER_DETAIL = gql`
 `
 
 export const FETCH_USER_SCORE = gql`
-  query ($token: String!) {
-    getUserScoring (token: $token) {
+  query($token: String!) {
+    getUserScoring(token: $token) {
       score
     }
   }

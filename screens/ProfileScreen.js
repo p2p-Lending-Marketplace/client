@@ -1,19 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react'
 import {
   Image,
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
   ImageBackground,
-  AsyncStorage
-} from "react-native";
-import { View, Text, Item } from "native-base";
-import colors from "../assets/colors";
-import { AntDesign } from "@expo/vector-icons"
-import { APP_NAME } from "../assets/variables"
-import { useLazyQuery, useMutation } from "@apollo/react-hooks"
-import { FETCH_APPLICATION_BY_UID, FETCH_USER_DETAIL, FETCH_USER_SCORE } from "../API/graphQuery"
-import { from } from "zen-observable";
+  AsyncStorage,
+} from 'react-native'
+import { View, Text, Item } from 'native-base'
+import colors from '../assets/colors'
+import { AntDesign } from '@expo/vector-icons'
+import { APP_NAME } from '../assets/variables'
+import { useLazyQuery, useMutation } from '@apollo/react-hooks'
+import {
+  FETCH_APPLICATION_BY_UID,
+  FETCH_USER_DETAIL,
+  FETCH_USER_SCORE,
+} from '../API/graphQuery'
+import { from } from 'zen-observable'
 
 const ProfileScreen = ({ navigation }) => {
   const handleSignOut = async () => {
@@ -43,18 +47,20 @@ const ProfileScreen = ({ navigation }) => {
       if (tokenString !== null) {
         const { token } = JSON.parse(tokenString)
         setToken(token)
-        fetchUser({
-          variables: {
-            token,
-          },
-        })
       }
     }
     getToken()
   }, [])
   useEffect(() => {
     if (token) {
+      console.log('GOTCHA!!!!')
+      console.log(token)
       fetchUserScore({
+        variables: {
+          token,
+        },
+      })
+      fetchUser({
         variables: {
           token,
         },
@@ -75,10 +81,16 @@ const ProfileScreen = ({ navigation }) => {
       })
     }
   }, [user])
-  const hideNumber = (phoneNumber) => {
-    const count = Math.floor(phoneNumber.length/3)
-    const star = phoneNumber.length - (phoneNumber.slice(0,count).length + phoneNumber.slice(phoneNumber.length - count).length)
-    const newFormatNumber = phoneNumber.slice(0,count) + "*".repeat(star) + phoneNumber.slice(phoneNumber.length - count)
+  const hideNumber = phoneNumber => {
+    const count = Math.floor(phoneNumber.length / 3)
+    const star =
+      phoneNumber.length -
+      (phoneNumber.slice(0, count).length +
+        phoneNumber.slice(phoneNumber.length - count).length)
+    const newFormatNumber =
+      phoneNumber.slice(0, count) +
+      '*'.repeat(star) +
+      phoneNumber.slice(phoneNumber.length - count)
     return newFormatNumber
   }
   if (appError || userError) {
@@ -165,13 +177,14 @@ const ProfileScreen = ({ navigation }) => {
           <TouchableOpacity
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
             onPress={() => {
-              token
-                ? navigation.navigate('History')
-                : navigation.push('Home')
+              token ? navigation.navigate('History') : navigation.push('Home')
             }}
           >
             <Image
-              source={{uri: "https://img.icons8.com/color/48/000000/activity-history.png"}}
+              source={{
+                uri:
+                  'https://img.icons8.com/color/48/000000/activity-history.png',
+              }}
               style={{ width: 50, height: 50 }}
             />
             <Text>History</Text>
@@ -405,67 +418,67 @@ const ProfileScreen = ({ navigation }) => {
       {/* </Container> */}
     </SafeAreaView>
   )
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.mainBackground,
-    justifyContent: "flex-end",
-    alignItems: "flex-end"
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
   },
   header: {
-    width: "12%",
-    justifyContent: "center",
-    alignItems: "center"
+    width: '12%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   underHeader: {
     flex: 1,
     backgroundColor: colors.mainBackground,
-    flexDirection: "row",
-    justifyContent: "center"
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   imageUnderHeader: {
     width: 60,
     height: 60,
     borderRadius: 100,
-    backgroundColor: "white"
+    backgroundColor: 'white',
   },
   contentWrapper: {
     flex: 4,
     backgroundColor: colors.whiteBackground,
-    alignItems: "center",
+    alignItems: 'center',
   },
   contentTop: {
     elevation: 5,
-    width: "90%",
-    height: "30%",
-    position: "absolute",
-    top: "-6%",
+    width: '90%',
+    height: '30%',
+    position: 'absolute',
+    top: '-6%',
     borderRadius: 15,
-    backgroundColor: "white",
-    flexDirection: "row"
+    backgroundColor: 'white',
+    flexDirection: 'row',
   },
   cardWrapper: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   contentMid: {
-    width: "90%",
-    height: "20%",
-    position: "absolute",
-    top: "30%",
+    width: '90%',
+    height: '20%',
+    position: 'absolute',
+    top: '30%',
     borderRadius: 15,
-    backgroundColor: "white",
-    flexDirection: "row", 
-    elevation: 5
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    elevation: 5,
   },
   cardWrapperMid: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1
-  }
-});
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
+  },
+})
 
-export default ProfileScreen;
+export default ProfileScreen

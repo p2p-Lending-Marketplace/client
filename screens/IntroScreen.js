@@ -9,57 +9,46 @@ class IntroScreen extends Component {
       myText: "I'm ready to get swiped!",
       gestureName: 'none',
       backgroundColor: '#fff',
-      currentPosition: "first"
+      currentPosition: 1,
     }
-    this.onSwipeLeft = this.onSwipeLeft.bind(this)
-    this.onSwipeRight = this.onSwipeRight.bind(this)
+    // this.onSwipeLeft = this.onSwipeLeft.bind(this)
+    // this.onSwipeRight = this.onSwipeRight.bind(this)
     this.onSwipe = this.onSwipe.bind(this)
   }
-  
 
-  onSwipeRight(gestureState) {
-    if (this.state.currentPosition === 'second') {
-      this.setState({ currentPosition: 'first' })
-    } else if (this.state.currentPosition === 'third') {
-      this.setState({ currentPosition: 'second' })
-    }
-  }
+  // onSwipeRight(gestureState) {
+  //   if (this.state.currentPosition === 'second') {
+  //     this.setState({ currentPosition: 'first' })
+  //   } else if (this.state.currentPosition === 'third') {
+  //     this.setState({ currentPosition: 'second' })
+  //   }
+  // }
 
-  onSwipeLeft(gestureState) {
-      if (this.state.currentPosition === 'first') {
-        this.setState({ currentPosition: 'second' })
-      } else if (this.state.currentPosition === 'second') {
-        this.setState({ currentPosition: 'third' })
-      } else if (this.state.currentPosition === 'third') {
-        this.props.navigation.navigate('tabNavigator')
-      }
-  }
+  // onSwipeLeft(gestureState) {
+  //     if (this.state.currentPosition === 'first') {
+  //       this.setState({ currentPosition: 'second' })
+  //     } else if (this.state.currentPosition === 'second') {
+  //       this.setState({ currentPosition: 'third' })
+  //     } else if (this.state.currentPosition === 'third') {
+  //       this.props.navigation.navigate('tabNavigator')
+  //     }
+  // }
 
   onSwipe(gestureName, gestureState) {
     const { SWIPE_LEFT, SWIPE_RIGHT } = swipeDirections
     this.setState({ gestureName: gestureName })
-    switch (gestureName) {
-      case SWIPE_RIGHT:
-        if (this.state.currentPosition === 'second') {
-          this.setState({ currentPosition: 'first' })
-        } else if (this.state.currentPosition === 'third') {
-          this.setState({ currentPosition: 'second' })
-        }
-        break
-      case SWIPE_LEFT:
-        if(this.state.currentPosition === "first"){
-        this.setState({currentPosition: "second"})
-        } else if(this.state.currentPosition === "second"){
-        this.setState({ currentPosition: 'third' })
-        } else if(this.state.currentPosition === "third"){
-          const from = this.props.navigation.getParam("from")
-          if(from){
-            this.props.navigation.navigate('tabNavigator')
-          } else {
-            this.props.navigation.push('tabNavigator')
-          }
-        }
-        break
+    if (gestureName === SWIPE_RIGHT) {
+      if (this.state.currentPosition > 1)
+        this.setState({
+          currentPosition: this.state.currentPosition - 1,
+        })
+    } else if (gestureName === SWIPE_LEFT) {
+      if (this.state.currentPosition === 3) {
+        this.props.navigation.navigate('tabNavigator')
+      } else
+        this.setState({
+          currentPosition: this.state.currentPosition + 1,
+        })
     }
   }
 
@@ -72,21 +61,29 @@ class IntroScreen extends Component {
     return (
       <GestureRecognizer
         onSwipe={this.onSwipe}
-        onSwipeLeft={this.onSwipeLeft}
-        onSwipeRight={this.onSwipeRight}
+        // onSwipeLeft={this.onSwipeLeft}
+        // onSwipeRight={this.onSwipeRight}
         config={config}
         style={{
           flex: 1,
           backgroundColor: this.state.backgroundColor,
         }}
       >
-        <View style={{ position: "absolute", top: '20%', width: '100%', justifyContent: "center", alignItems: "center"}}>
+        <View
+          style={{
+            position: 'absolute',
+            top: '20%',
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
           <Image
             source={require('../assets/images/logo.png')}
             style={{ width: 190, height: 64 }}
           />
         </View>
-        {this.state.currentPosition === 'first' && (
+        {this.state.currentPosition === 1 && (
           <View
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
           >
@@ -115,7 +112,7 @@ class IntroScreen extends Component {
             </View>
           </View>
         )}
-        {this.state.currentPosition === 'second' && (
+        {this.state.currentPosition === 2 && (
           <View
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
           >

@@ -5,77 +5,65 @@ import {
   KeyboardAvoidingView,
   AsyncStorage,
   ScrollView,
-  Image,
-  Text
+  Text,
 } from 'react-native'
-import { Notifications } from 'expo'
-import * as Permissions from 'expo-permissions'
 import { APP_NAME } from '../assets/variables'
 import { useLazyQuery, useMutation, useQuery } from '@apollo/react-hooks'
-import colors from "../assets/colors"
-import Divider from "react-native-divider"
-import Constants from "expo-constants"
-import { FETCH_APPLICATION_BY_UID, FETCH_USER_DETAIL, REGISTER_PUSH_NOTIFICATION, FETCH_USER_SCORE } from "../API/graphQuery"
-import { RegisterComponent, ActiveApplicationComponent, BannerHomeComponent, AlertProfileComponent, BoardScoreComponent, GreetingComponent } from "../components";
+import colors from '../assets/colors'
+import Divider from 'react-native-divider'
+import Constants from 'expo-constants'
+import {
+  FETCH_APPLICATION_BY_UID,
+  FETCH_USER_DETAIL,
+  REGISTER_PUSH_NOTIFICATION,
+  FETCH_USER_SCORE,
+} from '../API/graphQuery'
+import {
+  RegisterComponent,
+  ActiveApplicationComponent,
+  BannerHomeComponent,
+  AlertProfileComponent,
+  BoardScoreComponent,
+} from '../components'
 const HomeScreen = ({ navigation }) => {
   // Variables
   const [token, setToken] = useState(null)
   const [phone_number, setPhone_number] = useState(null)
-  const [fetchApplications, { loading: appLoading, data: appData, error: appError }] = useLazyQuery(FETCH_APPLICATION_BY_UID)
-  const [fetchUser, { loading: userLoading, data: user, error: userError }] = useLazyQuery(FETCH_USER_DETAIL)
-  const [fetchUserScore,{ loading: scoreLoading, data: score, error: scoreError }] = useLazyQuery(FETCH_USER_SCORE)
 
-  const [registerPush] = useMutation(REGISTER_PUSH_NOTIFICATION)
+  const [
+    fetchApplications,
+    { loading: appLoading, data: appData, error: appError },
+  ] = useLazyQuery(FETCH_APPLICATION_BY_UID)
+  const [
+    fetchUser,
+    { loading: userLoading, data: user, error: userError },
+  ] = useLazyQuery(FETCH_USER_DETAIL)
+  const [
+    fetchUserScore,
+    { loading: scoreLoading, data: score, error: scoreError },
+  ] = useLazyQuery(FETCH_USER_SCORE)
 
-  const registerForPushNotificationsAsync = async () => {
-    const pushToken = await AsyncStorage.getItem(APP_NAME + ':pushToken')
-    if (!pushToken) {
-      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS)
-      if (status !== 'granted') {
-        return
-      }
-
-      const token = await Notifications.getExpoPushTokenAsync()
-      const phoneNumber = await AsyncStorage.getItem(APP_NAME + ':phoneNumber')
-
-      registerPush({ variables: { token, phoneNumber } }).then(
-        async ({ data }) =>
-          await AsyncStorage.setItem(
-            APP_NAME + ':pushToken',
-            data.registerPushNotification.token
-          )
-      )
-    }
-    // Notifications.addListener(({ data }) => {
-    //   navigation.navigate('ApplicationDetail', { id: data.application_id })
-    // })
-  }
-  useEffect(() => {
-    registerForPushNotificationsAsync()
-  }, [])
-  //Function
   useEffect(() => {
     const getToken = async () => {
-      const tokenString = await AsyncStorage.getItem(APP_NAME + ":token")
+      const tokenString = await AsyncStorage.getItem(APP_NAME + ':token')
       if (tokenString !== null) {
         const { token } = JSON.parse(tokenString)
         setToken(token)
         fetchUser({
           variables: {
-            token
-          }
+            token,
+          },
         })
-  
       }
     }
-    getToken();
+    getToken()
   }, [])
   useEffect(() => {
-    if(token){
+    if (token) {
       fetchUserScore({
         variables: {
-          token
-        }
+          token,
+        },
       })
     }
   }, [token])
@@ -84,7 +72,7 @@ const HomeScreen = ({ navigation }) => {
   }
 
   useEffect(() => {
-    if(user){
+    if (user) {
       fetchApplications({
         variables: {
           userID: user.getUserById._id,
@@ -101,14 +89,10 @@ const HomeScreen = ({ navigation }) => {
     }
   }
 
-  useEffect(() => {
-    getPhoneNumber()
-    console.log(phone_number, "--------------")
-  }, [phone_number])
-  if(appError || userError){
+  if (appError || userError) {
     console.log(appError || userError)
   }
-  
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <KeyboardAvoidingView behavior="height" enabled style={{ flex: 1 }}>
@@ -159,8 +143,14 @@ const HomeScreen = ({ navigation }) => {
                   )}
                 </View>
                 {appData && (
-                  <View style={{marginTop: 20, justifyContent: "center", alignItems: "center"}}>
-                    <View style={{ width: '90%'}}>
+                  <View
+                    style={{
+                      marginTop: 20,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <View style={{ width: '90%' }}>
                       <Divider
                         borderColor={colors.mainBackground}
                         orientation="left"
