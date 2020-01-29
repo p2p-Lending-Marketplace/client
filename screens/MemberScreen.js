@@ -35,33 +35,86 @@ const MemberScreen = ({navigation}) => {
             {
               members.map((member, index) => {
                 return (
-                  <TouchableOpacity key={index} onPress={() => {
-                    goToDetailMember(member._id)
-                  }}>
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => {
+                      goToDetailMember(member._id)
+                    }}
+                  >
                     <View style={styles.content}>
                       <View
                         style={{
                           flex: 1,
-                          alignItems: 'center',
-                          justifyContent: 'center'
+                          marginTop: 5, 
                         }}
                       >
                         <Image
                           source={{
-                            uri: member.logoURL
+                            uri: member.logoURL,
                           }}
-                          style={{ width: 80, height: 80 }}
+                          style={{ width: 30, height: 30 }}
                         />
                       </View>
                       <View
                         style={{
-                          flex: 3,
-                          justifyContent: 'center',
-                          alignItems: 'center'
+                          flex: 7,
+                          flexDirection: 'row',
                         }}
                       >
-                        <Text style={{ fontSize: 20, fontWeight: '700' }}>{member.company_name}</Text>
-                        <Text>Interest: {member.min_interest} - {member.max_interest}% p.a.</Text>
+                        <View style={{ flex: 1}}>
+                          <Text style={{ fontSize: 15, fontWeight: '700' }}>
+                            {member.company_name}
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 13,
+                              fontWeight: '700',
+                              color: 'grey',
+                            }}
+                          >
+                            Interest:
+                          </Text>
+                          <Text style={{ fontSize: 13, marginBottom: 5 }}>
+                            {member.min_interest} - {member.max_interest}% p.a.
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 13,
+                              fontWeight: '700',
+                              color: 'grey',
+                            }}
+                          >
+                            Total Applications:
+                          </Text>
+                          <Text style={{ fontSize: 13 }}>15.230</Text>
+                        </View>
+                        <View style={{flex: 1}}>
+                          <Text style={{ fontSize: 15, fontWeight: '700' }}>
+                            
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 13,
+                              fontWeight: '700',
+                              color: 'grey',
+                            }}
+                          >
+                            % Acceptance:
+                          </Text>
+                          <Text style={{ fontSize: 13, marginBottom: 5 }}>
+                            30%
+                          </Text>
+                          <Text
+                            style={{
+                              fontSize: 13,
+                              fontWeight: '700',
+                              color: 'grey',
+                            }}
+                          >
+                            Average Credit Score:
+                          </Text>
+                          <Text style={{ fontSize: 13 }}>A</Text>
+                        </View>
                       </View>
                     </View>
                   </TouchableOpacity>
@@ -77,18 +130,20 @@ const MemberScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.mainBackground,
-    justifyContent: "flex-end",
-    alignItems: "flex-end"
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
   },
   content: {
-    flexDirection: "row",
+    borderLeftColor: '#4AE54A',
+    borderLeftWidth: 4,
+    flexDirection: 'row',
     margin: 10,
-    borderRadius: 7,
-    height: 100,
-    backgroundColor: "#FFF",
+    borderBottomRightRadius: 5,
+    borderTopRightRadius: 5,
+    backgroundColor: '#FFF',
     padding: 10,
-    elevation: 5
-  }
-});
+    elevation: 5,
+  },
+})
 
 export default MemberScreen;

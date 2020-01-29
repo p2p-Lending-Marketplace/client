@@ -263,75 +263,6 @@ const PersonalDataComponent = ({data}) => {
               marginVertical: 20,
             }}
           >
-            {/* <View
-              style={{
-                borderColor: colors.mainBackground,
-                borderWidth: 1,
-                width: 150,
-                height: 200,
-                borderRadius: 10,
-                justifyContent: 'center',
-                alignItems: 'center',
-                overflow: 'hidden',
-              }}
-            >
-              {photoLoading ? (
-                <Spinner color={colors.mainBackground} />
-              ) : photoData ? (
-                <ImageBackground
-                  source={{ uri: photoData.singleUpload.imageURL }}
-                  style={{
-                    width: 150,
-                    height: 200,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <TouchableOpacity
-                    onPress={() => {
-                      _pickImage('photo', [3, 4])
-                    }}
-                  >
-                    <Entypo
-                      name="cycle"
-                      style={{ fontSize: 70, color: colors.mainBackground }}
-                    />
-                  </TouchableOpacity>
-                </ImageBackground>
-              ) : (
-                <ImageBackground
-                  source={{ uri: dataUser.photo_url }}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <TouchableOpacity
-                    onPress={() => {
-                      _pickImage('photo', [3, 4])
-                    }}
-                  >
-                    <AntDesign
-                      name="plus"
-                      style={{ fontSize: 70, color: colors.mainBackground }}
-                    />
-                  </TouchableOpacity>
-                </ImageBackground>
-              )}
-            </View>
-            <View
-              style={{
-                justifyContent: 'flex-end',
-                alignItems: 'flex-end',
-                marginVertical: 5,
-              }}
-            >
-              <Text style={{ fontSize: 20, color: colors.mainBackground }}>
-                Photo
-              </Text>
-            </View> */}
             <Item
               stackedLabel
               style={{
@@ -379,7 +310,7 @@ const PersonalDataComponent = ({data}) => {
               <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity
                   style={{
-                    backgroundColor: '#1D63DB',
+                    backgroundColor: '#EEE',
                     marginRight: '1%',
                     width: '49%',
                     borderRadius: 5,
@@ -394,13 +325,13 @@ const PersonalDataComponent = ({data}) => {
                   <Entypo
                     name="attachment"
                     size={25}
-                    style={{ color: '#FFF', padding: 5 }}
+                    style={{ color: '#000', padding: 5 }}
                   />
                   <Text
                     style={{
                       textAlign: 'center',
                       paddingVertical: 10,
-                      color: '#FFF',
+                      color: '#000',
                     }}
                   >
                     Browse File
@@ -408,7 +339,7 @@ const PersonalDataComponent = ({data}) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={{
-                    backgroundColor: '#1D63DB',
+                    backgroundColor: '#EEE',
                     marginLeft: '1%',
                     width: '49%',
                     borderRadius: 5,
@@ -423,13 +354,13 @@ const PersonalDataComponent = ({data}) => {
                   <Entypo
                     name="camera"
                     size={25}
-                    style={{ color: '#FFF', padding: 5 }}
+                    style={{ color: '#000', padding: 5 }}
                   />
                   <Text
                     style={{
                       textAlign: 'center',
                       paddingVertical: 10,
-                      color: '#FFF',
+                      color: '#000',
                     }}
                   >
                     Open Camera
@@ -484,7 +415,7 @@ const PersonalDataComponent = ({data}) => {
               <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity
                   style={{
-                    backgroundColor: '#1D63DB',
+                    backgroundColor: '#EEE',
                     marginRight: '1%',
                     width: '49%',
                     borderRadius: 5,
@@ -499,13 +430,13 @@ const PersonalDataComponent = ({data}) => {
                   <Entypo
                     name="attachment"
                     size={25}
-                    style={{ color: '#FFF', padding: 5 }}
+                    style={{ color: '#000', padding: 5 }}
                   />
                   <Text
                     style={{
                       textAlign: 'center',
                       paddingVertical: 10,
-                      color: '#FFF',
+                      color: '#000',
                     }}
                   >
                     Browse File
@@ -513,7 +444,7 @@ const PersonalDataComponent = ({data}) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={{
-                    backgroundColor: '#1D63DB',
+                    backgroundColor: '#EEE',
                     marginLeft: '1%',
                     width: '49%',
                     borderRadius: 5,
@@ -528,13 +459,13 @@ const PersonalDataComponent = ({data}) => {
                   <Entypo
                     name="camera"
                     size={25}
-                    style={{ color: '#FFF', padding: 5 }}
+                    style={{ color: '#000', padding: 5 }}
                   />
                   <Text
                     style={{
                       textAlign: 'center',
                       paddingVertical: 10,
-                      color: '#FFF',
+                      color: '#000',
                     }}
                   >
                     Open Camera
@@ -543,85 +474,6 @@ const PersonalDataComponent = ({data}) => {
               </View>
             </Item>
           </View>
-          {/* <View
-            style={{
-              flex: 1,
-              width: '100%',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginVertical: 20,
-            }}
-          >
-            <View
-              style={{
-                borderColor: colors.mainBackground,
-                borderWidth: 1,
-                width: 170,
-                height: 120,
-                borderRadius: 10,
-                justifyContent: 'center',
-                alignItems: 'center',
-                overflow: 'hidden',
-              }}
-            >
-              {idCardLoading ? (
-                <Spinner color={colors.mainBackground} />
-              ) : idCardData ? (
-                <ImageBackground
-                  source={{ uri: idCardData.singleUpload.imageURL }}
-                  style={{
-                    width: 170,
-                    height: 120,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <TouchableOpacity
-                    onPress={() => {
-                      _pickImage('idCard', [4, 2])
-                    }}
-                  >
-                    <Entypo
-                      name="cycle"
-                      style={{ fontSize: 70, color: colors.mainBackground }}
-                    />
-                  </TouchableOpacity>
-                </ImageBackground>
-              ) : (
-                <ImageBackground
-                  source={{ uri: dataUser.id_url }}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <TouchableOpacity
-                    onPress={() => {
-                      _pickImage('idCard', [4, 2])
-                    }}
-                  >
-                    <AntDesign
-                      name="plus"
-                      style={{ fontSize: 70, color: colors.mainBackground }}
-                    />
-                  </TouchableOpacity>
-                </ImageBackground>
-              )}
-            </View>
-            <View
-              style={{
-                justifyContent: 'flex-end',
-                alignItems: 'flex-end',
-                marginVertical: 5,
-              }}
-            >
-              <Text style={{ fontSize: 20, color: colors.mainBackground }}>
-                ID Card
-              </Text>
-            </View>
-          </View> */}
           <TouchableOpacity
             style={{
               backgroundColor: '#1D63DB',

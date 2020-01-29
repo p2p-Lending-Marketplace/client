@@ -1,5 +1,5 @@
 import { createStackNavigator } from "react-navigation-stack";
-import { HomeScreen, UploadDataScreen, UploadData2Screen } from "../screens";
+import { HomeScreen, UploadDataScreen, LoginScreen } from "../screens";
 import colors from "../assets/colors"
 
 const homeStack = createStackNavigator({
@@ -33,21 +33,7 @@ const homeStack = createStackNavigator({
       headerLeft: null,
     },
   },
-  'Upload Data 2': {
-    screen: UploadData2Screen,
-    navigationOptions: {
-      headerStyle: {
-        backgroundColor: colors.mainBackground,
-      },
-      headerTintColor: '#FFF',
-      title: 'Upload Data',
-      headerTitleAlign: 'center',
-      headerTitleStyle: {
-        fontWeight: '700',
-      },
-      headerLeft: null,
-    },
-  },
+  LoginScreen
 })
 
 export default homeStack;

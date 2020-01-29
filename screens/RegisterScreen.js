@@ -8,8 +8,9 @@ import { SimpleLineIcons } from "@expo/vector-icons"
 import CountDown from 'react-native-countdown-component'
 import { APP_NAME } from "../assets/variables";
 
-const RegisterScreen = ({navigation}) => {
+const RegisterScreen = ({parentNavigation}) => {
   // Variables
+  const navigation = parentNavigation.navigation
   const [phoneNumber, setPhoneNumber] = useState("");
   const [otpCode, setOtpCode] = useState("")
   const [resendStatus, setResendStatus] = useState(false)
@@ -90,8 +91,8 @@ const RegisterScreen = ({navigation}) => {
 
   const savePhoneNumber = async () => {
     try {
+      alert("hello")
       await AsyncStorage.setItem(APP_NAME + ':phoneNumber', phoneNumberChecker())
-      alert("helooo")
       navigation.navigate('LoginScreen', { phoneNumber })
     } catch (error) {
       // Error saving data
@@ -100,7 +101,7 @@ const RegisterScreen = ({navigation}) => {
   }
   
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1}}>
           <View
             style={{
               flex: 1,
@@ -110,7 +111,11 @@ const RegisterScreen = ({navigation}) => {
               alignItems: 'center',
             }}
           >
-          <View style={{justifyContent: "center", alignItems: "center", position: "absolute", zIndex: 100, width: '100%', top: 90}}>
+          <View style={{
+            justifyContent: "center", 
+            alignItems: "center", 
+            width: '100%', 
+            marginBottom: 0}}>
             <Image
               source={{
                 uri:
@@ -182,7 +187,7 @@ const RegisterScreen = ({navigation}) => {
                       // paddingHorizontal: 30,
                       backgroundColor: '#1D63DB',
                       marginTop: 50,
-                      borderRadius: 5,
+                      borderRadius: 20,
                     }}
                     onPress={() => {
                       handleOnSubmit()
@@ -193,7 +198,6 @@ const RegisterScreen = ({navigation}) => {
                 : <TouchableOpacity
                     style={{
                       paddingVertical: 10,
-                      // paddingHorizontal: 30,
                       width: '90%',
                       backgroundColor: 'grey',
                       marginTop: 50,
@@ -204,19 +208,9 @@ const RegisterScreen = ({navigation}) => {
                     <Text style={{ fontSize: 15, color: '#FFF', textAlign: "center" }}>Sign Up</Text>
                   </TouchableOpacity>
             }
-            
-            {/* <View style={{ flex: 7, backgroundColor: "#FFF", justifyContent: "center", width: '100%' }}>
-              <View style={{ alignItems: "center",}}>
-                <Image source={require("../assets/images/register.jpg")} style={{width: '70%', height: 250}} />
-              </View>
-            </View> */}
-            {/* <RegisterPhoneComponent
-              data={{ phoneNumber, setPhoneNumber, handleOnChangePhone, handleSubmitNumber }}
-            /> */}
           </View>
       </SafeAreaView>
     )
-  // }
 };
 
 export default RegisterScreen;

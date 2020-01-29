@@ -11,7 +11,7 @@ import tabNavigator from './tab'
 
 const rootNavigator = createSwitchNavigator(
   {
-    IntroScreen,
+    // IntroScreen,
     LandingScreen,
     RegisterScreen,
     VerifyOTPScreen,
@@ -19,7 +19,7 @@ const rootNavigator = createSwitchNavigator(
     LoginScreen,
     tabNavigator
   },
-  // { initialRouteName: 'LandingScreen' }
+  { initialRouteName: 'LandingScreen' }
 )
 
 

@@ -26,8 +26,8 @@ const LandingScreen = ({ navigation }) => {
   }, [data])
 
   useEffect(() => {
-    if (phoneConfirmed === true) navigation.navigate('LoginScreen')
-    else if (phoneConfirmed === false) navigation.navigate('RegisterScreen')
+    if (phoneConfirmed === true) navigation.navigate('LoginScreen', {from: "landing"})
+    else if (phoneConfirmed === false) navigation.navigate('tabNavigator')
   }, [phoneConfirmed])
 
   return (
