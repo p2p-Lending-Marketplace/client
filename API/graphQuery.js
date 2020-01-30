@@ -123,19 +123,25 @@ export const UPDATE_USER_DATA = gql`
 `
 
 export const FETCH_APPLICATION_BY_UID = gql`
-  query($userID: ID!, $token: String!) {
+  query($userID: ID, $token: String!) {
     getAllUserApplications(userID: $userID, token: $token) {
       _id
-      user_id
-      fintech_id
+      user_id {
+        _id
+        name
+      }
+      fintech_id {
+        _id
+        company_name
+        logoURL
+      }
       amount
-      logoURL
-      company_name
       loan_term
       objective
       decision
-      createdAt
       status
+      createdAt
+      updatedAt
     }
   }
 `

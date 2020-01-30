@@ -6,7 +6,7 @@ import {
   AsyncStorage,
   ScrollView,
   Text,
-  Image
+  Image,
 } from 'react-native'
 import { APP_NAME } from '../assets/variables'
 import { useLazyQuery, useMutation, useQuery } from '@apollo/react-hooks'
@@ -16,7 +16,6 @@ import Constants from 'expo-constants'
 import {
   FETCH_APPLICATION_BY_UID,
   FETCH_USER_DETAIL,
-  REGISTER_PUSH_NOTIFICATION,
   FETCH_USER_SCORE,
 } from '../API/graphQuery'
 import {
@@ -25,12 +24,12 @@ import {
   BannerHomeComponent,
   AlertProfileComponent,
   BoardScoreComponent,
-  GreetingComponent
+  GreetingComponent,
 } from '../components'
 const HomeScreen = ({ navigation }) => {
   // Variables
   const [token, setToken] = useState(null)
-  const [phone_number, setPhone_number] = useState(null)
+  // const [phone_number, setPhone_number] = useState(null)
 
   const [
     fetchApplications,
@@ -44,57 +43,52 @@ const HomeScreen = ({ navigation }) => {
     fetchUserScore,
     { loading: scoreLoading, data: score, error: scoreError },
   ] = useLazyQuery(FETCH_USER_SCORE)
-  console.log(appData)
-  useEffect(() => {
-    const getToken = async () => {
-      const tokenString = await AsyncStorage.getItem(APP_NAME + ':token')
-      if (tokenString !== null) {
-        const { token } = JSON.parse(tokenString)
-        setToken(token)
-        fetchUser({
-          variables: {
-            token,
-          },
-        })
-      }
-    }
-    getToken()
-  }, [])
-  useEffect(() => {
-    if (token) {
-      fetchUserScore({
-        variables: {
-          token,
-        },
-      })
-    }
-  }, [token])
-  const handleOnPressApply = () => {
+
+  function handleOnPressApply() {
     navigation.navigate('Upload Data')
   }
 
+  async function getToken() {
+    const tokenString = await AsyncStorage.getItem(APP_NAME + ':token')
+    if (tokenString !== null) {
+      const { token } = JSON.parse(tokenString)
+      setToken(token)
+      // fetchUser({
+      //   variables: {
+      //     token,
+      //   },
+      // })
+    }
+  }
+
+  // async function getPhoneNumber() {
+  //   const phoneNumber = await AsyncStorage.getItem(APP_NAME + ':phoneNumber')
+  //   if (phoneNumber) {
+  //     setPhone_number(phone_number)
+  //   }
+  // }
+
   useEffect(() => {
-    console.log(user, "=========================================")
+    getToken()
+  }, [])
+
+  useEffect(() => {
+    if (token) {
+      !appData && fetchApplications({ variables: { token } })
+      !user && fetchUser({ variables: { token } })
+    }
+
+    if (appError || scoreError || userError) {
+      console.log(appError || scoreError || userError)
+    }
+  }, [token, appError, userError])
+
+  useEffect(() => {
     if (user) {
-      fetchApplications({
-        variables: {
-          userID: user.getUserById._id,
-          token,
-        },
-      })
+      if (user.getUserById.data_completed && !score)
+        fetchUserScore({ variables: { token } })
     }
   }, [user])
-
-  const getPhoneNumber = async () => {
-    const phoneNumber = await AsyncStorage.getItem(APP_NAME + ':phoneNumber')
-    if (phoneNumber) {
-      setPhone_number(phone_number)
-    }
-  }
-
-  if (appError || userError) {
-    console.log(appError || userError)
-  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -137,27 +131,45 @@ const HomeScreen = ({ navigation }) => {
                       fontWeight: '700',
                     }}
                   >
-                    {(user && user.getUserById.name) && `Hello, ${user.getUserById.name.split(' ')[0]}!`}
-                    {(user && !user.getUserById.name) && `Hello, Guest!`}
+                    {user &&
+                      `Hello, ${
+                        user.getUserById.name
+                          ? user.getUserById.name.split(' ')[0]
+                          : 'Guest'
+                      }!`}
                   </Text>
-                  {score && (
+                  {score ? (
                     <BoardScoreComponent
                       data={{ score: score.getUserScoring.score }}
                     />
-                  )}
-                  {!score && (
+                  ) : user && !user.getUserById.data_completed ? (
+                    <AlertProfileComponent
+                      handleOnPressApply={handleOnPressApply}
+                    />
+                  ) : (
                     <GreetingComponent />
                   )}
                 </View>
-                {
-                  !appData && (
-                    <View style={{justifyContent: "center", alignItems: "center", marginTop: 50}}>
-                      <Image source={require("../assets/images/search-icon.jpg")} style={{width: 200, height: 200}} />
-                      <Text style={{fontSize: 20}}>You don't have any applications</Text>
+                {!appData ||
+                  (appData.getAllUserApplications.length <= 0 && (
+                    <View
+                      style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        marginTop: 50,
+                      }}
+                    >
+                      <Image
+                        source={require('../assets/images/search-icon.jpg')}
+                        style={{ width: 175, height: 175 }}
+                      />
+                      <Text style={{ fontSize: 18, marginTop: 20 }}>
+                        You don't have any applications
+                      </Text>
                     </View>
-                  )
-                }
-                {appData && (
+                  ))}
+                {appData && appData.getAllUserApplications.length > 0 && (
                   <View
                     style={{
                       marginTop: 20,
@@ -186,15 +198,12 @@ const HomeScreen = ({ navigation }) => {
                   style={{ width: '100%' }}
                   showsVerticalScrollIndicator={false}
                 >
-                  {/* {user && !user.getUserById.data_completed && (
-                    <AlertProfileComponent data={{ handleOnPressApply }} />
-                  )} */}
-                  {user &&
-                    appData &&
-                    appData.getAllUserApplications.length <= 0 && (
+                  {/* {user &&
+                    (!appData ||
+                      appData.getAllUserApplications.length <= 0) && (
                       <BannerHomeComponent data={{ data_completed: user }} />
-                    )}
-                  {appData && (
+                    )} */}
+                  {appData && appData.getAllUserApplications.length > 0 && (
                     <ActiveApplicationComponent
                       data={{ applications: appData.getAllUserApplications }}
                     />
