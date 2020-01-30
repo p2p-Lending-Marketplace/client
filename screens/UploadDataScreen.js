@@ -172,10 +172,11 @@ const UploadDataScreen = ({ navigation }) => {
   }
 
   const updateAsyncStorage = async () => {
-    navigation.navigate("Profile")
+    navigation.push("Profile")
   }
 
   if(updateData){
+    alert("Success Save Data")
     updateAsyncStorage()
   }
 

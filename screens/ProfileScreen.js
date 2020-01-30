@@ -17,15 +17,16 @@ import {
   FETCH_USER_DETAIL,
   FETCH_USER_SCORE,
 } from '../API/graphQuery'
-import { from } from 'zen-observable'
 
 const ProfileScreen = ({ navigation }) => {
   const handleSignOut = async () => {
     await AsyncStorage.removeItem(APP_NAME + ':phoneNumber')
     await AsyncStorage.removeItem(APP_NAME + ':token')
     await setToken(null)
+    await setUser(null)
     navigation.push('Home')
   }
+  const [user, setUser] = useState(null)
   const [token, setToken] = useState('')
   const [
     fetchApplications,
@@ -33,7 +34,7 @@ const ProfileScreen = ({ navigation }) => {
   ] = useLazyQuery(FETCH_APPLICATION_BY_UID)
   const [
     fetchUser,
-    { loading: userLoading, data: user, error: userError },
+    { loading: userLoading, data: userData, error: userError },
   ] = useLazyQuery(FETCH_USER_DETAIL)
   const [
     fetchUserScore,
@@ -53,8 +54,6 @@ const ProfileScreen = ({ navigation }) => {
   }, [])
   useEffect(() => {
     if (token) {
-      console.log('GOTCHA!!!!')
-      console.log(token)
       fetchUserScore({
         variables: {
           token,
@@ -67,20 +66,27 @@ const ProfileScreen = ({ navigation }) => {
       })
     }
   }, [token])
-  const handleOnPressApply = () => {
-    navigation.navigate('Upload Data')
-  }
 
   useEffect(() => {
-    if (user) {
+    if (userData) {
+      setUser(userData.getUserById)
       fetchApplications({
         variables: {
-          userID: user.getUserById._id,
+          userID: userData.getUserById._id,
           token,
         },
       })
     }
-  }, [user])
+  }, [userData])
+  useEffect(() => {
+    if (appData && appData.getAllUserApplications.length > 0) {
+      fetchUserScore({
+        variables: {
+          token
+        }
+      })
+    }
+  }, [appData])
   const hideNumber = phoneNumber => {
     const count = Math.floor(phoneNumber.length / 3)
     const star =
@@ -121,12 +127,12 @@ const ProfileScreen = ({ navigation }) => {
         >
           <View style={{ width: '90%' }}>
             <Text style={{ color: 'white', fontSize: 30, fontWeight: 'bold' }}>
-              {user ? user.getUserById.name : 'User name'}
+              {(user && user.name) ? user.name : "Hello Guest"}
             </Text>
             <Text style={{ color: 'white', fontSize: 20 }}>
               {user
-                ? hideNumber(user.getUserById.phone_number)
-                : 'User phone number'}
+                ? hideNumber(user.phone_number)
+                : "Login to access our features"}
             </Text>
           </View>
           <View
@@ -172,7 +178,19 @@ const ProfileScreen = ({ navigation }) => {
               }}
               style={{ width: 50, height: 50 }}
             />
-            <Text>Data User</Text>
+            <Text>User Data</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+          >
+            <Text style={{ fontSize: 40, fontWeight: '700', color: colors.mainBackground }}>
+              {
+                score
+                  ? score.getUserScoring.score
+                  : 'X'
+              }
+            </Text>
+            <Text>Score</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
@@ -188,14 +206,6 @@ const ProfileScreen = ({ navigation }) => {
               style={{ width: 50, height: 50 }}
             />
             <Text>History</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
-          >
-            <Image
-              source={require('../assets/images/helpcenter.png')}
-              style={{ width: 50, height: 50 }}
-            />
           </TouchableOpacity>
         </View>
       </View>
@@ -290,50 +300,51 @@ const ProfileScreen = ({ navigation }) => {
                 flexDirection: 'row',
                 alignItems: 'center',
               }}
-              onPress={() => {
-                navigation.navigate('Upload Data')
-              }}
             >
               <Text style={{ marginVertical: 10, width: '90%' }}>About Us</Text>
               <AntDesign name="right" size={20} />
             </TouchableOpacity>
           </Item>
         </View>
-        <View
-          style={{
-            width: '90%',
-            backgroundColor: '#FFF',
-            position: 'absolute',
-            top: '75%',
-            borderRadius: 5,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Item
-            style={{
-              width: '90%',
-              alignItems: 'center',
-              paddingVertical: 8,
-              borderColor: 'transparent',
-            }}
-            last
-          >
-            <TouchableOpacity
+        {
+          user && (
+            <View
               style={{
-                width: '100%',
-                flexDirection: 'row',
+                width: '90%',
+                backgroundColor: '#FFF',
+                position: 'absolute',
+                top: '75%',
+                borderRadius: 5,
                 alignItems: 'center',
-              }}
-              onPress={() => {
-                handleSignOut()
+                justifyContent: 'center',
               }}
             >
-              <Text style={{ marginVertical: 10, width: '90%' }}>Sign Out</Text>
-              <AntDesign name="right" size={20} />
-            </TouchableOpacity>
-          </Item>
-        </View>
+              <Item
+                style={{
+                  width: '90%',
+                  alignItems: 'center',
+                  paddingVertical: 8,
+                  borderColor: 'transparent',
+                }}
+                last
+              >
+                <TouchableOpacity
+                  style={{
+                    width: '100%',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                  onPress={() => {
+                    handleSignOut()
+                  }}
+                >
+                  <Text style={{ marginVertical: 10, width: '90%' }}>Sign Out</Text>
+                  <AntDesign name="right" size={20} />
+                </TouchableOpacity>
+              </Item>
+            </View>
+          )
+        }
       </View>
       {/* <View style={{marginTop: 300, alignItems: "center"}}>
         <View style={{backgroundColor: "#FFF", height: '100%', width: '90%', borderRadius: 5}}>
