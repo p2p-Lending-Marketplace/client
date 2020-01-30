@@ -6,6 +6,7 @@ import {
   AsyncStorage,
   ScrollView,
   Text,
+  Image
 } from 'react-native'
 import { APP_NAME } from '../assets/variables'
 import { useLazyQuery, useMutation, useQuery } from '@apollo/react-hooks'
@@ -24,6 +25,7 @@ import {
   BannerHomeComponent,
   AlertProfileComponent,
   BoardScoreComponent,
+  GreetingComponent
 } from '../components'
 const HomeScreen = ({ navigation }) => {
   // Variables
@@ -42,7 +44,7 @@ const HomeScreen = ({ navigation }) => {
     fetchUserScore,
     { loading: scoreLoading, data: score, error: scoreError },
   ] = useLazyQuery(FETCH_USER_SCORE)
-
+  console.log(appData)
   useEffect(() => {
     const getToken = async () => {
       const tokenString = await AsyncStorage.getItem(APP_NAME + ':token')
@@ -72,6 +74,7 @@ const HomeScreen = ({ navigation }) => {
   }
 
   useEffect(() => {
+    console.log(user, "=========================================")
     if (user) {
       fetchApplications({
         variables: {
@@ -134,14 +137,26 @@ const HomeScreen = ({ navigation }) => {
                       fontWeight: '700',
                     }}
                   >
-                    {user && `Hello, ${user.getUserById.name.split(' ')[0]}!`}
+                    {(user && user.getUserById.name) && `Hello, ${user.getUserById.name.split(' ')[0]}!`}
+                    {(user && !user.getUserById.name) && `Hello, Guest!`}
                   </Text>
                   {score && (
                     <BoardScoreComponent
                       data={{ score: score.getUserScoring.score }}
                     />
                   )}
+                  {!score && (
+                    <GreetingComponent />
+                  )}
                 </View>
+                {
+                  !appData && (
+                    <View style={{justifyContent: "center", alignItems: "center", marginTop: 50}}>
+                      <Image source={require("../assets/images/search-icon.jpg")} style={{width: 200, height: 200}} />
+                      <Text style={{fontSize: 20}}>You don't have any applications</Text>
+                    </View>
+                  )
+                }
                 {appData && (
                   <View
                     style={{
@@ -171,9 +186,9 @@ const HomeScreen = ({ navigation }) => {
                   style={{ width: '100%' }}
                   showsVerticalScrollIndicator={false}
                 >
-                  {user && !user.getUserById.data_completed && (
+                  {/* {user && !user.getUserById.data_completed && (
                     <AlertProfileComponent data={{ handleOnPressApply }} />
-                  )}
+                  )} */}
                   {user &&
                     appData &&
                     appData.getAllUserApplications.length <= 0 && (
