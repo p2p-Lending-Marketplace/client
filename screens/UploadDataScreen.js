@@ -70,15 +70,16 @@ const UploadDataScreen = ({ navigation }) => {
   const datepicker = () => {
     show('date')
   }
-  const setDate = (_, date) => {
+  const setDate = async (event, date) => {
+    console.log(date)
     date = date || datePicker.date
-    setDatePicker({
+    await setDatePicker({
       show: !datePicker.show,
       date,
     })
-    setDataUser({
+    await setDataUser({
       ...dataUser,
-      dateOfBirth: date
+      date_of_birth: date
     })
   }
   const getPermissionAsync = async () => {

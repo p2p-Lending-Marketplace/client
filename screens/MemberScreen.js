@@ -12,8 +12,8 @@ import { useQuery } from '@apollo/react-hooks'
 import { FETCH_FINTECH_MEMBER } from '../API/graphQuery'
 
 const MemberScreen = ({ navigation }) => {
-  const goToDetailMember = id => {
-    navigation.navigate('Detail Fintech', { id })
+  const goToDetailMember = (id, name) => {
+    navigation.navigate('Detail Fintech', { id, name })
   }
 
   const { loading, data } = useQuery(FETCH_FINTECH_MEMBER)
@@ -22,12 +22,10 @@ const MemberScreen = ({ navigation }) => {
     return (
       <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
         <Spinner color={colors.mainBackground} />
-        {/* <Image source={{ uri: "https://www.oriciro.com/assets/images/tech/sp/b-product_img_01.gif"}} style={{width: 100, height: 100}} /> */}
       </View>
     )
   }
   if (data) {
-    console.log(data)
     const members = data.getAllFinteches
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -45,7 +43,7 @@ const MemberScreen = ({ navigation }) => {
                 <TouchableOpacity
                   key={index}
                   onPress={() => {
-                    goToDetailMember(member._id)
+                    goToDetailMember(member._id, member.company_name)
                   }}
                 >
                   <View style={styles.content}>
@@ -76,9 +74,6 @@ const MemberScreen = ({ navigation }) => {
                         }}
                       >
                         <View style={{ flex: 1 }}>
-                          {/* <Text style={{ fontSize: 15, fontWeight: '700' }}>
-                            {member.company_name}
-                          </Text> */}
                           <Text
                             style={{
                               fontSize: 13,
@@ -140,6 +135,7 @@ const MemberScreen = ({ navigation }) => {
       </SafeAreaView>
     )
   }
+  return null
 }
 const styles = StyleSheet.create({
   // container: {

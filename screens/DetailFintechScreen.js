@@ -1,18 +1,55 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, SafeAreaView, ScrollView, Image, TouchableOpacity } from 'react-native'
+import { View, Text, SafeAreaView, ScrollView, Image, TouchableOpacity, AsyncStorage } from 'react-native'
+import { Spinner } from "native-base"
 import colors from "../assets/colors"
 import Divider from "react-native-divider"
 import { useQuery } from "@apollo/react-hooks"
-import { FETCH_FINTECH_BY_ID } from "../API/graphQuery"
+import { FETCH_FINTECH_BY_ID, FETCH_USER_DETAIL } from "../API/graphQuery"
+import { useLazyQuery } from "@apollo/react-hooks"
+import { APP_NAME } from "../assets/variables"
 
 const DetailScreen = ({ navigation }) => {
   // Variables
+  const [dataUser, setDataUser] = useState(null)
+  const [token, setToken] = useState(null)
   const id = navigation.getParam("id")
   const { loading, error, data } = useQuery(FETCH_FINTECH_BY_ID, {
     variables: {
       id
     }
   })
+  const [
+    fetchUser,
+    { loading: userLoading, data: user, error: userError },
+  ] = useLazyQuery(FETCH_USER_DETAIL)
+  async function getToken() {
+    const tokenString = await AsyncStorage.getItem(APP_NAME + ':token')
+    if (tokenString !== null) {
+      const { token } = JSON.parse(tokenString)
+      setToken(token)
+      // fetchUser({
+      //   variables: {
+      //     token,
+      //   },
+      // })
+    }
+  }
+
+  useEffect(() => {
+    getToken()
+  }, [])
+
+  useEffect(() => {
+    if (token) {
+      !user && fetchUser({ variables: { token } })
+    }
+  }, [token])
+
+  useEffect(() => {
+    if(user){
+      setDataUser(user.getUserById)
+    }
+  }, [user])
 
   // Functions
   const handleApplyButton = () => {
@@ -21,9 +58,10 @@ const DetailScreen = ({ navigation }) => {
 
   if(loading){
     return(
-      <Text>
-        Loading
-      </Text>
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Spinner color={colors.mainBackground} />
+        {/* <Image source={{ uri: "https://www.oriciro.com/assets/images/tech/sp/b-product_img_01.gif"}} style={{width: 100, height: 100}} /> */}
+      </View>
     )
   }
   if(data){
@@ -71,15 +109,29 @@ const DetailScreen = ({ navigation }) => {
               {company.description}
             </Text>
           </View>
-          <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
-                <TouchableOpacity style={{width: 150, backgroundColor: colors.mainBackground, borderRadius: 7, marginHorizontal: 5, marginVertical: 30}} onPress={() => {
-                  handleApplyButton()
-                }}>
-                    <Text style={{textAlign: "center", paddingVertical: 5, fontSize: 15, color: "#FFF", fontWeight: '700'}}>
-                        Apply Now
+          {
+            (dataUser && dataUser.data_completed) ? (
+              <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                    <TouchableOpacity style={{width: 150, backgroundColor: colors.mainBackground, borderRadius: 7, marginHorizontal: 5, marginVertical: 30}} onPress={() => {
+                      handleApplyButton()
+                    }}>
+                        <Text style={{textAlign: "center", paddingVertical: 10, fontSize: 15, color: "#FFF", fontWeight: '700'}}>
+                            Apply Now
+                        </Text>
+                    </TouchableOpacity>
+              </View>
+            ) : (
+                <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                  <TouchableOpacity style={{ width: 200, backgroundColor: colors.mainBackground, borderRadius: 7, marginHorizontal: 5, marginVertical: 30 }} onPress={() => {
+                    navigation.navigate("Upload Data")
+                  }}>
+                    <Text style={{ textAlign: "center", paddingVertical: 10, fontSize: 15, color: "#FFF", fontWeight: '700' }}>
+                      Complete Data To Apply
                     </Text>
-                </TouchableOpacity>
-          </View>
+                  </TouchableOpacity>
+                </View>
+            )
+          }
         </ScrollView>
       </SafeAreaView>
     )

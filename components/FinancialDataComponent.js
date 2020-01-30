@@ -84,7 +84,7 @@ const FinancialDataComponent = ({data}) => {
                 borderRadius: 5,
                 paddingHorizontal: 10,
               }}
-              value={dataUser.salary}
+              value={String(dataUser.salary)}
               onChangeText={salary => {
                 handleDataChange('salary', salary)
               }}

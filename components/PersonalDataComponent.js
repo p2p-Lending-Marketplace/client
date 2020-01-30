@@ -31,6 +31,7 @@ const PersonalDataComponent = ({data}) => {
     const photoData = data.photoData
     const idCardLoading = data.idCardLoading
     const idCardData = data.idCardData
+    console.log(dataUser)
     return (
       <View style={{ flex: 1, backgroundColor: '#FFF' }}>
         <Form
