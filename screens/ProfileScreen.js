@@ -54,11 +54,6 @@ const ProfileScreen = ({ navigation }) => {
   }, [])
   useEffect(() => {
     if (token) {
-      fetchUserScore({
-        variables: {
-          token,
-        },
-      })
       fetchUser({
         variables: {
           token,
@@ -79,7 +74,7 @@ const ProfileScreen = ({ navigation }) => {
     }
   }, [userData])
   useEffect(() => {
-    if (appData && appData.getAllUserApplications.length > 0) {
+    if (appData && appData.getAllUserApplications.length > 0 && userData && userData.getUserById.data_completed) {
       fetchUserScore({
         variables: {
           token

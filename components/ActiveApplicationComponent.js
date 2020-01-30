@@ -8,7 +8,7 @@ import rupiah from 'rupiah-format'
 const ActiveApplicationComponent = ({ data }) => {
   // Variables
   const applications = data.applications
-  console.log(applications)
+  console.log(applications, "component")
   return (
     <View
       style={{
@@ -78,21 +78,6 @@ const ActiveApplicationComponent = ({ data }) => {
                     }}
                   />
                 </View>
-                {/* =========================================== */}
-                {/* <View
-                    style={{ 
-                      position: 'absolute', 
-                      left: '87%', 
-                      top: '4%',
-                    }}
-                  >
-                    <Text
-                      style={{
-                        backgroundColor: 'red',
-                        margin: ''
-                      }}
-                    ></Text>
-                  </View> */}
                 <View
                   style={{
                     flex: 1,
@@ -101,7 +86,7 @@ const ActiveApplicationComponent = ({ data }) => {
                 >
                   <Image
                     source={{
-                      uri: application.logoURL,
+                      uri: application.fintech_id.logoURL,
                     }}
                     style={{ width: 30, height: 30 }}
                   />
@@ -114,7 +99,7 @@ const ActiveApplicationComponent = ({ data }) => {
                 >
                   <View style={{ flex: 1 }}>
                     <Text style={{ fontSize: 15, fontWeight: '700' }}>
-                      {application.company_name}
+                      {application.fintech_id.company_name}
                     </Text>
                     <Text
                       style={{
@@ -159,54 +144,6 @@ const ActiveApplicationComponent = ({ data }) => {
                 </View>
               </View>
             </TouchableOpacity>
-            // <TouchableOpacity key={index}>
-            //   <View
-            //     style={{
-            //       flexDirection: 'row',
-            //       marginVertical: 10,
-            //       borderRadius: 7,
-            //       backgroundColor: '#FFF',
-            //       padding: 10,
-            //       elevation: 5,
-            //     }}
-            //   >
-            //     <View
-            //       style={{
-            //         flex: 2,
-            //         alignItems: 'center',
-            //         justifyContent: 'center',
-            //       }}
-            //     >
-            //       <Image
-            //         source={{
-            //           uri: application.logoURL,
-            //         }}
-            //         style={{ width: 80, height: 80 }}
-            //       />
-            //     </View>
-            //     <View
-            //       style={{
-            //         flex: 4,
-            //         justifyContent: 'center',
-            //         paddingHorizontal: 20,
-            //       }}
-            //     >
-            //       <Text style={{ fontWeight: 'bold' }}>Application Date: </Text>
-            //       <Text>
-            //         {format(new Date(application.createdAt), 'do MMMM YYY')}
-            //       </Text>
-            //       <Text style={{ fontWeight: 'bold' }}>Fintech Company: </Text>
-            //       <Text>{application.company_name}</Text>
-            //       <Text style={{ fontWeight: 'bold' }}>Amount: </Text>
-            //       <Text>{rupiah.convert(application.amount)}</Text>
-            //       <Text style={{ fontWeight: 'bold' }}>Loan Term: </Text>
-            //       <Text>{application.loan_term}</Text>
-            //     </View>
-            //     <View style={{ alignItems: 'center', flex: 2 }}>
-            //       <Text>{application.decision}</Text>
-            //     </View>
-            //   </View>
-            // </TouchableOpacity>
           )
         })}
       </View>
