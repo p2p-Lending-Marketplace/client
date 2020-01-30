@@ -3,7 +3,10 @@ import {
   View,
   SafeAreaView,
   ScrollView,
+  Image,
+  Text,
   AsyncStorage,
+  TouchableOpacity
 } from 'react-native'
 import colors from '../assets/colors'
 import { APP_NAME } from '../assets/variables'
@@ -12,7 +15,7 @@ import { FETCH_APPLICATION_BY_UID, FETCH_USER_DETAIL } from '../API/graphQuery'
 
 import { HistoryComponent } from "../components"
 
-const HistoryScreen = () => {
+const HistoryScreen = ({navigation}) => {
     // Variables
   const [token, setToken] = useState("")
   const [fetchApplications, { loading: appLoading, data: appData, error: appError }] = useLazyQuery(FETCH_APPLICATION_BY_UID)
@@ -49,6 +52,7 @@ const HistoryScreen = () => {
     console.log(appError || userError)
   }
   
+  console.log(appData, "Yahaaaaaaaaaaaaaaaaaaa")
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -64,11 +68,26 @@ const HistoryScreen = () => {
           style={{ marginHorizontal: 10, paddingTop: 10 }}
           showsVerticalScrollIndicator={false}
         >
-          { appData && (
-            <View style={{}}>
+          {
+            (appData) && (
               <HistoryComponent data={{  applications: appData.getAllUserApplications  }} />
-            </View>
-          )}
+            ) 
+          }
+          {
+            !appData && (
+              <View style={{ justifyContent: "center", alignItems: "center", marginTop: 130 }}>
+                <Image source={require("../assets/images/search-icon.jpg")} style={{ width: 200, height: 200 }} />
+                <Text style={{ fontSize: 20 }}>You don't have any applications</Text>
+                <TouchableOpacity style={{ marginVertical: 30, backgroundColor: colors.mainBackground, paddingHorizontal: 20, paddingVertical: 10, borderRadius: 5}} onPress={() => {
+                  navigation.navigate("Member")
+                }}>
+                  <Text style={{color: '#FFF', fontSize: 15}}>
+                    Apply Now
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )
+          }
         </ScrollView>
       </View>
     </SafeAreaView>

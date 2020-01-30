@@ -15,11 +15,12 @@ import { APP_NAME } from '../assets/variables'
 
 const PinCreateScreen = ({ navigation }) => {
   // Variables
+  const phoneNumber = navigation.getParam("phoneNumber")
+  const [status, setStatus] = useState(false)
   const [pin, setPin] = useState('')
   const [confirmPin, setConfirmPin] = useState('')
   const [pinValid, setPinValid] = useState(false)
 
-  const [phoneNumber, setPhoneNumber] = useState(null)
   const [addNewUser, { error, data }] = useMutation(REGISTER_USER)
 
   function handleOnChangePin(pin) {
@@ -30,8 +31,6 @@ const PinCreateScreen = ({ navigation }) => {
   }
 
   function handleOnPressSubmit() {
-    console.log(phoneNumber)
-    console.log(pin)
     addNewUser({
       variables: {
         phone_number: phoneNumber,
@@ -40,24 +39,25 @@ const PinCreateScreen = ({ navigation }) => {
     })
   }
 
-  async function getPhoneNumber() {
-    const phoneNumber = await AsyncStorage.getItem(APP_NAME + ':phoneNumber')
-    setPhoneNumber(phoneNumber)
-  }
-
-  useEffect(() => {
-    getPhoneNumber()
-  }, [])
-
   useEffect(() => {
     if (data) {
-      console.log(data)
-      navigation.navigate('tabNavigator')
+      const savePhoneNumber = async () => {
+        await AsyncStorage.setItem(APP_NAME + ':phoneNumber', phoneNumber)
+        await setStatus(true)
+      }
+      savePhoneNumber()
     }
     if (error) {
       console.log(error)
     }
   }, [data, error])
+
+  useEffect(() => {
+    console.log(status)
+    if(status){
+      navigation.navigate('tabNavigator')
+    }
+  }, [status])
 
   useEffect(() => {
     if (pin.length === 6 && confirmPin.length === 6 && pin === confirmPin) {
@@ -166,7 +166,9 @@ const PinCreateScreen = ({ navigation }) => {
                   paddingHorizontal: 50,
                   borderRadius: 7,
                 }}
-                onPress={handleOnPressSubmit}
+                onPress={() => {
+                  handleOnPressSubmit()
+                }}
               >
                 <Text style={{ fontSize: 15, color: '#FFF' }}>Finish</Text>
               </TouchableOpacity>

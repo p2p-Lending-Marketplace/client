@@ -110,7 +110,12 @@ const RegisterScreen = ({ parentNavigation }) => {
       verifyData &&
       !verifyData.verifyOTP._id
     ) {
-      navigation.navigate('PinCreateScreen')
+      const navigateToPinCreate = async () => {
+        const phoneNumber = await phoneNumberChecker()
+        console.log(phoneNumber)
+        navigation.navigate('PinCreateScreen', {phoneNumber})
+      }
+      navigateToPinCreate()
     }
   }, [verifyData, error, verifyError])
 

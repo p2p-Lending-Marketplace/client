@@ -74,7 +74,7 @@ const FinancialDataComponent = ({data}) => {
                 fontWeight: '700',
               }}
             >
-              Current Job
+              Salary
             </Label>
             <Input
               style={{
@@ -84,7 +84,7 @@ const FinancialDataComponent = ({data}) => {
                 borderRadius: 5,
                 paddingHorizontal: 10,
               }}
-              value={String(dataUser.salary)}
+              value={dataUser.salary}
               onChangeText={salary => {
                 handleDataChange('salary', salary)
               }}
