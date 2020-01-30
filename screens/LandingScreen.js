@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { AppLoading } from 'expo'
+import { AppLoading, Notifications } from 'expo'
 import { APP_NAME } from '../assets/variables'
 import { AsyncStorage } from 'react-native'
 import { useLazyQuery, useMutation } from '@apollo/react-hooks'
@@ -69,6 +69,13 @@ const LandingScreen = ({ navigation }) => {
         setTokenConfirmed(true)
       })
   }, [pushToken, phoneConfirmed])
+
+  useEffect(() => {
+    Notifications.addListener(({ data }) => {
+      console.log(data)
+      navigation.navigate('Home', { id: data._id })
+    })
+  }, [])
 
   return (
     <AppLoading

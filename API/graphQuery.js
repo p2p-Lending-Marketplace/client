@@ -194,3 +194,11 @@ export const FETCH_USER_SCORE = gql`
     }
   }
 `
+
+export const SELECT_APPLICATION = gql`
+  mutation($token: String!, $id: ID!, $status: String!) {
+    updateApplicationStatus(token: $token, status: $status, id: $id) {
+      _id
+    }
+  }
+`

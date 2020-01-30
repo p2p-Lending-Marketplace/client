@@ -17,6 +17,7 @@ import {
   FETCH_APPLICATION_BY_UID,
   FETCH_USER_DETAIL,
   FETCH_USER_SCORE,
+  SELECT_APPLICATION
 } from '../API/graphQuery'
 import {
   RegisterComponent,
@@ -29,8 +30,7 @@ import {
 const HomeScreen = ({ navigation }) => {
   // Variables
   const [token, setToken] = useState(null)
-  // const [phone_number, setPhone_number] = useState(null)
-
+  const [selectApp, {data, loading, error}] = useMutation(SELECT_APPLICATION)
   const [
     fetchApplications,
     { loading: appLoading, data: appData, error: appError },
@@ -43,6 +43,15 @@ const HomeScreen = ({ navigation }) => {
     fetchUserScore,
     { loading: scoreLoading, data: score, error: scoreError },
   ] = useLazyQuery(FETCH_USER_SCORE)
+  const handleSelect = (id) => {
+    selectApp({
+      variables: {
+        token,
+        id,
+        status: "selected"
+      }
+    })
+  }
 
   function handleOnPressApply() {
     navigation.navigate('Upload Data')
@@ -53,24 +62,12 @@ const HomeScreen = ({ navigation }) => {
     if (tokenString !== null) {
       const { token } = JSON.parse(tokenString)
       setToken(token)
-      // fetchUser({
-      //   variables: {
-      //     token,
-      //   },
-      // })
     }
   }
 
-  // async function getPhoneNumber() {
-  //   const phoneNumber = await AsyncStorage.getItem(APP_NAME + ':phoneNumber')
-  //   if (phoneNumber) {
-  //     setPhone_number(phone_number)
-  //   }
-  // }
-
   useEffect(() => {
     getToken()
-  }, [])
+  }, [navigation.state.routeName])
 
   useEffect(() => {
     if (token) {
@@ -84,7 +81,7 @@ const HomeScreen = ({ navigation }) => {
   }, [token, appError, userError])
 
   useEffect(() => {
-    if (user) {
+    if (user && user.getUserById) {
       if (user.getUserById.data_completed && !score)
         fetchUserScore({ variables: { token } })
     }
@@ -131,7 +128,7 @@ const HomeScreen = ({ navigation }) => {
                       fontWeight: '700',
                     }}
                   >
-                    {user &&
+                    {(user && user.getUserById) &&
                       `Hello, ${
                         user.getUserById.name
                           ? user.getUserById.name.split(' ')[0]
@@ -142,7 +139,7 @@ const HomeScreen = ({ navigation }) => {
                     <BoardScoreComponent
                       data={{ score: score.getUserScoring.score }}
                     />
-                  ) : user && !user.getUserById.data_completed ? (
+                  ) : (user && user.getUserById) && !user.getUserById.data_completed ? (
                     <AlertProfileComponent
                       handleOnPressApply={handleOnPressApply}
                     />
@@ -205,7 +202,7 @@ const HomeScreen = ({ navigation }) => {
                     )} */}
                   {appData && appData.getAllUserApplications.length > 0 && (
                     <ActiveApplicationComponent
-                      data={{ applications: appData.getAllUserApplications }}
+                      data={{ applications: appData.getAllUserApplications, handleSelect }}
                     />
                   )}
                 </ScrollView>

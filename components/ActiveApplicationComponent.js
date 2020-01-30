@@ -8,7 +8,7 @@ import rupiah from 'rupiah-format'
 const ActiveApplicationComponent = ({ data }) => {
   // Variables
   const applications = data.applications
-  console.log(applications, "component")
+  const handleSelect = data.handleSelect
   return (
     <View
       style={{
@@ -23,6 +23,7 @@ const ActiveApplicationComponent = ({ data }) => {
         }}
       >
         {applications.map((application, index) => {
+          console.log(application)
           return (
             <TouchableOpacity key={index}>
               <View
@@ -59,7 +60,7 @@ const ActiveApplicationComponent = ({ data }) => {
                       borderBottomLeftRadius: 3,
                     }}
                   >
-                    <Text style={{ color: '#FFF', fontWeight: 'bold' }}>
+                    <Text style={{ color: '#000', fontWeight: 'bold' }}>
                       {application.decision.toUpperCase()}
                     </Text>
                   </View>
@@ -98,7 +99,7 @@ const ActiveApplicationComponent = ({ data }) => {
                   }}
                 >
                   <View style={{ flex: 1 }}>
-                    <Text style={{ fontSize: 15, fontWeight: '700' }}>
+                    <Text style={{ fontSize: 20, fontWeight: '700' }}>
                       {application.fintech_id.company_name}
                     </Text>
                     <Text
@@ -140,7 +141,35 @@ const ActiveApplicationComponent = ({ data }) => {
                     <Text style={{ fontSize: 13, marginBottom: 5 }}>
                       {rupiah.convert(application.amount).split(',')[0]}
                     </Text>
+                    {
+                      application.decision === "accepted" && (
+                        <View style={{justifyContent: "center", alignItems: "center"}}>
+                          <TouchableOpacity style={{ marginVertical: 10, backgroundColor: colors.mainBackground, width: 80, borderRadius: 5}}
+                            onPress={() => {
+                              handleSelect(application._id)
+                            }}
+                          >
+                            <Text style={{textAlign: "center", paddingHorizontal: 20, paddingVertical: 5, color: '#FFF'}} >
+                              Select
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
+                      )
+                    }
+                    {/* <Text
+                      style={{
+                        fontSize: 13,
+                        fontWeight: '700',
+                        color: 'grey',
+                      }}
+                    >
+                      Amount:
+                    </Text>
+                    <Text style={{ fontSize: 13, marginBottom: 5 }}>
+                      {rupiah.convert(application.amount).split(',')[0]}
+                    </Text> */}
                   </View>
+                  
                 </View>
               </View>
             </TouchableOpacity>
