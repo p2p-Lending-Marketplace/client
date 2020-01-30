@@ -116,7 +116,7 @@ const ApplicationScreen = ({ navigation }) => {
             ...dataApplication,
             amount: Number(dataApplication.amount),
             loan_term: Number(dataApplication.loan_term),
-            userID: user.getUserById._id,
+            // userID: user.getUserById._id,
             fintechID: fintech_id,
             token: token
         }
@@ -260,7 +260,6 @@ const ApplicationScreen = ({ navigation }) => {
               >
                 Additional Data (Option)
               </Label>
-              {dataApplication.additional_data ? (
                 <View
                   style={{
                     borderColor: 'grey',
@@ -286,7 +285,6 @@ const ApplicationScreen = ({ navigation }) => {
                     {addLoading && <Spinner color={'#1D63DB'} />}
                   </ImageBackground>
                 </View>
-              ) : null}
               <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity
                   style={{

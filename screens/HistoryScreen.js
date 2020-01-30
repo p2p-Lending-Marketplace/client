@@ -13,7 +13,7 @@ import { APP_NAME } from '../assets/variables'
 import { useLazyQuery, useQuery } from '@apollo/react-hooks'
 import { FETCH_APPLICATION_BY_UID, FETCH_USER_DETAIL } from '../API/graphQuery'
 
-import { HistoryComponent } from "../components"
+import { HistoryComponent, ActiveApplicationComponent } from "../components"
 
 const HistoryScreen = ({navigation}) => {
     // Variables
@@ -52,8 +52,6 @@ const HistoryScreen = ({navigation}) => {
     console.log(appError || userError)
   }
   
-  console.log(appData, "Yahaaaaaaaaaaaaaaaaaaa")
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View
@@ -65,12 +63,13 @@ const HistoryScreen = ({navigation}) => {
         }}
       >
         <ScrollView
-          style={{ marginHorizontal: 10, paddingTop: 10 }}
+          style={{ marginHorizontal: 10, paddingTop: 10, width: '100%' }}
           showsVerticalScrollIndicator={false}
         >
           {
             (appData) && (
-              <HistoryComponent data={{  applications: appData.getAllUserApplications  }} />
+              <ActiveApplicationComponent data={{ applications: appData.getAllUserApplications}} />
+              // <HistoryComponent data={{  applications: appData.getAllUserApplications  }} />
             ) 
           }
           {

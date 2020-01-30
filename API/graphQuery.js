@@ -148,7 +148,6 @@ export const FETCH_APPLICATION_BY_UID = gql`
 
 export const SUBMIT_APPLICATION = gql`
   mutation addNewApplication(
-    $userID: ID!
     $fintechID: ID!
     $amount: Int!
     $loan_term: Int!
@@ -156,7 +155,6 @@ export const SUBMIT_APPLICATION = gql`
     $token: String!
   ) {
     addNewApplication(
-      userID: $userID
       fintechID: $fintechID
       amount: $amount
       loan_term: $loan_term
