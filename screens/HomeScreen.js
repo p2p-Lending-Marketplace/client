@@ -143,7 +143,9 @@ const HomeScreen = ({ navigation }) => {
                       data={{ score: score.getUserScoring.score }}
                     />
                   ) : user && !user.getUserById.data_completed ? (
-                    <AlertProfileComponent data={{ handleOnPressApply }} />
+                    <AlertProfileComponent
+                      handleOnPressApply={handleOnPressApply}
+                    />
                   ) : (
                     <GreetingComponent />
                   )}

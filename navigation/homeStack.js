@@ -1,12 +1,12 @@
-import { createStackNavigator } from "react-navigation-stack";
-import { HomeScreen, UploadDataScreen, LoginScreen } from "../screens";
-import colors from "../assets/colors"
+import { createStackNavigator } from 'react-navigation-stack'
+import { HomeScreen, UploadDataScreen, LoginScreen } from '../screens'
+import colors from '../assets/colors'
 
 const homeStack = createStackNavigator({
   Home: {
     screen: HomeScreen,
     navigationOptions: {
-      headerShown: false
+      headerShown: false,
       // headerStyle: {
       //   backgroundColor: colors.mainBackground,
       // },
@@ -30,10 +30,10 @@ const homeStack = createStackNavigator({
       headerTitleStyle: {
         fontWeight: '700',
       },
-      headerLeft: null,
+      // headerLeft: null,
     },
   },
-  LoginScreen
+  LoginScreen,
 })
 
-export default homeStack;
+export default homeStack

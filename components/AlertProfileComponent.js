@@ -2,10 +2,10 @@ import React from 'react'
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 import { multiply } from '../assets/icons'
 import colors from '../assets/colors'
+import { TouchableHighlight } from 'react-native-gesture-handler'
 
-const AlertProfileComponent = ({ data }) => {
+const AlertProfileComponent = ({ handleOnPressApply }) => {
   // Variables
-  const handleOnPressApply = data.handleOnPressApply
   return (
     <View
       style={{
@@ -43,17 +43,18 @@ const AlertProfileComponent = ({ data }) => {
         <Text style={{ textAlign: 'justify' }}>
           one more step to apply for installments, let's complete your profile.
         </Text>
-        <TouchableOpacity onPress={handleOnPressApply}>
+        <TouchableHighlight activeOpacity={1} onPress={handleOnPressApply}>
           <Text
             style={{
               textAlign: 'left',
               color: colors.mainBackground,
               fontWeight: '700',
+              backgroundColor: 'white',
             }}
           >
             Go To Profile
           </Text>
-        </TouchableOpacity>
+        </TouchableHighlight>
       </View>
       {/* <View style={{ flex: 0.3 }}>
           <TouchableOpacity>
