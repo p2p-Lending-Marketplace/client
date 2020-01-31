@@ -109,6 +109,38 @@ class IntroScreen extends Component {
                 Get all fintech list, complete your data at once, get your
                 credit score
               </Text>
+              <View style={{ flexDirection: 'row', marginTop: 25 }}>
+                <View
+                  style={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: 25,
+                    // opacity: 0.3,
+                    backgroundColor: '#016AFB',
+                    marginHorizontal: 5,
+                  }}
+                ></View>
+                <View
+                  style={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: 25,
+                    opacity: 0.3,
+                    backgroundColor: '#016AFB',
+                    marginHorizontal: 5,
+                  }}
+                ></View>
+                <View
+                  style={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: 25,
+                    opacity: 0.3,
+                    backgroundColor: '#016AFB',
+                    marginHorizontal: 5,
+                  }}
+                ></View>
+              </View>
             </View>
           </View>
         )}
@@ -145,6 +177,106 @@ class IntroScreen extends Component {
               >
                 All in One Platform.
               </Text>
+              <View style={{ flexDirection: 'row', marginTop: 25 }}>
+                <View
+                  style={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: 25,
+                    opacity: 0.3,
+                    backgroundColor: '#016AFB',
+                    marginHorizontal: 5,
+                  }}
+                ></View>
+                <View
+                  style={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: 25,
+                    // opacity: 0.3,
+                    backgroundColor: '#016AFB',
+                    marginHorizontal: 5,
+                  }}
+                ></View>
+                <View
+                  style={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: 25,
+                    opacity: 0.3,
+                    backgroundColor: '#016AFB',
+                    marginHorizontal: 5,
+                  }}
+                ></View>
+              </View>
+            </View>
+          </View>
+        )}
+        {this.state.currentPosition === 3 && (
+          <View
+            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+          >
+            <View
+              style={{
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '80%',
+              }}
+            >
+              <Image
+                source={require('../assets/images/start.jpg')}
+                style={{ width: 150, height: 150 }}
+              />
+              <Text
+                style={{
+                  textAlign: 'center',
+                  marginTop: 20,
+                  fontSize: 20,
+                }}
+              >
+                Reimburse your accepted loan,
+              </Text>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontSize: 20,
+                }}
+              >
+                All in One Platform.
+              </Text>
+              <View style={{ flexDirection: 'row', marginTop: 25 }}>
+                <View
+                  style={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: 25,
+                    opacity: 0.3,
+                    backgroundColor: '#016AFB',
+                    marginHorizontal: 5,
+                  }}
+                ></View>
+                <View
+                  style={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: 25,
+                    opacity: 0.3,
+                    backgroundColor: '#016AFB',
+                    marginHorizontal: 5,
+                  }}
+                ></View>
+                <View
+                  style={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: 25,
+                    // opacity: 0.3,
+                    backgroundColor: '#016AFB',
+                    marginHorizontal: 5,
+                  }}
+                ></View>
+              </View>
             </View>
           </View>
         )}

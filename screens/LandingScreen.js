@@ -72,7 +72,6 @@ const LandingScreen = ({ navigation }) => {
 
   useEffect(() => {
     Notifications.addListener(({ data }) => {
-      console.log(data)
       navigation.navigate('Home', { id: data._id })
     })
   }, [])

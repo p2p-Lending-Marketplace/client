@@ -74,11 +74,11 @@ const ProfileScreen = ({ navigation }) => {
     }
   }, [userData])
   useEffect(() => {
-    if (appData && appData.getAllUserApplications.length > 0 && userData && userData.getUserById.data_completed) {
+    if (userData && userData.getUserById.data_completed) {
       fetchUserScore({
         variables: {
-          token
-        }
+          token,
+        },
       })
     }
   }, [appData])
@@ -122,15 +122,15 @@ const ProfileScreen = ({ navigation }) => {
         >
           <View style={{ width: '90%' }}>
             <Text style={{ color: 'white', fontSize: 30, fontWeight: 'bold' }}>
-              {(user && user.name) ? user.name : "Hello Guest"}
+              {user && user.name ? user.name : 'Hello Guest'}
             </Text>
             <Text style={{ color: 'white', fontSize: 20 }}>
               {user
                 ? hideNumber(user.phone_number)
-                : "Login to access our features"}
+                : 'Login to access our features'}
             </Text>
           </View>
-          <View
+          {/* <View
             style={{
               position: 'absolute',
               top: 90,
@@ -141,7 +141,7 @@ const ProfileScreen = ({ navigation }) => {
             <TouchableOpacity>
               <AntDesign name="bells" size={20} style={{ color: '#FFF' }} />
             </TouchableOpacity>
-          </View>
+          </View> */}
         </ImageBackground>
         <View
           style={{
@@ -178,12 +178,14 @@ const ProfileScreen = ({ navigation }) => {
           <TouchableOpacity
             style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
           >
-            <Text style={{ fontSize: 40, fontWeight: '700', color: colors.mainBackground }}>
-              {
-                score
-                  ? score.getUserScoring.score
-                  : 'X'
-              }
+            <Text
+              style={{
+                fontSize: 40,
+                fontWeight: '700',
+                color: colors.mainBackground,
+              }}
+            >
+              {score ? score.getUserScoring.score : 'X'}
             </Text>
             <Text>Score</Text>
           </TouchableOpacity>
@@ -301,45 +303,45 @@ const ProfileScreen = ({ navigation }) => {
             </TouchableOpacity>
           </Item>
         </View>
-        {
-          user && (
-            <View
+        {user && (
+          <View
+            style={{
+              width: '90%',
+              backgroundColor: '#FFF',
+              position: 'absolute',
+              top: '75%',
+              borderRadius: 5,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Item
               style={{
                 width: '90%',
-                backgroundColor: '#FFF',
-                position: 'absolute',
-                top: '75%',
-                borderRadius: 5,
                 alignItems: 'center',
-                justifyContent: 'center',
+                paddingVertical: 8,
+                borderColor: 'transparent',
               }}
+              last
             >
-              <Item
+              <TouchableOpacity
                 style={{
-                  width: '90%',
+                  width: '100%',
+                  flexDirection: 'row',
                   alignItems: 'center',
-                  paddingVertical: 8,
-                  borderColor: 'transparent',
                 }}
-                last
+                onPress={() => {
+                  handleSignOut()
+                }}
               >
-                <TouchableOpacity
-                  style={{
-                    width: '100%',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                  }}
-                  onPress={() => {
-                    handleSignOut()
-                  }}
-                >
-                  <Text style={{ marginVertical: 10, width: '90%' }}>Sign Out</Text>
-                  <AntDesign name="right" size={20} />
-                </TouchableOpacity>
-              </Item>
-            </View>
-          )
-        }
+                <Text style={{ marginVertical: 10, width: '90%' }}>
+                  Sign Out
+                </Text>
+                <AntDesign name="right" size={20} />
+              </TouchableOpacity>
+            </Item>
+          </View>
+        )}
       </View>
       {/* <View style={{marginTop: 300, alignItems: "center"}}>
         <View style={{backgroundColor: "#FFF", height: '100%', width: '90%', borderRadius: 5}}>

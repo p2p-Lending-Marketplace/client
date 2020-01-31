@@ -42,7 +42,7 @@ const PinCreateScreen = ({ navigation }) => {
   async function saveToken(token) {
     try {
       await AsyncStorage.setItem(APP_NAME + ':token', token)
-      navigation.navigate('tabNavigator')
+      navigation.navigate('Member')
     } catch (error) {
       console.log(error)
     }

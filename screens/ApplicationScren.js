@@ -9,35 +9,46 @@ import {
   ImageBackground,
 } from 'react-native'
 import { Item, Form, Input, Label, Spinner } from 'native-base'
-import colors from "../assets/colors"
-import { SUBMIT_APPLICATION } from "../API/graphQuery"
-import { useMutation } from "@apollo/react-hooks"
-import { APP_NAME } from "../assets/variables"
-import { useLazyQuery } from "@apollo/react-hooks"
-import { FETCH_USER_DETAIL, UPLOAD_IMAGE } from "../API/graphQuery"
-import { Entypo } from "@expo/vector-icons"
+import colors from '../assets/colors'
+import { SUBMIT_APPLICATION } from '../API/graphQuery'
+import { useMutation } from '@apollo/react-hooks'
+import { APP_NAME } from '../assets/variables'
+import { useLazyQuery } from '@apollo/react-hooks'
+import {
+  FETCH_USER_DETAIL,
+  UPLOAD_IMAGE,
+  FETCH_APPLICATION_BY_UID,
+} from '../API/graphQuery'
+import { Entypo } from '@expo/vector-icons'
 import * as Permissions from 'expo-permissions'
 import * as ImagePicker from 'expo-image-picker'
 
 const ApplicationScreen = ({ navigation }) => {
   // Variables
-  const fintech_id = navigation.getParam("fintech_id")
-  const [token, setToken] = useState("")
-  const [fetchUser, { loading: userLoading, data: user, error: userError }] = useLazyQuery(FETCH_USER_DETAIL)
-  const [additionalData, { loading: addLoading, error: addError, data: addData }] = useMutation(UPLOAD_IMAGE)
+  const fintech_id = navigation.getParam('fintech_id')
+  const [token, setToken] = useState('')
+  const [
+    fetchUser,
+    { loading: userLoading, data: user, error: userError },
+  ] = useLazyQuery(FETCH_USER_DETAIL)
+  const [
+    additionalData,
+    { loading: addLoading, error: addError, data: addData },
+  ] = useMutation(UPLOAD_IMAGE)
   const [dataApplication, setDataApplication] = useState({
-      amount: "",
-      loan_term: "",
-      objective: "",
-      additional_data: ""
+    amount: null,
+    loan_term: null,
+    objective: '',
+    additional_data: '',
   })
-  
+
   // Function
 
   useEffect(() => {
     const getToken = async () => {
       const tokenString = await AsyncStorage.getItem(APP_NAME + ':token')
       if (tokenString !== null) {
+        console.log(tokenString)
         const { token } = JSON.parse(tokenString)
         setToken(token)
         fetchUser({
@@ -52,10 +63,10 @@ const ApplicationScreen = ({ navigation }) => {
 
   const [submitData, { data, error }] = useMutation(SUBMIT_APPLICATION)
   function handleDataChange(type, value) {
-      setDataApplication({
+    setDataApplication({
       ...dataApplication,
-      [type]: value
-      })
+      [type]: value,
+    })
   }
 
   const _pickImage = async (field, ratio, uploadOpt) => {
@@ -82,8 +93,8 @@ const ApplicationScreen = ({ navigation }) => {
     if (!result.cancelled) {
       additionalData({
         variables: {
-          file: result
-        }
+          file: result,
+        },
       })
     }
   }
@@ -97,8 +108,8 @@ const ApplicationScreen = ({ navigation }) => {
       return true
     }
   }
-  if(data){
-      navigation.goBack()
+  if (data) {
+    navigation.goBack()
   }
   useEffect(() => {
     if (addData) {
@@ -109,17 +120,19 @@ const ApplicationScreen = ({ navigation }) => {
     }
   }, [addData])
 
-
   const handleApplyButton = async () => {
     submitData({
-        variables: {
-            ...dataApplication,
-            amount: Number(dataApplication.amount),
-            loan_term: Number(dataApplication.loan_term),
-            // userID: user.getUserById._id,
-            fintechID: fintech_id,
-            token: token
-        }
+      variables: {
+        ...dataApplication,
+        amount: Number(dataApplication.amount),
+        loan_term: Number(dataApplication.loan_term),
+        // userID: user.getUserById._id,
+        fintechID: fintech_id,
+        token: token,
+      },
+      refetchQueries: [
+        { query: FETCH_APPLICATION_BY_UID, variables: { token } },
+      ],
     })
   }
 
@@ -161,7 +174,7 @@ const ApplicationScreen = ({ navigation }) => {
                   borderRadius: 5,
                   paddingHorizontal: 10,
                 }}
-                value={dataApplication.amount}
+                value={String(dataApplication.amount || '')}
                 keyboardType={'number-pad'}
                 onChangeText={amount => {
                   handleDataChange('amount', amount)
@@ -197,7 +210,7 @@ const ApplicationScreen = ({ navigation }) => {
                   borderRadius: 5,
                   paddingHorizontal: 10,
                 }}
-                value={dataApplication.loan_term}
+                value={String(dataApplication.loan_term || '')}
                 onChangeText={loan_term => {
                   handleDataChange('loan_term', loan_term)
                 }}
@@ -260,31 +273,31 @@ const ApplicationScreen = ({ navigation }) => {
               >
                 Additional Data (Option)
               </Label>
-                <View
+              <View
+                style={{
+                  borderColor: 'grey',
+                  borderWidth: 1,
+                  width: 150,
+                  height: 200,
+                  borderRadius: 5,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  overflow: 'hidden',
+                  marginBottom: 10,
+                }}
+              >
+                <ImageBackground
+                  source={{ uri: dataApplication.additional_data }}
                   style={{
-                    borderColor: 'grey',
-                    borderWidth: 1,
-                    width: 150,
-                    height: 200,
-                    borderRadius: 5,
+                    width: '100%',
+                    height: '100%',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    overflow: 'hidden',
-                    marginBottom: 10,
                   }}
                 >
-                  <ImageBackground
-                    source={{ uri: dataApplication.additional_data }}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                  >
-                    {addLoading && <Spinner color={'#1D63DB'} />}
-                  </ImageBackground>
-                </View>
+                  {addLoading && <Spinner color={'#1D63DB'} />}
+                </ImageBackground>
+              </View>
               <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity
                   style={{

@@ -15,7 +15,7 @@ import { APP_NAME } from '../assets/variables'
 
 const PinCreateScreen = ({ navigation }) => {
   // Variables
-  const phoneNumber = navigation.getParam("phoneNumber")
+  const phoneNumber = navigation.getParam('phoneNumber')
   const [status, setStatus] = useState(false)
   const [pin, setPin] = useState('')
   const [confirmPin, setConfirmPin] = useState('')
@@ -41,8 +41,14 @@ const PinCreateScreen = ({ navigation }) => {
 
   useEffect(() => {
     if (data) {
+      console.log(data, '44')
       const savePhoneNumber = async () => {
+        console.log(data.addNewUser)
         await AsyncStorage.setItem(APP_NAME + ':phoneNumber', phoneNumber)
+        await AsyncStorage.setItem(
+          APP_NAME + ':token',
+          JSON.stringify(data.addNewUser)
+        )
         await setStatus(true)
       }
       savePhoneNumber()
@@ -53,9 +59,8 @@ const PinCreateScreen = ({ navigation }) => {
   }, [data, error])
 
   useEffect(() => {
-    console.log(status)
-    if(status){
-      navigation.navigate('tabNavigator')
+    if (status) {
+      navigation.navigate('Member')
     }
   }, [status])
 

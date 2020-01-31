@@ -17,7 +17,7 @@ import {
   FETCH_APPLICATION_BY_UID,
   FETCH_USER_DETAIL,
   FETCH_USER_SCORE,
-  SELECT_APPLICATION
+  SELECT_APPLICATION,
 } from '../API/graphQuery'
 import {
   RegisterComponent,
@@ -29,8 +29,17 @@ import {
 } from '../components'
 const HomeScreen = ({ navigation }) => {
   // Variables
+  const idApp = navigation.getParam('id')
+  console.log(idApp)
+  const [idd, setIdd] = useState(null)
+  console.log(idd)
+  useEffect(() => {
+    if (idApp) {
+      setIdd(idApp)
+    }
+  }, [idApp, idd])
   const [token, setToken] = useState(null)
-  const [selectApp, {data, loading, error}] = useMutation(SELECT_APPLICATION)
+  const [selectApp, { data, loading, error }] = useMutation(SELECT_APPLICATION)
   const [
     fetchApplications,
     { loading: appLoading, data: appData, error: appError },
@@ -43,13 +52,16 @@ const HomeScreen = ({ navigation }) => {
     fetchUserScore,
     { loading: scoreLoading, data: score, error: scoreError },
   ] = useLazyQuery(FETCH_USER_SCORE)
-  const handleSelect = (id) => {
+  const handleSelect = id => {
     selectApp({
       variables: {
         token,
         id,
-        status: "selected"
-      }
+        status: 'selected',
+      },
+      refetchQueries: [
+        { query: FETCH_APPLICATION_BY_UID, variables: { token } },
+      ],
     })
   }
 
@@ -81,11 +93,56 @@ const HomeScreen = ({ navigation }) => {
   }, [token, appError, userError])
 
   useEffect(() => {
+    ;(async () => {
+      const token2 = await AsyncStorage.getItem(APP_NAME + ':token')
+      const tokenFix = JSON.parse(token2).token
+      fetchUser({
+        variables: {
+          token: tokenFix,
+        },
+      })
+      fetchApplications({
+        variables: {
+          token: tokenFix,
+        },
+      })
+    })()
+  }, [])
+
+  useEffect(() => {
+    navigation.addListener('didFocus', async () => {
+      const token2 = await AsyncStorage.getItem(APP_NAME + ':token')
+      const tokenFix = JSON.parse(token2).token
+      fetchUser({
+        variables: {
+          token: tokenFix,
+        },
+      })
+      // fetchApplications({ variables: { token } }
+    })
+  }, [])
+  useEffect(() => {
+    navigation.addListener('didFocus', async () => {
+      const token2 = await AsyncStorage.getItem(APP_NAME + ':token')
+      const tokenFix = JSON.parse(token2).token
+      fetchApplications({
+        variables: {
+          token: tokenFix,
+        },
+      })
+    })
+  }, [])
+
+  useEffect(() => {
     if (user && user.getUserById) {
-      if (user.getUserById.data_completed && !score)
+      if (user.getUserById.data_completed)
         fetchUserScore({ variables: { token } })
     }
   }, [user])
+
+  useEffect(() => {
+    console.log(score)
+  }, [score])
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -128,7 +185,8 @@ const HomeScreen = ({ navigation }) => {
                       fontWeight: '700',
                     }}
                   >
-                    {(user && user.getUserById) &&
+                    {user &&
+                      user.getUserById &&
                       `Hello, ${
                         user.getUserById.name
                           ? user.getUserById.name.split(' ')[0]
@@ -139,7 +197,9 @@ const HomeScreen = ({ navigation }) => {
                     <BoardScoreComponent
                       data={{ score: score.getUserScoring.score }}
                     />
-                  ) : (user && user.getUserById) && !user.getUserById.data_completed ? (
+                  ) : user &&
+                    user.getUserById &&
+                    !user.getUserById.data_completed ? (
                     <AlertProfileComponent
                       handleOnPressApply={handleOnPressApply}
                     />
@@ -202,7 +262,10 @@ const HomeScreen = ({ navigation }) => {
                     )} */}
                   {appData && appData.getAllUserApplications.length > 0 && (
                     <ActiveApplicationComponent
-                      data={{ applications: appData.getAllUserApplications, handleSelect }}
+                      data={{
+                        applications: appData.getAllUserApplications,
+                        handleSelect,
+                      }}
                     />
                   )}
                 </ScrollView>

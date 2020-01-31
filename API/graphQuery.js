@@ -99,6 +99,7 @@ export const UPDATE_USER_DATA = gql`
     $date_of_birth: String
     $num_id: String
     $token: String
+    $existing_loan_installment: Int
   ) {
     updateUserData(
       id: $id
@@ -116,6 +117,7 @@ export const UPDATE_USER_DATA = gql`
       place_of_birth: $place_of_birth
       num_id: $num_id
       token: $token
+      existing_loan_installment: $existing_loan_installment
     ) {
       _id
     }
@@ -182,6 +184,7 @@ export const FETCH_USER_DETAIL = gql`
       current_job
       salary
       salary_slip_url
+      existing_loan_installment
       data_completed
     }
   }
